@@ -1,6 +1,6 @@
 import HoTTLean.Frontend.Commands
-import HoTTLean.Model.Interpretation
-import HoTTLean.Groupoids.NaturalModelBase
+import HoTTLean.Model.Unstructured.Interpretation
+import HoTTLean.Groupoids.UHom
 import HoTTLean.Groupoids.Pi
 import HoTTLean.Groupoids.Sigma
 import HoTTLean.Groupoids.Id
@@ -29,7 +29,7 @@ unitt def uniq_fn {A : Type} (f g : A → Unit) : Identity f g := by
 /-! ## Interpretation -/
 
 open SynthLean
-open CategoryTheory MonoidalCategory NaturalModel Universe GroupoidModel
+open CategoryTheory MonoidalCategory Model.UnstructuredUniverse GroupoidModel
 
 instance : uHomSeq.IdSeq := sorry
 
