@@ -1,0 +1,62 @@
+$ lake build NaturalModel
+
+⚠ [990/1029] Replayed Poly.ForMathlib.CategoryTheory.LocallyCartesianClosed.Distributivity
+warning: Poly/ForMathlib/CategoryTheory/LocallyCartesianClosed/Distributivity.lean:114:6: declaration uses `sorry`
+warning: Poly/ForMathlib/CategoryTheory/LocallyCartesianClosed/Distributivity.lean:126:4: declaration uses `sorry`
+warning: Poly/ForMathlib/CategoryTheory/LocallyCartesianClosed/Distributivity.lean:152:4: declaration uses `sorry`
+⚠ [992/1029] Replayed Poly.UvPoly.Basic
+warning: Poly/UvPoly/Basic.lean:64:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:85:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:232:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:256:10: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:251:0: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:264:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:277:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:276:2: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:276:2: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:394:4: declaration uses `sorry`
+warning: Poly/UvPoly/Basic.lean:399:9: declaration uses `sorry`
+⚠ [1012/1029] Replayed HoTTLean.ForMathlib
+warning: HoTTLean/ForMathlib.lean:343:0: Definition `CategoryTheory.Equivalence.chosenFiniteProducts` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+warning: HoTTLean/ForMathlib.lean:343:4: Overlapping instance parameters in `chosenFiniteProducts`:
+
+⚠️ There are 2 `[CartesianMonoidalCategory C]` instances; one is sufficient.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+⚠ [1013/1029] Replayed HoTTLean.ForPoly
+warning: HoTTLean/ForPoly.lean:584:6: declaration uses `sorry`
+warning: HoTTLean/ForPoly.lean:588:6: declaration uses `sorry`
+warning: HoTTLean/ForPoly.lean:598:6: declaration uses `sorry`
+⚠ [1017/1029] Replayed HoTTLean.ForMathlib.CategoryTheory.RepPullbackCone
+warning: HoTTLean/ForMathlib/CategoryTheory/RepPullbackCone.lean:252:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: HoTTLean/ForMathlib/CategoryTheory/RepPullbackCone.lean:254:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [1020/1029] Replayed HoTTLean.Model.Natural.UHom
+warning: HoTTLean/Model/Natural/UHom.lean:39:0: Definition `Hom.comp_assoc` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Model/Natural/UHom.lean:125:0: Definition `UHom.comp_assoc` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Model/Natural/UHom.lean:439:0: Definition `Pi_pb` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+info: HoTTLean/Model/Natural/UHom.lean:622:2: Try this:
+  [apply] rwa [mkApp, unLam_mkLam]
+warning: HoTTLean/Model/Natural/UHom.lean:651:0: Definition `Sig_pb` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1026/1029] Replayed HoTTLean.Syntax.Substitution
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTp.refl_tp` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTp.trans_tp` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTm.refl_tm` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTm.trans_tm'` annotated with `@[grind .]`
+✔ [1028/1029] Built HoTTLean.Model.Natural.Interpretation (28s)
+Build completed successfully (1029 jobs).
+
+Exit status: 0
+Elapsed seconds: 30.47

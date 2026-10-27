@@ -110,7 +110,7 @@ theorem eqToHom_hom_aux {C1 C2 : Grpd.{v,u}} (x y: C1) (eq : C1 = C2) :
 theorem eqToHom_hom {C1 C2 : Grpd.{v,u}} {x y: C1} (f : x ⟶ y) (eq : C1 = C2) :
     (eqToHom eq).map f = (cast (Grpd.eqToHom_hom_aux x y eq) f) := by
   cases eq
-  simp only [eqToHom_refl, id_eq_id, Functor.id_map, cast_eq]
+  simp [CategoryStruct.id]
 
 @[simp] theorem map_eqToHom_map {x y : Γ} (h : x = y) {t s} (f : t ⟶ s) :
     (F.map (eqToHom h)).map f =
@@ -228,8 +228,8 @@ attribute [simp] comp_eq_comp id_eq_id in
 def mkIso {Δ Γ : Grpd} (F : Δ ≅≅ Γ) : Δ ≅ Γ where
   hom := F.hom
   inv := F.inv
-  hom_inv_id := by simp
-  inv_hom_id := by simp
+  hom_inv_id := F.hom_inv_id
+  inv_hom_id := F.inv_hom_id
 
 attribute [simp] comp_eq_comp id_eq_id in
 @[simps]
@@ -237,8 +237,8 @@ def mkIso' {Δ Γ : Type u} [Groupoid.{v} Δ] [Groupoid.{v} Γ] (F : Δ ≅≅ �
     Grpd.of Δ ≅ Grpd.of Γ where
   hom := F.hom
   inv := F.inv
-  hom_inv_id := by simp
-  inv_hom_id := by simp
+  hom_inv_id := F.hom_inv_id
+  inv_hom_id := F.inv_hom_id
 
 open MonoidalCategory
 

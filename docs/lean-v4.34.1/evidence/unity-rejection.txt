@@ -1,0 +1,78 @@
+{
+  "candidate-36d0ac07cf5f61823267": {
+    "artifact": {
+      "artifact_id": "artifact-0013e7fc4aaf",
+      "sha256": "491884eef2cd560a1bdeb8767e84e4699853a19ffb370471dbf027f07f52dfea"
+    },
+    "author": "Terra",
+    "base_main_sha": "6b49461e0b59e1a380ec0a2325d032e415141325",
+    "candidate_id": "candidate-36d0ac07cf5f61823267",
+    "commit_sha": "e0fad34798e29a32cdce6bb59b43d7953d64cecb",
+    "config_revision": 1,
+    "diff_sha256": "491884eef2cd560a1bdeb8767e84e4699853a19ffb370471dbf027f07f52dfea",
+    "feedback": {
+      "accepted": false,
+      "reason": "Configuration still has setup blockers",
+      "setup": {
+        "config_hashes": {
+          "lake-manifest.json": "0d96e204ccec42cc1fc07e56951cc751c7c6ec252f72f9d3bdfab52c3c25931e",
+          "lakefile.lean": "b1acada48493e2dc2a6ab3e9bfa02b1e9706ea6f4c520ca7cba668e814a934bc",
+          "lean-toolchain": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+        },
+        "configuration_revision": 1,
+        "created_at": "2026-10-27T19:34:37.618640+00:00",
+        "dependency_pins": {
+          "Poly": "cc08a1f77c20e07a7366f0824ecd36ae472c0377"
+        },
+        "lake_args": [],
+        "modules": [
+          "HoTTLean.Model.Natural.Interpretation",
+          "HoTTLean.Model.Natural.UHom",
+          "HoTTLean.Model.Natural.NaturalModel",
+          "test.basic",
+          "test.import",
+          "test.hott0",
+          "test.unitt"
+        ],
+        "pending_tasks": [
+          {
+            "kind": "configuration",
+            "reason": "dependency path must be canonical, project-local and not a symlink",
+            "retryable": true,
+            "status": "pending",
+            "step": "dependencies",
+            "task_id": "setup-dependencies"
+          }
+        ],
+        "phase": "blocked",
+        "project_scope": "build",
+        "schema": "compiler-migration-v2",
+        "target_version": "leanprover/lean4:v4.34.1",
+        "toolchain": {
+          "lake": {
+            "executable": "/data/user_data/shivansg/lean-toolchains/leanprover--lean4---v4.34.1/bin/lake",
+            "version_output": "Lake version 5.0.0-src+5045d00 (Lean version 4.34.1)"
+          },
+          "lean": {
+            "executable": "/data/user_data/shivansg/lean-toolchains/leanprover--lean4---v4.34.1/bin/lean",
+            "version_output": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)"
+          },
+          "target_version": "leanprover/lean4:v4.34.1"
+        }
+      }
+    },
+    "files": [
+      "HoTTLean/ForMathlib.lean",
+      "HoTTLean/ForMathlib/CategoryTheory/FreeGroupoid.lean",
+      "HoTTLean/ForMathlib/CategoryTheory/NatTrans.lean",
+      "HoTTLean/ForMathlib/CategoryTheory/RepPullbackCone.lean",
+      "HoTTLean/Grothendieck/IsPullback.lean",
+      "HoTTLean/Pointed/Basic.lean"
+    ],
+    "notes": "Partial import migration: ForMathlib, RepPullbackCone, NatTrans, Grothendieck/IsPullback replace removed pullback import; ForMathlib, FreeGroupoid, Pointed/Basic replace removed Grpd import. lake build HoTTLean.ForMathlib resolves imports but fails on declaration errors; remaining five modules not separately checked. Existing holes reported in forum.",
+    "status": "rejected",
+    "submitted": "2026-10-27T19:34:37.106953+00:00",
+    "task_id": "command-670a0b37a1c81476",
+    "task_revision": 3
+  }
+}

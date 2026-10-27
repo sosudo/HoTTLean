@@ -1,0 +1,14 @@
+Command: unity init
+Exit status: 1
+Initialized /data/user_data/shivansg/HoTTLean/.unity
+Fetching build cache...
+info: downloading https://releases.lean-lang.org/lean4/v4.25.0-rc2/lean-4.25.0-rc2-linux.tar.zst
+info: installing /home/shivansg/.elan/toolchains/leanprover--lean4---v4.25.0-rc2
+error: failed to extract package
+info: caused by: failed to set mtime for `/home/shivansg/.elan/toolchains/leanprover--lean4---v4.25.tmp/lib/lean/Lake/CLI/Main.olean.private`
+info: caused by: Quota exceeded (os error 122)
+Error: command failed (rc=1): lake exe cache get
+
+The failed temporary download was moved to the data volume.
+The target toolchain v4.34.1 was already installed on the data volume.
+The bump command uses that toolchain.

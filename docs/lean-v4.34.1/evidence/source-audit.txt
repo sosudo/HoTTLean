@@ -1,0 +1,69 @@
+Lean source audit: baseline 31133dd and current working tree
+
+Method
+- Scanned production Lean files under HoTTLean/ and test files under test/ at the
+  baseline and HoTTLeanTest/ in the current tree. The root test files were included.
+- Removed nested block comments, line comments, and escaped double-quoted strings
+  before scanning for `sorry`, `admit`, and `axiom` tokens. Checked the declaration
+  context for each token. Counted custom theory axioms separately.
+- Checked source imports and Lake roots and globs. This is a static source audit.
+
+Counts                         Baseline    Current
+Production `sorry`                 3           3
+Production axiom declarations      6           6
+Test `sorry`                       2           1
+Test theory axioms                10          10
+No `admit` token was found in either source set.
+
+Production holes and axioms
+- The three production holes are in HoTTLean/ForPoly.lean: baseline lines 595,
+  605, and 612; current lines 586, 596, and 603.
+- HoTTLean/Prelude.lean retains `sorryAx₀`, `sorryAx₁`, and `sorryAx₂` at
+  lines 41–43 in both trees.
+- HoTTLean/Syntax/Injectivity.lean retains `EqTp.inv_pi`, `EqTp.inv_sigma`,
+  and `EqTp.inv_Id` at lines 14, 19, and 25 in both trees.
+- The quoted syntax name `Parser.Command.axiom` in Frontend/Commands.lean is
+  not an axiom declaration. It occurs at baseline line 188 and current line 187.
+
+Test holes and axioms
+- The guarded `sorry` remains at basic.lean line 89 in both trees. Its
+  `#guard_msgs` assertion remains at line 88.
+- The baseline test/unitt.lean had an `IdSeq` instance hole at line 34. The
+  current test removes it and uses the instance in HoTTLean/Groupoids/UHom.lean:71.
+- The ten theory axioms remain: basic lines 71, 73, 75, and 77; hott0 lines 24
+  and 65; unitt lines 16, 19, 20, and 21. These use custom theory commands.
+
+Checks and compatibility
+- No `#exit` or assertion-disable directive was found. The existing
+  `addDeclCore ... (doCheck := false)` remains in Frontend/EnvExt.lean:111.
+  The baseline has the same option at line 110; the call has one new argument.
+- The local duplicate-namespace linter suppression in NaturalModel.lean is unchanged.
+  It occurs at baseline line 496 and current line 508. No linter suppression was added.
+- `backward.isDefEq.respectTransparency false` changes elaborator search. It does
+  not disable kernel checking of accepted declarations.
+- Frontend/EnvExt.lean:73 enables initializer execution for the process. Lean
+  documents restrictions for concurrent execution and loaded native versions.
+  This is a runtime change, not a kernel proof-check bypass.
+- Mathlib now supplies `Discrete.functor_ext` with implicit functor arguments.
+  It states the same equality as the removed local theorem. Calls that passed the
+  two functors explicitly need a source change.
+
+Tests and module coverage
+- The four test modules have corresponding files under HoTTLeanTest/. The
+  `basic`, `import`, and `hott0` changes preserve their assertions.
+- The current unitt test exercises the Unstructured interpretation. The baseline
+  test was outside the test umbrella and imported two absent modules:
+  HoTTLean.Model.Interpretation and HoTTLean.Groupoids.NaturalModelBase.
+- The current test umbrella imports basic, import, hott0, and unitt. The baseline
+  umbrella imported only the first three.
+- Static import closure from HoTTLean, Prelude, the three NaturalModel modules,
+  and the test umbrella covers 64 of 67 production and test modules. The other
+  three are compatibility modules under HoTTLean.ForMathlib.CategoryTheory:
+  Groupoid, Localization.Predicate, and MorphismProperty.Basic. The HoTTLean
+  library source glob includes them.
+
+Limits
+- The scan does not expand macros or inspect generated declarations, imported
+  dependencies, or elaborated environments. It does not prove proof-term safety.
+- Import closure and source globs are static checks. Build and test results are
+  recorded separately.

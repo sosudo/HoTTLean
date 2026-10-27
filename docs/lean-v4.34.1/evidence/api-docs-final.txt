@@ -1,0 +1,586 @@
+$ lake -R -Kenv=dev build HoTTLean:docs
+
+ℹ [194/247] Replayed «doc-gen4»/bibPrepass
+info: stdout:
+INFO: reference page disabled
+ℹ [195/247] Replayed «doc-gen4»/coreDocs
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Std.Time.DateTime.weekOfYear: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Std.Time.PlainDateTime.weekday: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Std.Time.PlainDateTime.weekYear: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Std.Time.PlainDateTime.weekOfYear: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeValueArray: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeDateTime: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeTable: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.lowerHexUInt64: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeBool: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeInt: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeFloat: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeString: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lake.Toml.Value.decodeNat: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Lean.Elab.Command.elabElabRulesAux: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Compiler.LCNF.CodeDecl.collectUsed: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `simp`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.ensureEvalTerm: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Meta.simpHaveTelescope: failed to generate equational theorem for `Lean.Meta.simpHaveTelescope`
+m : Type → Type
+inst : Monad m
+inst_1 : MonadLiftT Lean.MetaM m
+inst_2 : MonadControlT Lean.MetaM m
+inst_3 : Lean.Meta.MonadSimp m
+e : Lean.Expr
+⊢ (do
+      let info ← liftM (Lean.Meta.getHaveTelescopeInfo e)
+      if (!info.haveInfo.isEmpty) = true then do
+          let __x ← liftM (info.computeFixedUsed true)
+          let r ← Lean.Meta.simpHaveTelescopeAux✝ info __x.fst __x.snd e 0 (Array.mkEmpty info.haveInfo.size)
+          liftM (Lean.Meta.SimpHaveResult.toResult✝ info.level e r true)
+        else
+          panicWithPosWithDecl "Lean.Meta.HaveTelescope" "Lean.Meta.simpHaveTelescope" 456 2
+            ("assertion violation: " ++ "!info.haveInfo.isEmpty\n  ")) =
+    do
+    let info ← liftM (Lean.Meta.getHaveTelescopeInfo e)
+    if (!info.haveInfo.isEmpty) = true then do
+        let __x ← liftM (info.computeFixedUsed false)
+        let r ← Lean.Meta.simpHaveTelescopeAux✝ info __x.fst __x.snd e 0 (Array.mkEmpty info.haveInfo.size)
+        liftM (Lean.Meta.SimpHaveResult.toResult✝ info.level e r true)
+      else
+        panicWithPosWithDecl "Lean.Meta.HaveTelescope" "Lean.Meta.simpHaveTelescope" 456 2
+          ("assertion violation: " ++ "!info.haveInfo.isEmpty\n  ")
+WARNING: Failed to calculate equational lemmata for Lean.Doc.leanRole: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.PrettyPrinter.Delaborator.SubExpr.withBoundedAppFnArgs: failed to generate equational theorem for `Lean.PrettyPrinter.Delaborator.SubExpr.withBoundedAppFnArgs`
+  no progress at goal
+  α : Type
+  m : Type → Type
+  inst✝² : Monad m
+  inst✝¹ : MonadReaderOf Lean.SubExpr m
+  inst✝ : MonadWithReaderOf Lean.SubExpr m
+  maxArgs : Nat
+  xf : m α
+  xa : α → m α
+  r : Nat.below maxArgs :=
+    (Nat.brecOn.go maxArgs (Lean.PrettyPrinter.Delaborator.SubExpr.withBoundedAppFnArgs._f xf xa)).2
+  ⊢ (do
+        let __do_lift ← Lean.PrettyPrinter.Delaborator.SubExpr.getExpr
+        (match (motive := (maxArgs : Nat) → Lean.Expr → Nat.rec PUnit (fun n n_ih => m α ×' n_ih) maxArgs → m α)
+              maxArgs, __do_lift with
+            | maxArgs'.succ, fn.app arg => fun x => do
+              let acc ← Lean.PrettyPrinter.Delaborator.SubExpr.withAppFn x.1
+              Lean.PrettyPrinter.Delaborator.SubExpr.withAppArg (xa acc)
+            | x, x_1 => fun x => xf)
+            r) =
+      do
+      let __do_lift ← Lean.PrettyPrinter.Delaborator.SubExpr.getExpr
+      match maxArgs, __do_lift with
+        | maxArgs'.succ, fn.app arg => do
+          let acc ←
+            Lean.PrettyPrinter.Delaborator.SubExpr.withAppFn
+                (Lean.PrettyPrinter.Delaborator.SubExpr.withBoundedAppFnArgs maxArgs' xf xa)
+          Lean.PrettyPrinter.Delaborator.SubExpr.withAppArg (xa acc)
+        | x, x_1 => xf
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.ConfigItem.throwInvalidOption: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.ensureEvalExpr: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Elab.Term.mkCoe: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.evalMetaEval: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.ConfigItem.throwCannotSetOption: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Meta.Grind.pushNot: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Server.Completion.dotIdCompletion: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Syntax.asNode: (deterministic) timeout at `whnf`, maximum number of heartbeats (5000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.CodeAction.holeCodeActionProvider: failed to generate equality theorems for `match` expression `_private.Lean.Server.CodeActions.Provider.0.Lean.CodeAction.holeCodeActionProvider.match_7`
+case isTrue
+motive✝ : Array (Lean.Elab.ContextInfo × Lean.Elab.TermInfo) → Sort u_1
+x✝¹ : Array (Lean.Elab.ContextInfo × Lean.Elab.TermInfo)
+h_1✝ : (ctx : Lean.Elab.ContextInfo) → (info : Lean.Elab.TermInfo) → motive✝ #[(ctx, info)]
+h_2✝ : (x : Array (Lean.Elab.ContextInfo × Lean.Elab.TermInfo)) → motive✝ x
+x✝ : ∀ (ctx : Lean.Elab.ContextInfo) (info : Lean.Elab.TermInfo), x✝¹ = #[(ctx, info)] → False
+h✝ : x✝¹.size = 1
+⊢ (⋯ ▸ fun h => ⋯ ▸ Prod.casesOn (x✝¹.getLit 0 ⋯ ⋯) fun fst snd => h_1✝ fst snd) ⋯ = h_2✝ x✝¹
+WARNING: Failed to calculate equational lemmata for Lean.Elab.Tactic.evalGrindCore: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Meta.Tactic.TryThis.addRewriteSuggestion: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Level.collectMVars: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+WARNING: Failed to calculate equational lemmata for Lean.Elab.ConfigEval.deriveEvalExprUsingMetaEval: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+⚠ [1119/1215] Replayed HoTTLean.ForMathlib
+warning: HoTTLean/ForMathlib.lean:343:0: Definition `CategoryTheory.Equivalence.chosenFiniteProducts` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+warning: HoTTLean/ForMathlib.lean:343:4: Overlapping instance parameters in `chosenFiniteProducts`:
+
+⚠️ There are 2 `[CartesianMonoidalCategory C]` instances; one is sufficient.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+⚠ [1122/1215] Replayed HoTTLean.ForMathlib.CategoryTheory.RepPullbackCone
+warning: HoTTLean/ForMathlib/CategoryTheory/RepPullbackCone.lean:252:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: HoTTLean/ForMathlib/CategoryTheory/RepPullbackCone.lean:254:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [1142/1215] Replayed HoTTLean.ForMathlib.CategoryTheory.Grpd
+warning: HoTTLean/ForMathlib/CategoryTheory/Grpd.lean:153:0: Definition `Grpd.Functor.iso_hom` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Grpd.lean:158:0: Definition `Grpd.Functor.iso_inv` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1158/1215] Replayed HoTTLean.ForMathlib.CategoryTheory.NatTrans
+warning: HoTTLean/ForMathlib/CategoryTheory/NatTrans.lean:32:5: Ambiguous namespace `Functor`: it is interpreted as `_root_.CategoryTheory.Functor` because this `open` occurs inside `namespace CategoryTheory.NatTrans`, while `_root_.Functor` is silently not opened. Specify the namespace unambiguously, e.g. `_root_.CategoryTheory.Functor`. The warning can sometimes also be addressed by moving the `open` outside of the surrounding `namespace`.
+
+Note: This linter can be disabled with `set_option linter.ambiguousOpen false`
+⚠ [1159/1215] Replayed HoTTLean.ForMathlib.CategoryTheory.Bicategory.Grothendieck
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:78:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:579:0: Definition `transport_base` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:583:0: Definition `transport_fiber` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:597:0: Definition `toTransport_base` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:601:0: Definition `toTransport_fiber` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Bicategory/Grothendieck.lean:773:4: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [1160/1215] Replayed HoTTLean.Grothendieck.Groupoidal.Basic
+warning: HoTTLean/Grothendieck/Groupoidal/Basic.lean:46:0: The namespace `Functor` is duplicated in the declaration `CategoryTheory.Functor.Groupoidal.Functor.simpIdComp`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Grothendieck/Groupoidal/Basic.lean:52:0: The namespace `Functor` is duplicated in the declaration `CategoryTheory.Functor.Groupoidal.Functor.simpCompId`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Grothendieck/Groupoidal/Basic.lean:176:14: The namespace `Groupoidal` is duplicated in the declaration `CategoryTheory.Functor.Groupoidal.Grothendieck.Groupoidal.eta`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Grothendieck/Groupoidal/Basic.lean:180:14: The namespace `Groupoidal` is duplicated in the declaration `CategoryTheory.Functor.Groupoidal.Grothendieck.Groupoidal.Hom.eta`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Grothendieck/Groupoidal/Basic.lean:489:0: Definition `ι_comp_functorFrom` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1172/1215] Replayed HoTTLean.ForMathlib.CategoryTheory.Functor.IsPullback
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:662:0: Definition `hCLeft` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:885:0: Definition `fac_left` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:889:0: Definition `fac_right` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:893:0: Definition `uniq` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:908:0: Definition `isPullback` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:955:0: Definition `fac_left` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:958:0: Definition `fac_right` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:961:0: Definition `uniq` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Functor/IsPullback.lean:969:0: Definition `isPullback` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1183/1215] Replayed HoTTLean.Syntax.Substitution
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTp.refl_tp` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTp.trans_tp` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTm.refl_tm` annotated with `@[grind .]`
+warning: HoTTLean/Syntax/Substitution.lean:513:2: this parameter is redundant, environment already contains `SynthLean.EqTm.trans_tm'` annotated with `@[grind .]`
+⚠ [1186/1215] Replayed HoTTLean.Model.Unstructured.UHom
+warning: HoTTLean/Model/Unstructured/UHom.lean:40:0: Definition `Hom.comp_assoc` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Model/Unstructured/UHom.lean:104:0: Definition `UHom.comp_assoc` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Model/Unstructured/UHom.lean:141:0: automatically included section variable(s) unused in theorem `Model.UnstructuredUniverse.Hom.extCompMapTyIsoExt_hom_comp_substWk`:
+  [ChosenTerminal Ctx]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [ChosenTerminal Ctx] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: HoTTLean/Model/Unstructured/UHom.lean:376:0: Definition `Model.UnstructuredUniverse.UHomSeq.PiSeq.ofMonomorphic` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+⚠ [1194/2008] Replayed HoTTLean.Pointed.Basic
+warning: HoTTLean/Pointed/Basic.lean:21:5: Ambiguous namespace `Functor`: it is interpreted as `_root_.CategoryTheory.Functor` because this `open` occurs inside `namespace CategoryTheory`, while `_root_.Functor` is silently not opened. Specify the namespace unambiguously, e.g. `_root_.CategoryTheory.Functor`. The warning can sometimes also be addressed by moving the `open` outside of the surrounding `namespace`.
+
+Note: This linter can be disabled with `set_option linter.ambiguousOpen false`
+warning: HoTTLean/Pointed/Basic.lean:23:0: `PCat`: universes `u`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+warning: HoTTLean/Pointed/Basic.lean:155:0: `PGrpd`: universes `u`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+⚠ [1195/2008] Replayed HoTTLean.Grothendieck.IsPullback
+warning: HoTTLean/Grothendieck/IsPullback.lean:174:5: Ambiguous namespace `IsPullback`: it is interpreted as `_root_.CategoryTheory.Functor.Grothendieck.IsPullback` because this `open` occurs inside `namespace CategoryTheory.Functor.Grothendieck`, while `_root_.CategoryTheory.IsPullback` is silently not opened. Specify the namespace unambiguously, e.g. `_root_.CategoryTheory.Functor.Grothendieck.IsPullback`. The warning can sometimes also be addressed by moving the `open` outside of the surrounding `namespace`.
+
+Note: This linter can be disabled with `set_option linter.ambiguousOpen false`
+⚠ [1197/2008] Replayed HoTTLean.Grothendieck.Groupoidal.IsPullback
+warning: HoTTLean/Grothendieck/Groupoidal/IsPullback.lean:176:0: Definition `sec_toPGrpd` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Grothendieck/Groupoidal/IsPullback.lean:189:0: Definition `sec_forget` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1198/2008] Replayed HoTTLean.ForMathlib.CategoryTheory.Core
+warning: HoTTLean/ForMathlib/CategoryTheory/Core.lean:25:0: Definition `comp_inclusion_injective` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Core.lean:140:0: Definition `fac_left` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/ForMathlib/CategoryTheory/Core.lean:142:0: Definition `fac_right` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1199/2008] Replayed HoTTLean.Groupoids.Basic
+warning: HoTTLean/Groupoids/Basic.lean:39:0: Definition `pGrpdToGroupoidalAsSmallFunctor_groupoidalAsSmallFunctorToPGrpd` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Basic.lean:43:0: Definition `groupoidalAsSmallFunctorToPGrpd_pGrpdToGroupoidalAsSmallFunctor` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Basic.lean:47:0: Definition `pGrpdToGroupoidalAsSmallFunctor_forget` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Basic.lean:120:0: `Ty`: universes `u_1`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+warning: HoTTLean/Groupoids/Basic.lean:124:0: `Tm`: universes `u_1`, `v` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+⚠ [1201/2008] Replayed HoTTLean.Groupoids.UnstructuredModel
+warning: HoTTLean/Groupoids/UnstructuredModel.lean:24:0: `U`: universes `v`, `u_1` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+⚠ [1203/2008] Replayed HoTTLean.Groupoids.Pi
+warning: HoTTLean/Groupoids/Pi.lean:350:0: Definition `obj_hext` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Pi.lean:355:0: Definition `hom_hext` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Pi.lean:366:0: Definition `hom_hext'` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/Pi.lean:603:6: Variable name `x` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _x
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: HoTTLean/Groupoids/Pi.lean:604:13: Variable name `x` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _x
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: HoTTLean/Groupoids/Pi.lean:604:15: Variable name `y` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _y
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: HoTTLean/Groupoids/Pi.lean:830:6: Unused tactic linter: `all_goals try exact heq_of_eq hc` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Groupoids/Pi.lean:831:6: Unused tactic linter: `all_goals try exact hc` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Groupoids/Pi.lean:834:6: Unused tactic linter: `all_goals rfl` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Groupoids/Pi.lean:834:16: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: HoTTLean/Groupoids/Pi.lean:1453:26: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [1204/2008] Replayed HoTTLean.Groupoids.ClovenIsofibration
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:151:4: The namespace `map` is duplicated in the declaration `CategoryTheory.Functor.ClovenIsofibration.classifier.map.map`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:260:4: The namespace `hom` is duplicated in the declaration `CategoryTheory.Functor.ClovenIsofibration.grothendieckClassifierIso.hom.hom`.
+
+Note: This linter can be disabled with `set_option linter.dupNamespace false`
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:419:0: Definition `CategoryTheory.Functor.ClovenIsofibration.toTransport_IsIso` of class type is semireducible. Most type class instances should be instance-reducible, so consider marking this
+definition with `@[instance_reducible]`. If it is intentionally semireducible, this warning can be disabled with `set_option warn.classDefReducibility false`.
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:419:0: Definition `toTransport_IsIso` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:435:0: Definition `forget.liftObj_id` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: HoTTLean/Groupoids/ClovenIsofibration.lean:439:0: Definition `forget.liftIso_id` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+⚠ [1205/2008] Replayed HoTTLean.Groupoids.Id
+warning: HoTTLean/Groupoids/Id.lean:496:26: Unused tactic linter: `try rfl` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Groupoids/Id.lean:496:26: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: HoTTLean/Groupoids/Id.lean:477:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:481:20: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:483:20: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:518:20: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:528:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:532:20: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: HoTTLean/Groupoids/Id.lean:790:0: `I_map_obj_ff`: universes `v`, `u_1` only occur together. This usually means there is a `max` expression in the type where none of these universes appear on their own.
+
+Note: This linter can be disabled with `set_option linter.checkUnivs false`
+⚠ [1206/2008] Replayed HoTTLean.Syntax.Synth
+warning: HoTTLean/Syntax/Synth.lean:136:15: Unused tactic linter: `grind` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Syntax/Synth.lean:136:15: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [1210/2008] Replayed HoTTLean.Typechecker.Evaluate
+warning: HoTTLean/Typechecker/Evaluate.lean:721:19: Unused tactic linter: `assumption` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Typechecker/Evaluate.lean:755:19: Unused tactic linter: `assumption` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Typechecker/Evaluate.lean:762:37: Unused tactic linter: `assumption` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: HoTTLean/Typechecker/Evaluate.lean:721:19: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: HoTTLean/Typechecker/Evaluate.lean:755:19: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: HoTTLean/Typechecker/Evaluate.lean:762:37: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [1214/2008] Replayed HoTTLean.Frontend.EnvExt
+warning: HoTTLean/Frontend/EnvExt.lean:65:15: Overlapping instance parameters in `TheoryExt`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:71:4: Overlapping instance parameters in `mkInitTheoryData`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:82:19: Overlapping instance parameters in `theoryExt`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:82:0: Overlapping instance parameters in `initFn✝`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:127:4: Overlapping instance parameters in `saveTheoryDecl`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:140:4: Overlapping instance parameters in `saveShallowTheoryConst`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:146:4: Overlapping instance parameters in `getTheoryData`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+warning: HoTTLean/Frontend/EnvExt.lean:153:4: Overlapping instance parameters in `setTheoryData`:
+
+⚠️ `[MonadError m]` and `[MonadQuotation m]` can be used to infer conflicting versions of `[MonadRef m]`.
+
+When a data-carrying type class has multiple potential instances coming from different instance parameters, then these potential instances are incompatible. This is an example of an "instance diamond", which leads to unexpected unification failures.
+
+Delete or combine some of your instance parameters to avoid this.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+ℹ [1268/2008] Replayed importGraph/ImportGraph.Tools.FindHome:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Lean.Name.findHome: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+ℹ [1487/2008] Replayed mathlib/Mathlib.Tactic.MkIffOfInductiveProp:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Mathlib.Tactic.MkIff.nCasesSum: failed to generate equational theorem for `Mathlib.Tactic.MkIff.nCasesSum`
+  failed to generate equality theorems for `match` expression `_private.Mathlib.Tactic.MkIffOfInductiveProp.0.Mathlib.Tactic.MkIff.nCasesSum.match_4`
+  case isTrue
+  motive✝ : Array Lean.Meta.CasesSubgoal → Sort u_1
+  x✝¹ : Array Lean.Meta.CasesSubgoal
+  h_1✝ : (sg1 sg2 : Lean.Meta.CasesSubgoal) → motive✝ #[sg1, sg2]
+  h_2✝ : (x : Array Lean.Meta.CasesSubgoal) → motive✝ x
+  x✝ : ∀ (sg1 sg2 : Lean.Meta.CasesSubgoal), x✝¹ = #[sg1, sg2] → False
+  h✝ : x✝¹.size = 2
+  ⊢ (⋯ ▸ fun h => ⋯ ▸ h_1✝ (x✝¹.getLit 0 ⋯ ⋯) (x✝¹.getLit 1 ⋯ ⋯)) ⋯ = h_2✝ x✝¹
+WARNING: Failed to calculate equational lemmata for Mathlib.Tactic.MkIff.nCasesProd: failed to generate equational theorem for `Mathlib.Tactic.MkIff.nCasesProd`
+  failed to generate equality theorems for `match` expression `_private.Mathlib.Tactic.MkIffOfInductiveProp.0.Mathlib.Tactic.MkIff.nCasesProd.match_5`
+  case isTrue
+  motive✝ : Array Lean.Meta.CasesSubgoal → Sort u_1
+  x✝¹ : Array Lean.Meta.CasesSubgoal
+  h_1✝ : (sg : Lean.Meta.CasesSubgoal) → motive✝ #[sg]
+  h_2✝ : (x : Array Lean.Meta.CasesSubgoal) → motive✝ x
+  x✝ : ∀ (sg : Lean.Meta.CasesSubgoal), x✝¹ = #[sg] → False
+  h✝ : x✝¹.size = 1
+  ⊢ (⋯ ▸ fun h => ⋯ ▸ h_1✝ (x✝¹.getLit 0 ⋯ ⋯)) ⋯ = h_2✝ x✝¹
+ℹ [1512/2008] Replayed Qq/Qq.MatchImpl:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Qq.Impl.mkIsDefEqResult: failed
+WARNING: Failed to obtain information for: Qq.Impl.mkLambdaQ: failed
+ℹ [1513/2008] Replayed Qq/Qq.Match:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Qq.Impl.makeMatchCode: failed
+WARNING: Failed to obtain information for: Qq.Impl.withLetHave: failed
+WARNING: Failed to calculate equational lemmata for Qq.Impl.mkQqLets: failed
+ℹ [1621/2008] Replayed mathlib/Mathlib.Tactic.ErwQuestion:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Mathlib.Tactic.Erw?.logDiffs: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+ℹ [2052/2232] Replayed mathlib/Mathlib.Data.Fin.VecNotation:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for PiFin.toExpr: failed
+ℹ [2118/2232] Replayed mathlib/Mathlib.Tactic.CategoryTheory.Coherence.Normalize:docInfo
+info: stdout:
+WARNING: Failed to calculate equational lemmata for Mathlib.Tactic.BicategoryLike.eval: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+ℹ [2207/2232] Ran hottlean:srcUri.github
+info: Found git remote for hottlean at https://github.com/sosudo/HoTTLean @ d3df93c147fc512dc86f159fe308a673f6029af4
+✔ [2214/2232] Built hottlean/HoTTLean.ForMathlib.CategoryTheory.MorphismProperty.WideSubcategory:docInfo (1.8s)
+✔ [2215/2232] Built HoTTLean (2.4s)
+✔ [2216/2232] Built hottlean/HoTTLean.Model.Unstructured.Hurewicz:docInfo (2.5s)
+✔ [2217/2233] Built hottlean/HoTTLean.ForMathlib.CategoryTheory.Bicategory.Grothendieck:docInfo (2.6s)
+✔ [2219/2233] Built hottlean/HoTTLean.Model.Unstructured.Interpretation:docInfo (3.4s)
+✔ [2220/2234] Built hottlean/HoTTLean.Grothendieck.Groupoidal.Basic:docInfo (2.8s)
+✔ [2222/2235] Built hottlean/HoTTLean.Pointed.Basic:docInfo (2.4s)
+✔ [2224/2236] Built hottlean/HoTTLean.Grothendieck.IsPullback:docInfo (2.2s)
+✔ [2226/2237] Built hottlean/HoTTLean.Pointed.IsPullback:docInfo (2.3s)
+✔ [2228/2238] Built hottlean/HoTTLean.Grothendieck.Groupoidal.IsPullback:docInfo (2.3s)
+✔ [2230/2239] Built hottlean/HoTTLean.Groupoids.Basic:docInfo (2.2s)
+✔ [2232/2240] Built hottlean/HoTTLean.Groupoids.IsPullback:docInfo (2.2s)
+✔ [2234/2242] Built hottlean/HoTTLean.Groupoids.UnstructuredModel:docInfo (2.3s)
+✔ [2237/2243] Built hottlean/HoTTLean.Groupoids.Sigma:docInfo (2.2s)
+✔ [2239/2244] Built hottlean/HoTTLean.Groupoids.ClovenIsofibration:docInfo (2.5s)
+✔ [2241/2244] Built hottlean/HoTTLean.Groupoids.Id:docInfo (2.1s)
+✔ [2242/2245] Built hottlean/HoTTLean.Groupoids.Pi:docInfo (2.8s)
+✔ [2244/2245] Built hottlean/HoTTLean:docInfo (3.6s)
+ℹ [2245/2245] Replayed hottlean/HoTTLean:docs
+info: Generating documentation for HoTTLean (1 root modules)
+Build completed successfully (2245 jobs).
+
+Exit status: 0
+Elapsed seconds: 37.48

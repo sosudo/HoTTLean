@@ -1,0 +1,58 @@
+Final command results. All exit statuses are 0.
+
+[
+  {
+    "name": "api-docs-final",
+    "command": "lake -R -Kenv=dev build HoTTLean:docs",
+    "exit_status": 0,
+    "seconds": 37.48
+  },
+  {
+    "name": "default-update-cached-config",
+    "command": "lake update",
+    "exit_status": 0,
+    "seconds": 19.4
+  },
+  {
+    "name": "default-update-final",
+    "command": "lake -R update",
+    "exit_status": 0,
+    "seconds": 14.49
+  },
+  {
+    "name": "project-final",
+    "command": "lake build",
+    "exit_status": 0,
+    "seconds": 1.72
+  },
+  {
+    "name": "natural-final",
+    "command": "lake build NaturalModel",
+    "exit_status": 0,
+    "seconds": 30.47
+  },
+  {
+    "name": "tests-final",
+    "command": "lake test",
+    "exit_status": 0,
+    "seconds": 1.69
+  },
+  {
+    "name": "compatibility-final",
+    "command": "lake build +HoTTLean.ForMathlib.CategoryTheory.Groupoid +HoTTLean.ForMathlib.CategoryTheory.Localization.Predicate +HoTTLean.ForMathlib.CategoryTheory.MorphismProperty.Basic",
+    "exit_status": 0,
+    "seconds": 1.33
+  },
+  {
+    "name": "functor-map-final",
+    "command": "lake env lean docs/lean-v4.34.1/evidence/FunctorMapProbe.lean",
+    "exit_status": 0,
+    "seconds": 2.72
+  },
+  {
+    "name": "whitespace-final",
+    "command": "git diff --check",
+    "exit_status": 0,
+    "seconds": 0.04
+  }
+]

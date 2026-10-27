@@ -1,0 +1,16 @@
+info: doc-gen4: cloning https://github.com/leanprover/doc-gen4
+info: doc-gen4: checking out revision '953c8992d174b4e56955e01e101d46668c68f2bb'
+info: toolchain not updated; already up-to-date
+info: leansqlite: cloning https://github.com/leanprover/leansqlite
+info: leansqlite: checking out revision 'f9cdb9eacb5c8b8ecc02ee9fd9e568d7d28c1416'
+info: UnicodeBasic: cloning https://github.com/fgdorais/lean4-unicode-basic
+info: UnicodeBasic: checking out revision '0e569d08b6443ce0908d356884c765397253e2f0'
+info: BibtexQuery: cloning https://github.com/dupuisf/BibtexQuery
+info: BibtexQuery: checking out revision '4d8616fd4870d0a3453d845770833eac7951fe1c'
+info: MD4Lean: cloning https://github.com/acmepjz/md4lean
+info: MD4Lean: checking out revision '31907cc18f48a95384f99cee5582c00fb39e0f67'
+info: mathlib: running post-update hooks
+Current branch: HEAD
+Using cache from origin: (some leanprover-community/mathlib4)
+No files to download
+Already decompressed 8908 file(s)

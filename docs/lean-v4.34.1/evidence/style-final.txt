@@ -1,0 +1,5 @@
+Check all production and test Lean files.
+Limit source lines to 100 characters, except URL lines.
+Reject broad Mathlib imports.
+
+PASS. No long source lines or broad Mathlib imports.

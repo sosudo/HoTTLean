@@ -1,0 +1,49 @@
+Prior result (already completed; not rerun):
+$ /home/shivansg/.local/share/uv/tools/unity/bin/python -m unittest discover -s tests -p test_bump_workflow_setup.py
+Ran 56 tests in 8.257s
+OK
+
+$ /home/shivansg/.local/share/uv/tools/unity/bin/python -m unittest discover -s tests -p test_bump_dependency_names.py
+.F........
+======================================================================
+FAIL: test_decoder_matches_installed_native_lean_without_loading_project (test_bump_dependency_names.DependencyNameTests.test_decoder_matches_installed_native_lean_without_loading_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/data/user_data/shivansg/unity-bump-fix/tests/test_bump_dependency_names.py", line 137, in test_decoder_matches_installed_native_lean_without_loading_project
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : /tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:1:0: error: object file '/home/shivansg/.elan/toolchains/leanprover--lean4---v4.7.0/lib/lean/Lean/Data/Json/FromToJson/Basic.olean' of module Lean.Data.Json.FromToJson.Basic does not exist
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:2:17: error: unknown constant 'CoeFun'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:2:17: error: unknown constant 'sorryAx'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:2:32: error: unknown constant 'CoeFun'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:2:32: error: unknown constant 'sorryAx'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:3:2: error: unknown constant 'Bind.bind'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:3:2: error: unknown constant 'sorryAx'
+/tmp/unity-bump-dependency-name-nqgs_cl6/NameOracle.lean:2:43: error: unknown constant 'sorryAx'
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.418s
+
+FAILED (failures=1)
+Exit status: 1
+
+$ /home/shivansg/.local/share/uv/tools/unity/bin/python -m unittest discover -s tests -p test_bump_workflow_runtime.py
+......Executing <Task finished name='Task-56' coro=<WorkflowRuntimeTests.test_declaration_reconciliation_rejects_same_head_import_or_config_edits_without_probes() done, defined at /data/user_data/shivansg/unity-bump-fix/tests/test_bump_workflow_runtime.py:473> result=None created at /home/shivansg/miniconda/lib/python3.13/asyncio/runners.py:100> took 0.103 seconds
+.Executing <Task finished name='Task-61' coro=<WorkflowRuntimeTests.test_declaration_reconciliation_requires_current_authoritative_build_and_file_bytes() done, defined at /data/user_data/shivansg/unity-bump-fix/tests/test_bump_workflow_runtime.py:421> result=None created at /home/shivansg/miniconda/lib/python3.13/asyncio/runners.py:100> took 0.311 seconds
+.Executing <Task finished name='Task-66' coro=<WorkflowRuntimeTests.test_environment_reconciliation_rejects_partial_stale_or_unstable_builds() done, defined at /data/user_data/shivansg/unity-bump-fix/tests/test_bump_workflow_runtime.py:141> result=None created at /home/shivansg/miniconda/lib/python3.13/asyncio/runners.py:100> took 0.132 seconds
+.................Executing <Task finished name='Task-189' coro=<WorkflowRuntimeTests.test_scope_reconciliation_requires_every_current_component() done, defined at /data/user_data/shivansg/unity-bump-fix/tests/test_bump_workflow_runtime.py:356> result=None created at /home/shivansg/miniconda/lib/python3.13/asyncio/runners.py:100> took 0.177 seconds
+...
+----------------------------------------------------------------------
+Ran 28 tests in 14.623s
+
+OK
+Exit status: 0
+
+Run the native dependency-name oracle with only Lean v4.34.1 selected.
+test_decoder_matches_installed_native_lean_without_loading_project (test_bump_dependency_names.DependencyNameTests.test_decoder_matches_installed_native_lean_without_loading_project) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.220s
+
+OK

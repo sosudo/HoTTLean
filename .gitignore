@@ -3,6 +3,9 @@
 ## Lake
 .lake/*
 .cache/*
+## Local repair workspaces
+.unity/
+.worktrees/
 ## Python
 __pycache__
 venv

@@ -9,6 +9,8 @@ universe v u
 
 noncomputable section
 
+set_option backward.isDefEq.respectTransparency false
+
 open CategoryTheory Limits Opposite MonoidalCategory
 
 namespace NaturalModel
@@ -54,11 +56,11 @@ def Hom.subst (M : Universe Ctx)
     Hom (M.pullback (ym(σ) ≫ A)) (M.pullback A) :=
   let Aσ := ym(σ) ≫ A
   { mapTm :=
-    (M.disp_pullback A).lift (M.var Aσ) ym(M.disp Aσ ≫ σ) (by aesop_cat)
+    (M.disp_pullback A).lift (M.var Aσ) ym(M.disp Aσ ≫ σ) (by simp [Aσ])
     mapTy := ym(σ)
     pb := by
-      convert IsPullback.of_right' (M.disp_pullback Aσ) (M.disp_pullback A)
-      simp }
+      simpa only [Universe.pullback, Aσ, Functor.map_comp] using
+        IsPullback.of_right' (M.disp_pullback Aσ) (M.disp_pullback A) }
 
 def Hom.cartesianNatTrans {M N : Universe Ctx} (h : Hom M N) :
     M.Ptp ⟶ N.Ptp :=
@@ -80,8 +82,7 @@ theorem Hom.mk_comp_cartesianNatTrans {M N : Universe Ctx} (h : Hom M N)
   refine this.trans ?_
   simp [UvPoly.Equiv.mk']; congr 1
   rw [← Category.assoc]; congr 1
-  generalize_proofs _ h1
-  apply h1.hom_ext <;> simp
+  apply ((M.disp_pullback A).paste_horiz h.pb).hom_ext <;> simp
 
 /- We have a 'nice', specific terminal object in `Ctx`,
 and this instance allows use to use it directly
@@ -248,7 +249,9 @@ theorem mk_comp_cartesianNatTrans {i j ij jlen} {Γ X} (A : y(Γ) ⟶ s[i].Ty)
     PtpEquiv.mk s[i] A B ≫ (s.cartesianNatTrans i j).app X =
     PtpEquiv.mk s[j] (A ≫ (s.homOfLe i j).mapTy)
     (ym(substCons _ (s[j].disp _) _ (s.unliftVar i j ij jlen A rfl) (by simp)) ≫ B) := by
-  convert Hom.mk_comp_cartesianNatTrans _ _ _
+  dsimp only [cartesianNatTrans]
+  rw [Hom.mk_comp_cartesianNatTrans]
+  congr 2
   apply (IsPullback.paste_horiz (s[i].disp_pullback _) (s.homOfLe i j).pb).hom_ext
   · simp [unliftVar]
   · simp

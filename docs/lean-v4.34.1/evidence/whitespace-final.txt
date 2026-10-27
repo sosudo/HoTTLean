@@ -1,0 +1,5 @@
+$ git diff --check
+
+
+Exit status: 0
+Elapsed seconds: 0.04

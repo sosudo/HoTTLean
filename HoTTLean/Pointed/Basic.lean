@@ -7,6 +7,8 @@ import HoTTLean.ForMathlib.CategoryTheory.Functor.IsPullback
 Here we define pointed categories and pointed groupoids as well as prove some basic lemmas.
 -/
 
+set_option backward.isDefEq.respectTransparency false
+
 universe w v u v₁ u₁ v₂ u₂
 
 noncomputable section
@@ -14,6 +16,7 @@ noncomputable section
 namespace CategoryTheory
 
 attribute [local simp] eqToHom_map Grpd.id_eq_id Grpd.comp_eq_comp Functor.id_comp
+  Cat.Hom.obj Cat.Hom.map Cat.Hom.comp_toFunctor Cat.Hom.id_toFunctor
 
 open Functor
 
@@ -36,6 +39,8 @@ postfix:max "⟱" => forgetToCat.map
 
 lemma forgetToCat_map {C D : PCat} (F : C ⟶ D) :
     F⟱ = F.base := rfl
+
+attribute [local simp] forgetToCat_map
 
 @[simp]
 theorem id_obj {C : PCat} (X : C.base) : (𝟙 C)⟱.obj X = X :=
@@ -124,7 +129,9 @@ theorem mapFiber_inv {x y} (f : x ⟶ y) [IsIso f] :
 end
 
 theorem eqToHom_base_map {x y : PCat} (eq : x = y) {a b} (f : a ⟶ b) :
-    (eqToHom eq).base.map f = eqToHom (by simp) ≫ (eqToHom (by simp [eq] : x.base = y.base)).map f ≫ eqToHom (by simp) := by
+    (eqToHom eq).base.map f =
+      eqToHom (by simp) ≫ (eqToHom (by simp [eq] : x.base = y.base)).map f ≫
+        eqToHom (by simp) := by
   cases eq
   simp
 
@@ -168,6 +175,8 @@ postfix:max "⟱" => forgetToGrpd.map
 
 lemma forgetToGrpd_map {C D : PGrpd} (F : C ⟶ D) :
     F⟱ = F.base := rfl
+
+attribute [local simp] forgetToGrpd_map
 
 @[simp]
 theorem id_obj {C : PGrpd} (X : C.base) : (𝟙 C)⟱.obj X = X :=

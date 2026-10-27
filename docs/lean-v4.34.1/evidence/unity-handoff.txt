@@ -1,0 +1,102 @@
+{
+  "source_file": "unity-handoff-loop.json",
+  "source_sha256": "32e5d0a9666bae5ed4f91a1e28561660bf31f4b2413039e7f49ce53b43d081d3",
+  "snapshot_phase": "repairing",
+  "main_sha": "d3df93c147fc512dc86f159fe308a673f6029af4",
+  "updated_at": "2026-10-27T19:48:40.491412+00:00",
+  "tasks": [
+    {
+      "task_id": "configuration-2",
+      "kind": "configuration",
+      "status": "running",
+      "owner": "Terra",
+      "attempts": 5,
+      "reason": "One-for-one test root rename requires moving all four source files and updating the internal import; configuration and supplemental names must be serialized by controller.",
+      "requested_config": {}
+    },
+    {
+      "task_id": "configuration-3",
+      "kind": "configuration",
+      "status": "pending",
+      "owner": null,
+      "attempts": 0,
+      "reason": "Avoid proofwidgets test library root collision while retaining all four tests and test driver.",
+      "requested_config": {
+        "modules": [
+          "HoTTLean.Groupoids.UHom",
+          "HoTTLean.Model.Natural.Interpretation",
+          "HoTTLean.Model.Natural.NaturalModel",
+          "HoTTLean.Model.Natural.UHom",
+          "HoTTLeanTest.basic",
+          "HoTTLeanTest.hott0",
+          "HoTTLeanTest.import",
+          "HoTTLeanTest.unitt",
+          "test.basic",
+          "test.hott0",
+          "test.import",
+          "test.unitt"
+        ]
+      }
+    },
+    {
+      "task_id": "configuration-4",
+      "kind": "configuration",
+      "status": "pending",
+      "owner": null,
+      "attempts": 0,
+      "reason": "The library named test collides with Lake's test command; a distinct module root preserves all four tests and the test driver.",
+      "requested_config": {
+        "modules": [
+          "HoTTLean.Groupoids.UHom",
+          "HoTTLean.Model.Natural.Interpretation",
+          "HoTTLean.Model.Natural.NaturalModel",
+          "HoTTLean.Model.Natural.UHom",
+          "HoTTLeanTest.basic",
+          "HoTTLeanTest.hott0",
+          "HoTTLeanTest.import",
+          "HoTTLeanTest.unitt",
+          "test.basic",
+          "test.hott0",
+          "test.import",
+          "test.unitt"
+        ]
+      }
+    },
+    {
+      "task_id": "configuration-5",
+      "kind": "configuration",
+      "status": "pending",
+      "owner": null,
+      "attempts": 0,
+      "reason": "Lake test driver module root must match the one-for-one test source rename and avoid the test namespace collision.",
+      "requested_config": {}
+    },
+    {
+      "task_id": "configuration-6",
+      "kind": "configuration",
+      "status": "pending",
+      "owner": null,
+      "attempts": 0,
+      "reason": "One-for-one test root rename avoids the test library collision; source moves are prepared in the leased worktree.",
+      "requested_config": {
+        "lake_args": [],
+        "modules": [
+          "HoTTLean.Groupoids.UHom",
+          "HoTTLean.Model.Natural.Interpretation",
+          "HoTTLean.Model.Natural.NaturalModel",
+          "HoTTLean.Model.Natural.UHom",
+          "HoTTLeanTest.basic",
+          "HoTTLeanTest.hott0",
+          "HoTTLeanTest.import",
+          "HoTTLeanTest.unitt",
+          "test.basic",
+          "test.hott0",
+          "test.import",
+          "test.unitt"
+        ]
+      }
+    }
+  ],
+  "stop_log_last_line": "bump stopped: partial work and exact verification evidence retained",
+  "stop_exit_status": "0"
+}

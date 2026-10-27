@@ -11,6 +11,8 @@ import HoTTLean.ForMathlib.CategoryTheory.FreeGroupoid
 Here we construct universes for the groupoid natural model.
 -/
 
+set_option backward.isDefEq.respectTransparency false
+
 universe w v u v₁ u₁ v₂ u₂ v₃ u₃
 
 noncomputable section
@@ -21,7 +23,7 @@ namespace CategoryTheory.PGrpd
 def pGrpdToGroupoidalAsSmallFunctor : PGrpd.{v, v} ⥤
     ∫(Grpd.asSmallFunctor.{w, v, v}) :=
   Grothendieck.functorTo PGrpd.forgetToGrpd
-  (fun x => AsSmall.up.obj.{v, v, w} x.fiber)
+  (fun x => AsSmall.up.obj x.fiber)
   (fun f => AsSmall.up.map f.fiber)
   (by aesop_cat)
   (by aesop_cat)
@@ -29,7 +31,7 @@ def pGrpdToGroupoidalAsSmallFunctor : PGrpd.{v, v} ⥤
 def groupoidalAsSmallFunctorToPGrpd :
     ∫(Grpd.asSmallFunctor.{w, v, v}) ⥤ PGrpd.{v,v} :=
   PGrpd.functorTo Groupoidal.forget
-  (fun x => AsSmall.down.obj.{v, v, w} x.fiber)
+  (fun x => AsSmall.down.obj x.fiber)
   (fun f => AsSmall.down.map f.fiber)
   (by aesop_cat)
   (by aesop_cat)

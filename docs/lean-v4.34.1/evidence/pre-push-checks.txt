@@ -1,0 +1,21 @@
+Pre-push verification
+
+The Lean source and dependency configuration match the recorded final source hashes.
+No Lean source changed during repository cleanup.
+
+$ lake build
+Exit status: 0
+Elapsed seconds: 2.09
+
+$ lake build NaturalModel
+Exit status: 0
+Elapsed seconds: 1.33
+
+$ lake test
+Exit status: 0
+Elapsed seconds: 1.30
+
+PASS: All 72 source and configuration hashes match.
+PASS: All local migration record links resolve.
+PASS: git diff --check.
+PASS: The cleaned Unity patch reproduces the tested source exactly.
