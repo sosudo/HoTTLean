@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.NatTrans
 import Mathlib.CategoryTheory.Functor.TwoSquare
-import Mathlib.CategoryTheory.Limits.Shapes.Pullback.CommSq
+import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 import HoTTLean.ForMathlib
 
 universe w v u v₁ u₁ v₂ u₂ v₃ u₃
