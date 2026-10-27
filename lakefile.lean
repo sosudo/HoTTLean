@@ -1,7 +1,7 @@
 import Lake
 open Lake DSL
 
-require Poly from git "https://github.com/sinhp/Poly" @ "master"
+require Poly from git "https://github.com/sinhp/Poly" @ "cc08a1f77c20e07a7366f0824ecd36ae472c0377"
 
 require checkdecls from git "https://github.com/PatrickMassot/checkdecls.git"
 
