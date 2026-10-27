@@ -1,10 +1,10 @@
 import Mathlib.CategoryTheory.Limits.Shapes.Pullback.PullbackCone
 import Mathlib.CategoryTheory.Groupoid.Discrete
-import Mathlib.CategoryTheory.Limits.Shapes.Pullback.CommSq
+import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 import Mathlib.CategoryTheory.Category.ULift
 import Mathlib.Logic.Function.ULift
 import Mathlib.CategoryTheory.Category.Cat
-import Mathlib.CategoryTheory.Category.Grpd
+import Mathlib.CategoryTheory.Groupoid.Grpd.Basic
 import Mathlib.Data.Part
 import Mathlib.CategoryTheory.Monoidal.Cartesian.Basic
 import Mathlib.CategoryTheory.Core
