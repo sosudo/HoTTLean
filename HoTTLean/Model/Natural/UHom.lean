@@ -596,8 +596,14 @@ theorem unLam_mkLam {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[
     s.unLam ilen jlen A B (s.mkLam ilen jlen A t) lam_tp = t := by
   simp [mkLam, unLam]
   convert PtpEquiv.snd_mk s[i] A t using 2
-  apply (s.Pi_pb ilen jlen).hom_ext <;> simp
-  rw [PtpEquiv.mk_comp_right, t_tp]
+  congr 1
+  apply (s.Pi_pb ilen jlen).hom_ext
+  · exact (s.Pi_pb ilen jlen).lift_fst ..
+  -- The projection unfolds the semireducible mkPi in its proof argument.
+  · set_option backward.isDefEq.respectTransparency false in
+      rw [(s.Pi_pb ilen jlen).lift_snd]
+    rw [PtpEquiv.mk_comp_right, t_tp]
+  · apply proof_irrel_heq
 
 /--
 ```
