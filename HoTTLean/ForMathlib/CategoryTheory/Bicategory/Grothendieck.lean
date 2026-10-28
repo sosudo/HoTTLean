@@ -443,14 +443,14 @@ instance : Category (∫ F) where
     ext
     · simp [Hom.comp, Hom.id]
     · dsimp [Hom.comp, Hom.id]
-      rw [← NatIso.naturality_2 (eqToIso (F.map_id Y.base)) f.fiber]
+      rw [← NatIso.naturality_2 (eqToIso (congrArg Cat.Hom.toFunctor (F.map_id Y.base))) f.fiber]
       simp
   id_comp f := by ext <;> simp [Hom.comp, Hom.id]
   assoc f g h := by
     ext
     · simp [Hom.comp]
     · dsimp [Hom.comp, Hom.id]
-      rw [← NatIso.naturality_2 (eqToIso (F.map_comp _ _)) f.fiber]
+      rw [← NatIso.naturality_2 (eqToIso (congrArg Cat.Hom.toFunctor (F.map_comp _ _))) f.fiber]
       simp
 
 namespace Hom
@@ -574,7 +574,7 @@ If `F : C ⥤ Cat` is a functor and `t : c ⟶ d` is a morphism in `C`, then `tr
 `c`-based element of `∫ F` to a `d`-based element.
 -/
 def transport (x : ∫ F) {c : C} (t : x.base ⟶ c) : ∫ F :=
-  mk c ((F.map t).obj x.fiber)
+  mk c ((F.map t).toFunctor.obj x.fiber)
 
 @[simp]
 def transport_base (x : ∫ F) {c : C} (t : x.base ⟶ c) : (transport x t).base = c :=
@@ -582,7 +582,7 @@ def transport_base (x : ∫ F) {c : C} (t : x.base ⟶ c) : (transport x t).base
 
 @[simp]
 def transport_fiber (x : ∫ F) {c : C} (t : x.base ⟶ c) :
-    (transport x t).fiber = (F.map t).obj x.fiber :=
+    (transport x t).fiber = (F.map t).toFunctor.obj x.fiber :=
   rfl
 
 /--
