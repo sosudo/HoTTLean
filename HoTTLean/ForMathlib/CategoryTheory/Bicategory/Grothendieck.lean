@@ -1149,13 +1149,15 @@ instance faithful_ι (c : C) : (ι F c).Faithful where
 theorem ι_comp_forget : ι F c ⋙ forget _ = (const (F.obj c)).obj c :=
   rfl
 
+-- Match the wrapped Cat functors during dependent fiber comparison.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem ι_comp_pre (G : D ⥤ C) (x : D)
     : ι (G ⋙ F) x ⋙ pre F G = ι F (G.obj x) := by
   apply Grothendieck.FunctorTo.hext
   · rw [ι_comp_forget, Functor.assoc, pre_comp_forget, ← Functor.assoc, ι_comp_forget]
     apply Functor.ext <;> simp
-  · simp
-  · simp
+  · intro a; rfl
+  · intro a b f; simp
 
 variable {F}
 
@@ -1176,7 +1178,7 @@ set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem ιNatTrans_id_app {X : C} {a : F.obj X} :
     (@ιNatTrans _ _ F _ _ (𝟙 X)).app a = eqToHom (by simp) :=
-  Hom.ext _ _ (by simp [ιNatTrans, ι_obj_base]) (by simp [ι, ιNatTrans])
+  Hom.ext _ _ (by simp [ιNatTrans]; change 𝟙 X = 𝟙 X; rfl) (by simp [ι, ιNatTrans])
 
 set_option backward.isDefEq.respectTransparency false in
 lemma ιNatTrans_comp_app {X Y Z : C} {f : X ⟶ Y} {g : Y ⟶ Z} {a} :
