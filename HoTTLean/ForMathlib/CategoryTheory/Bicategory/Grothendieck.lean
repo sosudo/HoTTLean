@@ -1451,12 +1451,16 @@ section AsSmall
 
 attribute [-simp] AsSmall.down_obj AsSmall.down_map
 
+-- Normalize the wrapped Cat projections in the dependent transport equations.
+set_option backward.isDefEq.respectTransparency false in
 /-- The inverse functor to build the equivalence `compAsSmallFunctorEquivalence`. -/
 @[simp] def compAsSmallFunctorEquivalenceInverse :
     ∫ F ⥤ ∫(F ⋙ Cat.asSmallFunctor.{w}) :=
   functorTo (forget _) (fun X => (AsSmall.up.obj X.fiber)) (fun f => (AsSmall.up.map f.fiber))
-  (by simp) (by intros; simp)
+  (by intro X; simp [eqToHom_map])
+  (by intros; simp [Functor.map_comp, eqToHom_map, Cat.asSmallFunctor, forget])
 
+set_option backward.isDefEq.respectTransparency false in
 /-- The functor to build the equivalence `compAsSmallFunctorEquivalence`. -/
 @[simp] def compAsSmallFunctorEquivalenceFunctor :
     ∫(F ⋙ Cat.asSmallFunctor.{w}) ⥤ ∫ F :=
@@ -1464,7 +1468,7 @@ attribute [-simp] AsSmall.down_obj AsSmall.down_map
   (by intros; simp; apply eqToHom_map) -- FIXME: eqToHom_map does not fire under simp
   (by
     intros
-    simp [Functor.map_comp])
+    simp [Functor.map_comp, eqToHom_map, Cat.asSmallFunctor, forget])
   -- FIXME: these AsSmall goals are awful. Need to add some evil lemmas for AsSmall.up, AsSmall.down
 
 /-- Taking the Grothendieck construction on `F ⋙ asSmallFunctor`, where
