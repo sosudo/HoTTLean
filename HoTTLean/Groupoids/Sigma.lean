@@ -281,8 +281,8 @@ abbrev assocHom {x y : Γ} (f : x ⟶ y) :
 
 theorem assocHom_comp {x y z : Γ} (f : x ⟶ y) (g : y ⟶ z) :
     assocHom B (f ≫ g) = assocHom B f ≫ Functor.whiskerLeft (sigmaMap B f) (assocHom B g) ≫
-      eqToHom (by simp [sigmaMap_comp, Functor.assoc]) := by
-  simp [assocHom, assocIso_comp]
+      eqToHom (by simp only [sigmaMap_comp]; exact (Functor.assoc _ _ _).symm) := by
+  simp only [assocHom, assocIso_comp, Iso.trans_hom, Functor.isoWhiskerLeft_hom, eqToIso.hom]
 
 section
 
