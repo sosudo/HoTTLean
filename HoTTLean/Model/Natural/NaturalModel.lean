@@ -1371,7 +1371,7 @@ lemma lift_fst : lift i ar aC hrC ≫ ie.verticalNatTrans.app N.Tm = ar := by
 
 lemma lift_snd : lift i ar aC hrC ≫ ie.iFunctor.map N.tp = aC := by
   dsimp only [lift, equivMk]
-  rw [UvPoly.Equiv.mk'_comp_right]
+  rw! (transparency := .default) [UvPoly.Equiv.mk'_comp_right]
   apply UvPoly.Equiv.ext' ie.iUvPoly N.Ty
   · rw! [i.j_tp]
     rw [UvPoly.Equiv.snd'_mk']
