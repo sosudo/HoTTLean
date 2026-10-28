@@ -78,19 +78,17 @@ def lift' (c : C) (x' : yoneda.obj c ⟶ s.pt) : yoneda.obj c ⟶ t.pt :=
   rfl
 
 def lift''_app (s : Cone F) (c : C) :
-    s.pt.obj (Opposite.op c) → t.pt.obj (Opposite.op c) :=
-  yonedaEquiv ∘ lift' P c ∘ yonedaEquiv.symm
+    s.pt.obj (Opposite.op c) ⟶ t.pt.obj (Opposite.op c) :=
+  TypeCat.ofHom (yonedaEquiv ∘ lift' P c ∘ yonedaEquiv.symm)
 
 theorem lift''_app_naturality {c d : C} (f : c ⟶ d) :
     s.pt.map (f.op) ≫ lift''_app P s c
       = lift''_app P s d ≫ t.pt.map (Opposite.op f) := by
   ext x
-  simp[lift''_app, lift']
-  rw[yonedaEquiv_naturality']
-  have h := lift'_naturality P f (yonedaEquiv.symm x)
-  simp[lift'] at h
-  simp
-  rw[← h, yonedaEquiv_symm_naturality_left]
+  change yonedaEquiv (lift' P c (yonedaEquiv.symm (s.pt.map f.op x))) =
+    t.pt.map f.op (yonedaEquiv (lift' P d (yonedaEquiv.symm x)))
+  rw [yonedaEquiv_naturality, ← lift'_naturality,
+    yonedaEquiv_symm_naturality_left]
 
 variable (s)
 
@@ -104,9 +102,9 @@ def lift'' : s.pt ⟶ t.pt := {
 theorem fac_ext (j : J) (c : C) (x) :
     (lift'' P s ≫ t.π.app j).app (Opposite.op c) x
     = (s.π.app j).app (Opposite.op c) x := by
-  dsimp [lift'',lift', lift''_app, ← yonedaEquiv_comp]
-  rw [P.fac (repConeOfConeMap s c (yonedaEquiv.symm x)) j]
-  simp [repConeOfConeMap, yonedaEquiv_comp, Equiv.apply_symm_apply yonedaEquiv x]
+  have h := congrArg (fun α : yoneda.obj c ⟶ (F.obj j) => yonedaEquiv α)
+    (P.fac (repConeOfConeMap s c (yonedaEquiv.symm x)) j)
+  simpa [yonedaEquiv_comp, repConeOfConeMap, lift'', lift''_app, lift'] using h
 
 theorem uniq_ext (m : s.pt ⟶ t.pt)
     (hm : ∀ (j : J), m ≫ t.π.app j = s.π.app j) (c : C) (x) :
@@ -116,7 +114,9 @@ theorem uniq_ext (m : s.pt ⟶ t.pt)
   have hj : (∀ (j : J), (x' ≫ m) ≫ t.π.app j = x' ≫ s.π.app j) := by simp[hm]
   have h := P.uniq (repConeOfConeMap s c x') (x' ≫ m) hj
   dsimp [lift'', lift''_app, lift']
-  rw [← h, yonedaEquiv_comp, Equiv.apply_symm_apply yonedaEquiv x]
+  rw [← h]
+  change m.app (Opposite.op c) x = yonedaEquiv (x' ≫ m)
+  simp [yonedaEquiv_comp, x']
 
 def IsLimit {t : Cone F} (P : RepIsLimit t) : IsLimit t where
   lift := lift'' P
@@ -229,23 +229,26 @@ open Opposite
 
 def repPullbackCone (c : C) (x : G.obj (op c)) : RepPullbackCone f g :=
   .mk c (yonedaEquiv.symm $ a.app (op c) x) (yonedaEquiv.symm $ b.app (op c) x) (by
-    simpa [yonedaEquiv_symm_naturality_right] using congr_fun (NatTrans.congr_app hab (op c)) x)
+    simpa [yonedaEquiv_symm_naturality_right] using ConcreteCategory.congr_hom (NatTrans.congr_app hab (op c)) x)
 
 def lift'.app (c : C) : G.obj (op c) ⟶ W.obj (op c) :=
-  fun x => yonedaEquiv (lift (repPullbackCone a b hab c x))
+  TypeCat.ofHom fun x => yonedaEquiv (lift (repPullbackCone a b hab c x))
 
 include lift_naturality in
 lemma lift'.naturality ⦃c d : C⦄ (σ : c ⟶ d) : G.map σ.op ≫ lift'.app lift a b hab c =
     lift'.app lift a b hab d ≫ W.map σ.op := by
   ext x
-  dsimp only [types_comp_apply, app]
-  rw [yonedaEquiv_naturality, lift_naturality (repPullbackCone a b hab d x) σ]
+  change yonedaEquiv (lift (repPullbackCone a b hab c (G.map σ.op x))) =
+    W.map σ.op (yonedaEquiv (lift (repPullbackCone a b hab d x)))
+  change yonedaEquiv (lift (repPullbackCone a b hab c (G.map σ.op x))) =
+    W.map σ.op (yonedaEquiv (show yoneda.obj d ⟶ W from lift (repPullbackCone a b hab d x)))
+  erw [yonedaEquiv_naturality, lift_naturality (repPullbackCone a b hab d x) σ]
   dsimp only [repPullbackCone, π_app_left, fst_mk, π_app_right, snd_mk]
   congr 3
-  · rw [yonedaEquiv_symm_naturality_left σ]
-    simpa using congr_fun (a.naturality σ.op) x
-  · rw [yonedaEquiv_symm_naturality_left σ]
-    simpa using congr_fun (b.naturality σ.op) x
+  · erw [yonedaEquiv_symm_naturality_left σ]
+    simpa using ConcreteCategory.congr_hom (a.naturality σ.op) x
+  · erw [yonedaEquiv_symm_naturality_left σ]
+    simpa using ConcreteCategory.congr_hom (b.naturality σ.op) x
 
 include lift_naturality in
 def lift' : G ⟶ W where
