@@ -766,8 +766,10 @@ theorem pre_comp_forget (α : D ⥤ C) (A : C ⥤ Grpd) :
   · rw [ι_comp_forget, Functor.assoc, pre_comp_forget, ← Functor.assoc, ι_comp_forget]
     apply Functor.ext <;> simp
   · intro
-    simp
-  · simp
+    rfl
+  · intros
+    simp only [Functor.comp_map, pre_map_fiber, ι_map_fiber]
+    exact (eqToHom_comp_heq _ _).trans (eqToHom_comp_heq _ _).symm
 
 noncomputable section
 
@@ -784,18 +786,6 @@ def invFiber : y.fiber ⟶ (F.map f.base).obj x.fiber :=
     (F.map f.base).map (CategoryTheory.inv f).fiber
 
 @[simp]
-lemma fiber_comp_invFiber : f.fiber ≫ invFiber f = 𝟙 ((F.map f.base).obj x.fiber) := by
-  have h := comp_fiber f (CategoryTheory.inv f)
-  rw! [IsIso.hom_inv_id] at h
-  have h0 : F.map (CategoryTheory.inv f).base ⋙ F.map f.base = 𝟭 _ := by
-    simp [← Grpd.comp_eq_comp, ← Functor.map_comp, ← comp_base]
-  have h1 := Functor.congr_map (F.map f.base) h
-  simp [← heq_eq_eq, eqToHom_map, ← Functor.comp_map, Functor.congr_hom h0] at h1
-  dsimp [invFiber]
-  rw! [← h1]
-  simp
-
-@[simp]
 lemma invFiber_comp_fiber : invFiber f ≫ f.fiber = 𝟙 _ := by
   have h := comp_fiber (CategoryTheory.inv f) f
   rw! [IsIso.inv_hom_id] at h
@@ -804,6 +794,11 @@ lemma invFiber_comp_fiber : invFiber f ≫ f.fiber = 𝟙 _ := by
   · simp
   · simp
   · simpa using (eqToHom_heq_id_cod _ _ _).symm
+
+@[simp]
+lemma fiber_comp_invFiber : f.fiber ≫ invFiber f = 𝟙 ((F.map f.base).obj x.fiber) := by
+  apply (cancel_mono f.fiber).1
+  simp only [Category.assoc, invFiber_comp_fiber, Category.comp_id, Category.id_comp]
 
 instance : IsIso f.fiber :=
   ⟨invFiber f , fiber_comp_invFiber f, invFiber_comp_fiber f⟩
@@ -838,7 +833,7 @@ lemma map_map_eqToHom {α : F ⟶ G} {X Y : ∫(F)} (f : X ⟶ Y) :
 @[simp] theorem eqToHom_comp_fiber {C : Type u} [Category.{v} C] {A : C ⥤ Grpd.{v₁, u₁}}
     {p q r : ∫(A)} (h : p = q) {f : q ⟶ r} :
     (eqToHom h ≫ f).fiber = eqToHom (by subst h; simp) ≫ f.fiber := by
-  simp [eqToHom_map]
+  simp only [comp_fiber, fiber_eqToHom, eqToHom_map, Category.assoc, eqToHom_trans_assoc]
 
 end
 
@@ -875,44 +870,8 @@ theorem map_eqToHom_base {G1 G2 : ∫(A)} (eq : G1 = G2)
 open CategoryTheory.Functor in
 /-- Every morphism `f : X ⟶ Y` in the base category induces a natural transformation from the fiber
 inclusion `ι F X` to the composition `F.map f ⋙ ι F Y`. -/
-def ιNatIso {X Y : Γ} (f : X ⟶ Y) : ι A X ≅ A.map f ⋙ ι A Y where
-  hom := ιNatTrans f
-  inv := whiskerLeft (A.map f) (ιNatTrans (Groupoid.inv f)) ≫ eqToHom (by
-    convert_to A.map (f ≫ Groupoid.inv f) ⋙ ι A X = ι A X
-    · simp only [Functor.map_comp, Grpd.comp_eq_comp, Functor.assoc]
-    · simp)
-  hom_inv_id := by
-    ext a
-    apply Groupoidal.Hom.hext
-    · simp
-    . simp only [NatTrans.comp_app, whiskerLeft_app, comp_base,  comp_fiber, Grpd.map_comp_map,
-        Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp,
-        NatTrans.id_app, id_fiber, eqToHom_comp_heq_iff]
-      -- FIXME: `transparency := default` is like `erw` and should be avoided
-      rw! (castMode := .all) (transparency := .default)
-        [eqToHom_app, map_eqToHom_base, Category.id_comp]
-      -- FIXME: `occs` is fragile
-      rw! (transparency := .default) (occs := .pos [4]) [Functor.map_id]
-      rw! (transparency := .default) [Category.id_comp]
-      simp only [eqToHom_refl, fiber_eqToHom, eqRec_heq_iff_heq]
-      -- these should be automated
-      apply HEq.trans (eqToHom_heq_id_cod _ _ _)
-      apply HEq.symm (eqToHom_heq_id_cod _ _ _)
-  inv_hom_id := by
-    ext a
-    apply Groupoidal.Hom.hext
-    · simp
-    . simp only [NatTrans.comp_app, whiskerLeft_app, comp_fiber, ιNatTrans_app_fiber,
-        map_comp, eqToHom_map, Category.assoc, eqToHom_trans_assoc, NatTrans.id_app,
-        id_fiber, eqToHom_comp_heq_iff]
-      -- FIXME: `transparency := default` is like `erw` and should be avoided
-      -- FIXME: `occs` is fragile
-      rw! (transparency := .default) (occs := .pos [6]) [Functor.map_id]
-      rw! (transparency := .default) (occs := .pos [4]) [Functor.map_id]
-      rw! (transparency := .default) [eqToHom_app]
-      simp only [comp_obj, fiber_eqToHom, eqToHom_map, Category.id_comp, id_base,
-        eqToHom_comp_heq_iff]
-      exact (eqToHom_heq_id_cod _ _ _).symm
+noncomputable def ιNatIso {X Y : Γ} (f : X ⟶ Y) : ι A X ≅ A.map f ⋙ ι A Y :=
+  asIso (ιNatTrans f)
 
 theorem ιNatIso_hom {x y : Γ} (f : x ⟶ y) :
     (ιNatIso A f).hom = ιNatTrans f := by
