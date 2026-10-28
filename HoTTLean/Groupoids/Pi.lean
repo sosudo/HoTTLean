@@ -218,7 +218,8 @@ lemma conjugatingObjNatTransEquiv'_id (x : Γ) (S) (T) (g) :
     conjugatingObjNatTransEquiv' A B (𝟙 x) S T g =
     eqToHom (by simp) ≫ g ≫ eqToHom (by simp) := by
   ext
-  simp [conjugatingObjNatTransEquiv', Grpd.Functor.iso]
+  change (eqToHom _ ≫ whiskerLeft (Grpd.Functor.iso A (𝟙 x)).hom g).app _ = _
+  simp [Grpd.Functor.iso_id]
 
 lemma conjugatingObjNatTransEquiv'_comp {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶ z) (S) (T) (g) :
     conjugatingObjNatTransEquiv' A B (f1 ≫ f2) S T g =
