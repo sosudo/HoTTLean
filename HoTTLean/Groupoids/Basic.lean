@@ -29,7 +29,7 @@ def pGrpdToGroupoidalAsSmallFunctor : PGrpd.{v, v} ⥤
 def groupoidalAsSmallFunctorToPGrpd :
     ∫(Grpd.asSmallFunctor.{w, v, v}) ⥤ PGrpd.{v,v} :=
   PGrpd.functorTo Groupoidal.forget
-  (fun x => AsSmall.down.obj.{v, v, w} x.fiber)
+  (fun x => AsSmall.down.obj x.fiber)
   (fun f => AsSmall.down.map f.fiber)
   (by aesop_cat)
   (by aesop_cat)
