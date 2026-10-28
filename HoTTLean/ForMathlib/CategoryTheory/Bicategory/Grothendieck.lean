@@ -1172,11 +1172,11 @@ variable (hom_id : ∀ c, hom (𝟙 c) = eqToHom (by simp only [Functor.map_id];
 variable (hom_comp : ∀ c₁ c₂ c₃ (f : c₁ ⟶ c₂) (g : c₂ ⟶ c₃), hom (f ≫ g) =
   hom f ≫ whiskerLeft (F.map f).toFunctor (hom g) ≫ eqToHom (by simp only [Functor.map_comp]; rfl))
 
+-- Cat functor projections in transport equations need the legacy transparency behavior.
+set_option backward.isDefEq.respectTransparency false in
 /-- Construct a functor from `∫ F` to another category `E` by providing a family of
 functors on the fibers of `∫ F`, a family of natural transformations on morphisms in the
 base of `∫ F` and coherence data for this family of natural transformations. -/
--- Cat functor projections in transport equations need the legacy transparency behavior.
-set_option backward.isDefEq.respectTransparency false in
 @[simps]
 def functorFrom : ∫ F ⥤ E where
   obj X := (fib X.base).obj X.fiber
@@ -1430,6 +1430,10 @@ def compAsSmallFunctorEquivalence :
   inverse := compAsSmallFunctorEquivalenceInverse F
   counitIso := CategoryTheory.Iso.refl _
   unitIso := CategoryTheory.Iso.refl _
+  functor_unitIso_comp := by
+    intro X
+    change (compAsSmallFunctorEquivalenceFunctor F).map (𝟙 X) ≫ 𝟙 _ = 𝟙 _
+    rw [Functor.map_id, Category.comp_id]
 
 namespace AsSmall
 
