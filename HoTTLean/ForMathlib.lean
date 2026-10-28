@@ -416,9 +416,9 @@ variable {Γ : Type u₂} [Category.{v₂} Γ] {A : Γ ⥤ Grpd.{v₁,u₁}}
 
 @[simp] theorem Cat.map_id_obj {A : Γ ⥤ Cat.{v₁,u₁}}
     {x : Γ} {a : A.obj x} :
-    (A.map (𝟙 x)).obj a = a := by
-  have : A.map (𝟙 x) = 𝟙 (A.obj x) := by simp
-  exact Functor.congr_obj this a
+    (A.map (𝟙 x)).toFunctor.obj a = a := by
+  have h : (A.map (𝟙 x)).toFunctor = (𝟭 (A.obj x)) := by simp
+  exact Functor.congr_obj h a
 
 theorem Cat.map_id_map {A : Γ ⥤ Cat.{v₁,u₁}}
     {x : Γ} {a b : A.obj x} {f : a ⟶ b} :
