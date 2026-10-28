@@ -866,6 +866,8 @@ lemma inv_heq_inv {C : Type*} [Category C] {X Y : C} {X' Y' : C}
   subst hX hY hf
   rfl
 
+-- Use local transparency to unfold the bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.naturality_comp_hom {x y z : Γ} (g1 : x ⟶ y) (g2 : y ⟶ z) :
     (strongTrans.naturality B s hs (g1 ≫ g2)).hom =
     eqToHom (by simp [Functor.assoc]) ≫
@@ -878,6 +880,7 @@ lemma strongTrans.naturality_comp_hom {x y z : Γ} (g1 : x ⟶ y) (g2 : y ⟶ z)
     (twoCell B s hs g1) (twoCell B s hs g2)
     (twoCell B s hs (g1 ≫ g2)) ?_).trans
   · simp [naturality]
+    rfl
   · apply (strongTrans.twoCell_comp ..).trans
     rw [Functor.whiskerRight_whiskerLeft]
     simp only [sigma, eqToHom_refl]
