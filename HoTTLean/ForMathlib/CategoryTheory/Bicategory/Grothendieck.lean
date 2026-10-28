@@ -922,7 +922,10 @@ def toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
   map_id x := by
     set_option backward.isDefEq.respectTransparency false in
       apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
-  map_comp f g := by apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
+  map_comp f g := by
+    set_option backward.isDefEq.respectTransparency false in
+      apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
+      all_goals rfl
 
 @[simps!]
 def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
@@ -931,7 +934,10 @@ def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
   map_id x := by
     set_option backward.isDefEq.respectTransparency false in
       apply Hom.ext <;> simp
-  map_comp f g := by apply Hom.ext <;> simp
+  map_comp f g := by
+    set_option backward.isDefEq.respectTransparency false in
+      apply Hom.ext <;> simp
+      all_goals rfl
 
 def toPseudofunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck where
   hom := toPseudofunctor'Iso.hom F
