@@ -1379,9 +1379,11 @@ lemma whiskerLeftInvLamObjObjSigMap_naturality_heq {x y} (f : x ⟶ y) :
   · apply sigmaMap_naturality_heq
   · apply lamObjFiberObjCompSigMap_naturality
 
+-- Match bundled groupoid projections in the section naturality proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma lam_comp_map {x y} (f : x ⟶ y) :
     lamMapFiber A β (σ.map f) ≍ lamMapFiber (σ ⋙ A) (pre A σ ⋙ β) f := by
-  apply Section.hom_hext
+  apply Section.hom_hext'
   · simp [Functor.assoc, sigmaObj_naturality]
   · simp
   · simp [Functor.assoc]
@@ -1394,7 +1396,23 @@ lemma lam_comp_map {x y} (f : x ⟶ y) :
     simp only [← heq_eq_eq, heq_cast_iff_heq]
     apply lamObjFiber_naturality
   · apply lamObjFiber_naturality
-  · apply whiskerLeftInvLamObjObjSigMap_naturality_heq
+  · intro k k' hk
+    have h := whiskerLeftInvLamObjObjSigMap_naturality_heq A β σ f
+    dsimp only [lamMapFiber]
+    cases hk
+    have happ {C D D' : Grpd.{u₁,u₁}} (hD : D ≍ D')
+        {F G : C ⥤ D} {F' G' : C ⥤ D'} (hF : F ≍ F') (hG : G ≍ G')
+        {α : F ⟶ G} {α' : F' ⟶ G'} (hα : α ≍ α') (a : C) :
+        α.app a ≍ α'.app a := by
+      subst hD hF hG hα
+      rfl
+    apply happ _ _ _ h k
+    any_goals apply Grpd.comp_hcongr
+    any_goals apply Grpd.comp_hcongr
+    any_goals simp only [comp_obj, Functor.comp_map, Functor.map_inv, heq_eq_eq, Functor.assoc]
+    any_goals apply sigmaObj_naturality
+    any_goals apply lamObjFiberObj_naturality
+    any_goals apply sigmaMap_naturality_heq
 
 theorem lam_comp : σ ⋙ lam A β = lam (σ ⋙ A) (pre A σ ⋙ β) := by
   apply PGrpd.Functor.hext
