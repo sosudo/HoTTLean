@@ -1359,7 +1359,12 @@ end
 /-- `Grothendieck.ι F c` composed with `Grothendieck.functorFrom` is isomorphic a functor on a fiber
 on `F` supplied as the first argument to `Grothendieck.functorFrom`. -/
 def ιCompFunctorFrom (c : C) : ι F c ⋙ (functorFrom fib hom hom_id hom_comp) ≅ fib c :=
-  NatIso.ofComponents (fun _ => CategoryTheory.Iso.refl _) (fun f => by simp [hom_id])
+  NatIso.ofComponents (fun _ => CategoryTheory.Iso.refl _) (fun f => by
+    -- Normalize the dependent fiber inclusion projections.
+    set_option backward.isDefEq.respectTransparency false in
+      simp only [CategoryTheory.Iso.refl_hom, Category.comp_id, Category.id_comp]
+      change (hom (𝟙 c)).app _ ≫ (fib c).map (eqToHom _ ≫ f) = (fib c).map f
+      simp [hom_id])
 
 @[simp]
 lemma ι_comp_functorFrom (c : C) : ι F c ⋙ (functorFrom fib hom hom_id hom_comp) = fib c :=
@@ -1369,7 +1374,8 @@ lemma whiskerRight_ιNatTrans_functorFrom {x y} (f : x ⟶ y) :
     Functor.whiskerRight (ιNatTrans f) (functorFrom fib hom hom_id hom_comp) =
     eqToHom (ι_comp_functorFrom ..) ≫ hom f ≫
     eqToHom (by rw [Functor.assoc, ι_comp_functorFrom]) := by
-  ext; simp
+  set_option backward.isDefEq.respectTransparency false in
+    ext; simp [ιNatTrans, ι]; rfl
 
 section
 variable (A : E ⥤ C) (fibObj : (x : E) → (A ⋙ F).obj x)
