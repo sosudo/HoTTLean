@@ -92,9 +92,9 @@ lemma ι_mono {T C : Type u} [Category.{v} C] [Category.{v} T]
     ext
     exact Functor.congr_obj e X
   · intro X
-    simp only [Functor.fullyFaithfulCancelRight_hom_app, Functor.preimage, ι_obj, ι_map,
-      eqToIso.hom, eqToHom_app, Functor.comp_obj, Classical.choose_eq]
-    rfl
+    apply (ι Z).map_injective
+    simp only [Functor.fullyFaithfulCancelRight_hom_app, Functor.map_preimage,
+      eqToIso.hom, eqToHom_map, eqToHom_app, Functor.comp_obj]
 
 end ObjectProperty
 
