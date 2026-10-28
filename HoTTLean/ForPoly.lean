@@ -440,24 +440,27 @@ theorem snd_comp_right (pair : Γ ⟶ P @ X) : snd P Y (pair ≫ P.functor.map f
   rw [snd_eq_snd', snd'_comp_right, snd', Category.assoc, ← eqToIso.hom]; congr! 2
   exact IsPullback.isoPullback_eq_eqToIso_left (fst_comp_right _ _ _ f pair) P.p
 
+-- Expose the fan apex when comparing the chosen pullback projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma ext' {pair₁ pair₂ : Γ ⟶ P @ X}
     {R f g} (H : IsPullback (P := R) f g (fst P X pair₁) P.p)
     (h1 : fst P X pair₁ = fst P X pair₂)
     (h2 : snd' P X pair₁ H = snd' P X pair₂ (by rwa [h1] at H)) :
     pair₁ = pair₂ := by
   simp [fst_eq] at h1 H
-  apply partialProd.hom_ext ⟨fan P X, isLimitFan P X⟩ h1
+  apply UvPoly.hom_ext (P := P) (X := X) h1
   refine (cancel_epi H.isoPullback.hom).1 ?_
-  convert h2 using 1 <;> (
-    simp [snd'_eq, comparison_pullback.map, partialProd.snd, partialProd.cone]
-    simp only [← Category.assoc]; congr! 2
-    ext <;> simp)
-  · slice_lhs 2 3 => apply pullback.lift_fst
-    slice_lhs 1 2 => apply H.isoPullback_hom_fst
-    simp
-  · slice_lhs 2 3 => apply pullback.lift_snd
-    slice_lhs 1 2 => apply H.isoPullback_hom_snd
-    simp
+  convert h2 using 1 <;>
+    simp only [snd'_eq, comparison_pullback.map, ← Category.assoc] <;>
+    congr 1 <;>
+    apply pullback.hom_ext <;>
+    simp [Category.assoc] <;>
+    first
+    | exact H.isoPullback_hom_snd
+    | exact (Category.assoc _ _ _).symm.trans
+        (congrArg (fun k => k ≫ pair₁) H.isoPullback_hom_fst)
+    | exact (Category.assoc _ _ _).symm.trans
+        (congrArg (fun k => k ≫ pair₂) H.isoPullback_hom_fst)
 
 /-- Switch the selected pullback `R` used in `UvPoly.Equiv.mk'` with a different pullback `R'`. -/
 theorem mk'_eq_mk' (b : Γ ⟶ B) {R f g} (H : IsPullback (P := R) f g b P.p) (x : R ⟶ X)
