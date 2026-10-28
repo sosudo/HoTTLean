@@ -513,8 +513,8 @@ theorem ext {ab₁ ab₂ : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp}
   simp only [dependent, PtpEquiv.snd] at h2
   generalize_proofs _ _ H at h2
   refine Equiv.ext' M.uvPolyTp N.Ty H ?_ h2
-  simp [Equiv.fst, pullback.condition]
-  simp only [← Category.assoc]; congr 1
+  exact (fst_tp ab₁).symm.trans
+    ((congrArg (fun a => a ≫ M.tp) h1).trans (fst_tp ab₂))
 
 theorem comp_mk
     (α : y(Γ) ⟶ M.Tm) {A} (e1 : α ≫ M.tp = A)
