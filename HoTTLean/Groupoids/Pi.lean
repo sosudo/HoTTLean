@@ -473,6 +473,8 @@ variable (app : (x : Γ) → A.obj x ⥤ B.obj x)
     Functor.whiskerRight (naturality f).hom (B.map g)
     ≫ eqToHom (by simp [Functor.assoc]))
 
+-- Cat 2-cell projections require bundled pseudofunctor coercions to unfold during rewriting.
+set_option backward.isDefEq.respectTransparency false in
 def strongTrans : (A ⋙ Grpd.forgetToCat).toPseudofunctor'.StrongTrans
     (B ⋙ Grpd.forgetToCat).toPseudofunctor' where
   app x := (app x.as).toCatHom
@@ -484,26 +486,35 @@ def strongTrans : (A ⋙ Grpd.forgetToCat).toPseudofunctor'.StrongTrans
     simp only [Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
       LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete, Bicategory.whiskerRight,
       eqToHom_refl, Bicategory.whiskerLeft]
-    aesop
+    apply Cat.Hom₂.ext
+    simp [Cat.Hom.toNatTrans_comp]
   naturality_id := by
     intro x
+    apply Cat.Hom₂.ext
     simp only [Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
       LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete, Bicategory.whiskerLeft,
       eqToIso.hom, Bicategory.whiskerRight, Bicategory.leftUnitor, Bicategory.rightUnitor]
+    simp only [Cat.Hom.toNatTrans_comp, Cat.Hom₂.eqToHom_toNatTrans] at *
+    dsimp only [Cat.Hom.isoMk, NatTrans.toCatHom₂, Functor.toCatHom] 
     rw [Functor.eqToHom_whiskerRight, Functor.leftUnitor_hom_comp_rightUnitor_inv,
       Functor.whiskerLeft_eqToHom, naturality_id]
-    simp
-    conv => right; apply Category.comp_id
+    simp [Cat.Hom.toNatTrans_comp]
   naturality_comp := by
     intro x y z f g
+    change Discrete (x.as ⟶ y.as) at f
+    change Discrete (y.as ⟶ z.as) at g
+    cases f with | mk f =>
+    cases g with | mk g =>
+    apply Cat.Hom₂.ext
     simp only [Grpd.forgetToCat, Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map,
       id_eq, LocallyDiscrete.id_as, LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete,
       naturality_comp, eqToHom_refl, Category.id_comp, Bicategory.whiskerLeft, Cat.of_α,
       eqToIso.hom, Category.assoc, Bicategory.whiskerRight, Bicategory.associator,
       Functor.associator_eq, Iso.refl_hom, Iso.refl_inv]
+    simp only [Cat.Hom.toNatTrans_comp, Cat.Hom₂.eqToHom_toNatTrans] at *
     rw [Functor.eqToHom_whiskerRight, Functor.whiskerLeft_eqToHom]
     erw [Category.id_comp, Category.id_comp, Category.comp_id]
-    simp
+    simp [Cat.Hom.toNatTrans_comp, naturality_comp]
 
 lemma strongTrans_comp_toStrongTrans'_self_aux (happ : ∀ x, app x ⋙ φ.app x = 𝟭 _)
     {x y} (f : x ⟶ y) (a : A.obj x) :
