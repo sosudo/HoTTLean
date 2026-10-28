@@ -581,6 +581,8 @@ lemma mapStrongTrans_map_fiber {x y} (f : x ⟶ y) :
     (naturality f.base).inv.app x.fiber ≫ (app y.base).map f.fiber :=
   rfl
 
+-- The Grothendieck functor coercions require backward transparency for these rewrites.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapStrongTrans_comp_map_self (happ : ∀ x, app x ⋙ φ.app x = 𝟭 _)
     (hnaturality : ∀ {x y} (f : x ⟶ y) (a : A.obj x),
       (φ.app y).map ((naturality f).hom.app a) =
