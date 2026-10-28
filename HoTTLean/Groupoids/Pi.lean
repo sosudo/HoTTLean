@@ -983,6 +983,8 @@ lemma inversion_comp_forgetToGrpd : inversion B s hs ⋙ PGrpd.forgetToGrpd = B 
   simp [← Functor.assoc, mapStrongTrans_comp_map_fstNatTrans]
 
 -- NOTE: this is not as general as the `mapStrongTrans` simp lemmas
+-- The groupoid coercions in the dependent fiber rewrites require backward unfolding.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapStrongTrans_map_ι_map_fiber_fiber_heq {x : Γ} {a b : A.obj x} (h : a ⟶ b) :
     ((mapStrongTrans B s hs).map ((ι A x).map h)).fiber.fiber ≍
     ((strongTrans.app B s hs x).map h).fiber := by
