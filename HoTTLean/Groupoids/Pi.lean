@@ -542,10 +542,10 @@ lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = �
     ext a
     simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, Cat.of_α,
       Functor.toPseudofunctor'_map, Functor.comp_map, id_eq, strongTrans, comp_app,
-      NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, Cat.comp_obj, categoryStruct_id_app,
-      Cat.id_obj, categoryStruct_comp_naturality_hom, Bicategory.associator,
+      NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, categoryStruct_id_app,
+      categoryStruct_comp_naturality_hom, Bicategory.associator,
       NatTrans.toStrongTrans'_naturality, eqToIso.hom, Bicategory.whiskerLeft_eqToHom,
-      Category.assoc, Cat.comp_app, Functor.associator_inv_app, Cat.whiskerRight_app,
+      Category.assoc, Functor.associator_inv_app, Cat.whiskerRight_app,
       Functor.associator_hom_app, Cat.eqToHom_app, Category.id_comp, eqToHom_trans,
       categoryStruct_id_naturality_hom, Bicategory.rightUnitor, Bicategory.leftUnitor,
       Functor.rightUnitor_hom_app, Functor.leftUnitor_inv_app, Category.comp_id, ← heq_eq_eq,
