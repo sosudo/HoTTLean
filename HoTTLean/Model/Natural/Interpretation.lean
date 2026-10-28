@@ -496,7 +496,7 @@ theorem mem_ofTerm_pair {Γ l i j B t u} {llen : l < s.length + 1} {x} :
     have ilen : i < s.length + 1 := by> omega
     have jlen : j < s.length + 1 := by> omega
     ∃ t' : y(Γ.1) ⟶ s[i].Tm, t' ∈ I.ofTerm Γ i t ∧
-    ∃ A', ∃ eq : t' ≫ s[i].tp = A',
+    ∃ A' : y(Γ.1) ⟶ s[i].Ty, ∃ eq : t' ≫ s[i].tp = A',
     ∃ B' : y((Γ.snoc ilen A').1) ⟶ s[j].Ty,
       B' ∈ I.ofType (Γ.snoc ilen A') j B ∧
     ∃ u' : y(Γ.1) ⟶ s[j].Tm, u' ∈ I.ofTerm Γ j u ∧
