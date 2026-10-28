@@ -884,24 +884,29 @@ def grothendieckTypeToCat : ∫(G ⋙ typeToCat) ≌ G.Elements where
         rcases X with ⟨_, ⟨⟩⟩
         exact CategoryTheory.Iso.refl _)
       (by
-        rintro ⟨_, ⟨⟩⟩ ⟨_, ⟨⟩⟩ ⟨base, ⟨⟨f⟩⟩⟩
-        dsimp at *
-        simp
-        rfl)
+        intro X Y f
+        refine Hom.ext _ _ ?_ ?_
+        · rcases X with ⟨_, ⟨⟩⟩
+          rcases Y with ⟨_, ⟨⟩⟩
+          change f.base ≫ 𝟙 _ = 𝟙 _ ≫ f.base
+          simp
+        · change @Eq (Discrete.mk _ ⟶ Discrete.mk _) _ _
+          exact Subsingleton.elim _ _)
   counitIso :=
     NatIso.ofComponents
       (fun X => by
         cases X
         exact CategoryTheory.Iso.refl _)
       (by
-        rintro ⟨⟩ ⟨⟩ ⟨f, e⟩
-        dsimp at *
-        simp
-        rfl)
+        intro X Y f
+        apply Functor.Elements.hom_ext
+        change f.hom ≫ 𝟙 _ = 𝟙 _ ≫ f.hom
+        simp)
   functor_unitIso_comp := by
     rintro ⟨_, ⟨⟩⟩
+    apply Functor.Elements.hom_ext
+    change 𝟙 _ ≫ 𝟙 _ = 𝟙 _
     simp
-    rfl
 
 end Elements
 
