@@ -58,20 +58,20 @@ variable (F : Pseudofunctor B Cat) {a b : B}
 
 @[simp] lemma _root_.CategoryTheory.LocallyDiscrete.Iso.hom_inv {C : Type u₁} [Category C]
     (X Y : LocallyDiscrete C) (e : X ≅ Y) : e.hom.toLoc ≫ e.inv.toLoc = 𝟙 _ :=
-  LocallyDiscrete.eq_of_hom ⟨⟨by simp⟩⟩
+  LocallyDiscrete.eq_of_hom ⟨by simp⟩
 
-attribute [reassoc] StrongTrans.naturality_comp_inv_app
+-- The reassociated lemma is supplied by Mathlib.
 
 end
 
 lemma _root_.CategoryTheory.Functor.toPseudofunctor'_map₂ {C : Type u₁} [Category.{v₁} C] (F : C ⥤ Cat)
     {a b : LocallyDiscrete C} {f g : a ⟶ b} (η : f ⟶ g) :
-    F.toPseudoFunctor'.map₂ η = eqToHom (by simp [eq_of_hom η]) := by
-  simp [Functor.toPseudoFunctor', pseudofunctorOfIsLocallyDiscrete]
+    F.toPseudofunctor'.map₂ η = eqToHom (by simp [eq_of_hom η]) := by
+  simp [Functor.toPseudofunctor', pseudofunctorOfIsLocallyDiscrete]
 
 @[simps]
 def _root_.CategoryTheory.NatTrans.toStrongTrans' {C : Type u₁} [Category.{v₁} C] (F G : C ⥤ Cat) (α : F ⟶ G) :
-    F.toPseudoFunctor' ⟶ G.toPseudoFunctor' where
+    F.toPseudofunctor' ⟶ G.toPseudofunctor' where
   app x := α.app x.as
   naturality _ := eqToIso (α.naturality _)
   naturality_naturality η := by simp [Functor.toPseudofunctor'_map₂]
@@ -848,37 +848,37 @@ section Pseudofunctor
 variable (F)
 
 @[simps!]
-def toPseudoFunctor'Iso.hom : ∫ F ⥤ F.toPseudoFunctor'.Grothendieck where
+def toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
   map_id x := by apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
   map_comp f g := by apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
 
 @[simps!]
-def toPseudoFunctor'Iso.inv : F.toPseudoFunctor'.Grothendieck ⥤ ∫ F where
+def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
   map_id x := by apply Hom.ext <;> simp
   map_comp f g := by apply Hom.ext <;> simp
 
-def toPseudoFunctor'Iso : ∫ F ≅≅ F.toPseudoFunctor'.Grothendieck where
-  hom := toPseudoFunctor'Iso.hom F
-  inv := toPseudoFunctor'Iso.inv F
+def toPseudofunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck where
+  hom := toPseudofunctor'Iso.hom F
+  inv := toPseudofunctor'Iso.inv F
 
-def toPseudoFunctor'Equivalence : ∫ F ≌ F.toPseudoFunctor'.Grothendieck :=
-  (toPseudoFunctor'Iso F).toEquivalence
+def toPseudofunctor'Equivalence : ∫ F ≌ F.toPseudofunctor'.Grothendieck :=
+  (toPseudofunctor'Iso F).toEquivalence
 
-lemma toPseudoFunctor'Iso.hom_comp_forget : toPseudoFunctor'Iso.hom F ⋙
+lemma toPseudofunctor'Iso.hom_comp_forget : toPseudofunctor'Iso.hom F ⋙
     Pseudofunctor.Grothendieck.forget _ = forget _ :=
   rfl
 
-lemma toPseudoFunctor'Iso.inv_comp_forget : toPseudoFunctor'Iso.inv F ⋙ forget _ =
+lemma toPseudofunctor'Iso.inv_comp_forget : toPseudofunctor'Iso.inv F ⋙ forget _ =
     Pseudofunctor.Grothendieck.forget _ :=
   rfl
 
-lemma map_eq_pseudofunctor_map {G} (α : F ⟶ G) : map α = (toPseudoFunctor'Iso F).hom ⋙
+lemma map_eq_pseudofunctor_map {G} (α : F ⟶ G) : map α = (toPseudofunctor'Iso F).hom ⋙
     Pseudofunctor.Grothendieck.map α.toStrongTrans' ⋙
-    (toPseudoFunctor'Iso G).inv := by
+    (toPseudofunctor'Iso G).inv := by
   fapply Functor.ext
   · aesop
   · intro _
