@@ -124,6 +124,8 @@ variable {C : Type u} [Category.{v} C] {D : Type u} [Category.{v} D]
 variable {E : Type*} [Category E] (En : E ⥤ C) (Ew : E ⥤ Core D)
   (hE : En ⋙ F = Ew ⋙ inclusion D)
 
+-- The equality transports in this dependent construction require reducible type transparency.
+set_option backward.isDefEq.respectTransparency.types false in
 def lift : E ⥤ Core C where
   obj x := ⟨ En.obj x ⟩
   map {x y} f := ⟨ @asIso _ _ _ _ (En.map f) $ by
