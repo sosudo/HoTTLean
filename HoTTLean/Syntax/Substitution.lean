@@ -92,7 +92,7 @@ theorem rename_all :
   have ih_subst (B a : Expr χ) (ξ) :
       (B.subst a.toSb).rename ξ = (B.rename (Expr.upr ξ)).subst (a.rename ξ).toSb := by autosubst
   mutual_induction WfCtx
-  all_goals dsimp only; try intros
+  all_goals (try dsimp only); try intros
   all_goals try simp only [Expr.rename, ih_subst] at *; clear ih_subst
   -- Cases that don't go through by `grind_cases`.
   case ax p _ Ec _ _ ihA _ _ Δ ξ =>
