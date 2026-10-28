@@ -1064,18 +1064,23 @@ variable {x y : Γ} (f : x ⟶ y)
 
 open CategoryTheory.Functor
 
+-- These local settings reconcile bundled groupoid coercions in the dependent fiber projections.
+set_option backward.isDefEq.respectTransparency false in
 def lamObjFiberObjCompSigMap.app (a : A.obj x) :
     (lamObjFiberObj A β x ⋙ sigmaMap (β ⋙ PGrpd.forgetToGrpd) f).obj a ⟶
     (A.map f ⋙ lamObjFiberObj A β y).obj a :=
   homMk (𝟙 _) (eqToHom (by simp; rfl) ≫ (β.map ((ιNatTrans f).app a)).fiber)
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] lemma lamObjFiberObjCompSigMap.app_base (a : A.obj x) : (app A β f a).base = 𝟙 _ := by
   simp [app]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap.app_fiber_eq (a : A.obj x) : (app A β f a).fiber =
     eqToHom (by simp; rfl) ≫ (β.map ((ιNatTrans f).app a)).fiber := by
   simp [app]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap.app_fiber_heq (a : A.obj x) : (app A β f a).fiber ≍
     (β.map ((ιNatTrans f).app a)).fiber := by
   simp [app]
