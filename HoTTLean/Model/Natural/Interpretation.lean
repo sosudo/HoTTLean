@@ -657,7 +657,7 @@ def sub1 {se : y(Γ.1) ⟶ s[l].Tm}
 @[simp] theorem sub1_toSb {se : y(Γ.1) ⟶ s[l].Tm}
     (A : y(Γ.1) ⟶ s[l].Ty) (e) (eq : se ≫ s[l].tp = A) (H : se ∈ I.ofTerm Γ l e) :
     (sub1 llen A e eq H).toSb = Expr.toSb e := by
-  simp [sub1, toSb, Expr.toSb]
+  rfl
 
 def up {Δ Γ σ full} (sσ : I.CSb Δ Γ σ full)
     {l} (llen : l < s.length + 1) (A : y(Γ.1) ⟶ s[l].Ty)
