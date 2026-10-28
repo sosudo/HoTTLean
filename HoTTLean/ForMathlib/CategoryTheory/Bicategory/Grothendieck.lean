@@ -1167,14 +1167,16 @@ theorem cast_eq {F G : C ⥤ Cat}
 
 section
 
-variable (fib : ∀ c, F.obj c ⥤ E) (hom : ∀ {c c' : C} (f : c ⟶ c'), fib c ⟶ F.map f ⋙ fib c')
+variable (fib : ∀ c, F.obj c ⥤ E) (hom : ∀ {c c' : C} (f : c ⟶ c'), fib c ⟶ (F.map f).toFunctor ⋙ fib c')
 variable (hom_id : ∀ c, hom (𝟙 c) = eqToHom (by simp only [Functor.map_id]; rfl))
 variable (hom_comp : ∀ c₁ c₂ c₃ (f : c₁ ⟶ c₂) (g : c₂ ⟶ c₃), hom (f ≫ g) =
-  hom f ≫ whiskerLeft (F.map f) (hom g) ≫ eqToHom (by simp only [Functor.map_comp]; rfl))
+  hom f ≫ whiskerLeft (F.map f).toFunctor (hom g) ≫ eqToHom (by simp only [Functor.map_comp]; rfl))
 
 /-- Construct a functor from `∫ F` to another category `E` by providing a family of
 functors on the fibers of `∫ F`, a family of natural transformations on morphisms in the
 base of `∫ F` and coherence data for this family of natural transformations. -/
+-- Cat functor projections in transport equations need the legacy transparency behavior.
+set_option backward.isDefEq.respectTransparency false in
 @[simps]
 def functorFrom : ∫ F ⥤ E where
   obj X := (fib X.base).obj X.fiber
@@ -1202,7 +1204,7 @@ variable (K : Grothendieck F ⥤ E)
 abbrev asFunctorFromFib (c : C) : (F.obj c) ⥤ E := ι F c ⋙ K
 
 abbrev asFunctorFromHom {c c' : C} (f: c ⟶ c') :
-    asFunctorFromFib K c ⟶ F.map f ⋙ asFunctorFromFib K c' :=
+    asFunctorFromFib K c ⟶ (F.map f).toFunctor ⋙ asFunctorFromFib K c' :=
   Functor.whiskerRight (ιNatTrans f) K
 
 lemma asFunctorFromHom_app {c c' : C} (f: c ⟶ c') (p : F.obj c) :
@@ -1216,8 +1218,8 @@ lemma asFunctorFromHom_id (c : C) : asFunctorFromHom K (𝟙 c) =
 
 lemma asFunctorFromHom_comp (c₁ c₂ c₃ : C) (f : c₁ ⟶ c₂) (g: c₂ ⟶ c₃) :
     asFunctorFromHom K (f ≫ g) =
-    asFunctorFromHom K f ≫ Functor.whiskerLeft (F.map f) (asFunctorFromHom K g) ≫ eqToHom
-    (by simp[← Functor.assoc]; congr) := by
+    asFunctorFromHom K f ≫ Functor.whiskerLeft (F.map f).toFunctor (asFunctorFromHom K g) ≫ eqToHom
+    (by simp[← Functor.assoc]) := by
   ext p
   simp [asFunctorFromHom, eqToHom_map, ιNatTrans_comp_app]
 
@@ -1242,7 +1244,7 @@ variable {D : Type*} [Category D] (G : E ⥤ D)
 def functorFromCompFib (c : C) : F.obj c ⥤ D := fib c ⋙ G
 
 def functorFromCompHom {c c' : C} (f : c ⟶ c') :
-    functorFromCompFib fib G c ⟶ F.map f ⋙ functorFromCompFib fib G c' :=
+    functorFromCompFib fib G c ⟶ (F.map f).toFunctor ⋙ functorFromCompFib fib G c' :=
   Functor.whiskerRight (hom f) G
 
 include hom_id in
@@ -1255,7 +1257,7 @@ include hom_comp in
 lemma functorFromCompHom_comp (c₁ c₂ c₃ : C) (f : c₁ ⟶ c₂) (g : c₂ ⟶ c₃):
     functorFromCompHom fib hom G (f ≫ g)
     = functorFromCompHom fib hom G f ≫
-    Functor.whiskerLeft (F.map f) (functorFromCompHom fib hom G g) ≫
+    Functor.whiskerLeft (F.map f).toFunctor (functorFromCompHom fib hom G g) ≫
     eqToHom (by simp[Cat.comp_eq_comp, Functor.map_comp, Functor.assoc]) := by
   ext
   simp [functorFromCompHom, hom_comp]
@@ -1273,10 +1275,10 @@ theorem functorFrom_comp : functorFrom fib hom hom_id hom_comp ⋙ G =
 end
 
 section
-variable (fib' : ∀ c, F.obj c ⥤ E) (hom' : ∀ {c c' : C} (f : c ⟶ c'), fib' c ⟶ F.map f ⋙ fib' c')
+variable (fib' : ∀ c, F.obj c ⥤ E) (hom' : ∀ {c c' : C} (f : c ⟶ c'), fib' c ⟶ (F.map f).toFunctor ⋙ fib' c')
 variable (hom_id' : ∀ c, hom' (𝟙 c) = eqToHom (by simp only [Functor.map_id]; rfl))
 variable (hom_comp' : ∀ c₁ c₂ c₃ (f : c₁ ⟶ c₂) (g : c₂ ⟶ c₃), hom' (f ≫ g) =
-  hom' f ≫ Functor.whiskerLeft (F.map f) (hom' g) ≫ eqToHom (by simp only [Functor.map_comp]; rfl))
+  hom' f ≫ Functor.whiskerLeft (F.map f).toFunctor (hom' g) ≫ eqToHom (by simp only [Functor.map_comp]; rfl))
 
 theorem functorFrom_eq_of (ef : fib = fib')
     (hhom : ∀ {c c' : C} (f : c ⟶ c'), hom f ≫ eqToHom (by rw[ef]) = eqToHom (by rw[ef]) ≫ hom' f) :
@@ -1388,14 +1390,14 @@ end
 
 end FunctorFrom
 
-/-- The fiber inclusion `ι F c` composed with `map α` is isomorphic to `α.app c ⋙ ι F' c`. -/
+/-- The fiber inclusion `ι F c` composed with `map α` is isomorphic to `(α.app c).toFunctor ⋙ ι F' c`. -/
 @[simps!]
-def ιCompMap {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α ≅ α.app c ⋙ ι F' c :=
+def ιCompMap {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α ≅ (α.app c).toFunctor ⋙ ι F' c :=
   NatIso.ofComponents (fun X => CategoryTheory.Iso.refl _) (fun f => by
     simp only [CategoryTheory.Iso.refl_hom, Category.comp_id]
     apply Hom.ext <;> simp)
 
-lemma ι_comp_map {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α = α.app c ⋙ ι F' c :=
+lemma ι_comp_map {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α = (α.app c).toFunctor ⋙ ι F' c :=
   Functor.ext_of_iso (ιCompMap ..) (by intro; rfl)
 
 section AsSmall
