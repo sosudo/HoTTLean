@@ -1027,6 +1027,7 @@ theorem preNatIso_congr {G H : D ⥤ C} {α β : G ≅ H} (h : α = β) :
   subst h
   simp
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem preNatIso_eqToIso {G H : D ⥤ C} {h : G = H} :
     preNatIso F (eqToIso h) =
     eqToIso (by subst h; simp [map_id_eq, Cat.id_eq_id, Functor.id_comp]) := by
@@ -1034,16 +1035,20 @@ theorem preNatIso_congr {G H : D ⥤ C} {α β : G ≅ H} (h : α = β) :
   ext
   fapply Hom.ext
   · simp
+    rfl
   · simp only [eqToIso_refl, comp_obj, eqToIso.hom, preNatIso_hom_app_fiber,
       Category.comp_id]
     rw! [eqToHom_app, fiber_eqToHom]
+    rfl
 
+set_option backward.isDefEq.respectTransparency false in
 theorem preNatIso_comp {G1 G2 G3 : D ⥤ C} (α : G1 ≅ G2) (β : G2 ≅ G3) :
     preNatIso F (α ≪≫ β) = preNatIso F α ≪≫ isoWhiskerLeft _ (preNatIso F β) ≪≫
     eqToIso (by simp [map_comp_eq, Functor.assoc]) := by
   ext
   fapply Hom.ext
   · simp
+    rfl
   · simp only [CategoryTheory.Iso.trans_hom, eqToIso.hom, NatTrans.comp_app]
     rw! [eqToHom_app]
     simp
