@@ -660,7 +660,9 @@ as the induced map in the following diagram
 lemma pi.obj_hext {A A' : Γ ⥤ Grpd.{u₁,u₁}} (hA : A ≍ A') {B : ∫ A ⥤ Grpd.{u₁,u₁}}
     {B' : ∫ A' ⥤ Grpd.{u₁,u₁}} (hB : B ≍ B') (x : Γ)
     (f : (pi A B).obj x) (f' : (pi A' B').obj x) (hf : f.obj.obj ≍ f'.obj.obj) : f ≍ f' := by
-  aesop
+  subst hA hB
+  simp at *
+  exact eq_of_heq (Section.obj_hext HEq.rfl HEq.rfl HEq.rfl f f' (heq_of_eq hf))
 
 end
 
