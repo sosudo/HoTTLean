@@ -902,18 +902,23 @@ section Pseudofunctor
 
 variable (F)
 
+-- Match the bundled Cat transports when elaborating the identity laws.
 @[simps!]
 def toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
-  map_id x := by apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
+  map_id x := by
+    set_option backward.isDefEq.respectTransparency false in
+      apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
   map_comp f g := by apply Pseudofunctor.Grothendieck.Hom.ext <;> simp
 
 @[simps!]
 def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
-  map_id x := by apply Hom.ext <;> simp
+  map_id x := by
+    set_option backward.isDefEq.respectTransparency false in
+      apply Hom.ext <;> simp
   map_comp f g := by apply Hom.ext <;> simp
 
 def toPseudofunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck where
