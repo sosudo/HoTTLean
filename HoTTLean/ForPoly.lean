@@ -88,7 +88,10 @@ theorem ev_naturality {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
   rw [← isoWhiskerLeft_inv, ← Category.assoc, Iso.comp_inv_eq,
     ← isoWhiskerRight_hom, ← Iso.eq_comp_inv] at this
   simp [β, pushforwardPullbackIsoSquare_eq, ev] at this ⊢
-  rw [show inv _ (I := _) = α.inv by simp [α, pullbackMapIsoSquare]]
+  change whiskerRight (conjugateEquiv ((adj P.p).comp (Over.mapPullbackAdj e))
+    ((Over.mapPullbackAdj b).comp (adj P'.p)) α.inv) pbk ≫
+    whiskerLeft p'fwd bb.hom ≫ whiskerRight (adj P'.p).counit ebk =
+    whiskerLeft ebk (adj P.p).counit
   generalize Over.mapPullbackAdj e = adje, Over.mapPullbackAdj b = adjb at *
   ext X : 2; simp
   have := congr(
