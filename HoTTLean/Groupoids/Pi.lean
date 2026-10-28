@@ -741,7 +741,7 @@ lemma strongTrans.app_map_base (y) {a a'} (f : a ⟶ a') :
 
 def strongTrans.twoCell {x y : Γ} (g : x ⟶ y) :
     A.map (CategoryTheory.inv g) ⋙ strongTrans.app B s hs x ⋙ sigmaMap B g ⟶
-  strongTrans.app B s hs y := (PGrpd.mapFiber' hs g).1
+  strongTrans.app B s hs y := (PGrpd.mapFiber' hs g).1.hom
 
 lemma strongTrans.twoCell_app_base_aux {x y : Γ} (g : x ⟶ y) (a) :
     base ((A.map (CategoryTheory.inv g) ⋙ app B s hs x ⋙ sigmaMap B g).obj a) =
@@ -766,7 +766,7 @@ lemma strongTrans.twoCell_id (x) :
 
 set_option maxHeartbeats 400000 in
 lemma strongTrans.pi_map_map {x y z} (f : x ⟶ y) (g : y ⟶ z) :
-    (((pi A B).map g).map (PGrpd.mapFiber' hs f)).1 =
+    (((pi A B).map g).map (PGrpd.mapFiber' hs f)).1.hom =
     Functor.whiskerLeft (A.map (CategoryTheory.inv g))
     (Functor.whiskerRight (twoCell B s hs f) (sigmaMap B g)) :=
   Section.functor_map_map (A := A)
