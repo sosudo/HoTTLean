@@ -1295,6 +1295,8 @@ lemma lam_comp_aux (x) :
     ι A (σ.obj x) ⋙ β ⋙ PGrpd.forgetToGrpd = ι (σ ⋙ A) x ⋙ pre A σ ⋙ β ⋙ PGrpd.forgetToGrpd := by
   simp [← Functor.assoc, ← ι_comp_pre]
 
+-- Unfold bundled groupoid coercions when comparing the dependent section objects.
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObj_naturality (x) :
     lamObjFiberObj A β (σ.obj x) ≍ lamObjFiberObj (σ ⋙ A) (pre A σ ⋙ β) x := by
   simp only [lamObjFiberObj, ← ι_comp_pre, comp_obj, Functor.assoc]
@@ -1317,6 +1319,8 @@ theorem lamObjFiber_naturality (x : Δ) : lamObjFiber A β (σ.obj x) ≍
   · simp only [sigma_obj, sigma.fstNatTrans_app, lamObjFiber_obj_obj, comp_obj]
     apply lamObjFiberObj_naturality
 
+-- The fiber projection uses the same bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap.app_naturality {x y} (f : x ⟶ y) (a) :
     lamObjFiberObjCompSigMap.app A β (σ.map f) a ≍
     lamObjFiberObjCompSigMap.app (σ ⋙ A) (pre A σ ⋙ β) f a := by
