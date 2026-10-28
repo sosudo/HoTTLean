@@ -471,15 +471,29 @@ theorem fst_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) 
     pullback.snd (PartialProduct.fan M.uvPolyTp N.Ty).fst M.uvPolyTp.p = α
   exact pullback.lift_snd _ _ _
 
+-- The pullback presentation of compDom needs reducible instance compatibility.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem dependent_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A)
     (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
     (h : β ≫ N.tp = ym(M.sec _ α eq) ≫ B) :
     dependent (mk α eq B β h) A (by simp [fst_mk, eq]) = B := by
   simp [mk, dependent, UvPoly.compP]
-  convert PtpEquiv.snd_mk M A B using 2
-  slice_lhs 1 2 => apply pullback.lift_snd
-  simp
+  have hp (w₁ : PtpEquiv.mk M A B ≫ (PartialProduct.fan M.uvPolyTp N.Ty).fst =
+      α ≫ M.uvPolyTp.p)
+      (w₂ : β ≫ N.uvPolyTp.p =
+        pullback.lift (PtpEquiv.mk M A B) α w₁ ≫ (PartialProduct.fan M.uvPolyTp N.Ty).snd) :
+      (pullback.lift β (pullback.lift (PtpEquiv.mk M A B) α w₁) w₂ ≫
+        pullback.snd N.uvPolyTp.p (PartialProduct.fan M.uvPolyTp N.Ty).snd) ≫
+        pullback.fst (PartialProduct.fan M.uvPolyTp N.Ty).fst M.uvPolyTp.p =
+        PtpEquiv.mk M A B := by
+    rw [pullback.lift_snd]
+    exact pullback.lift_fst _ _ _
+  convert PtpEquiv.snd_mk M A B using 1
+  congr 1
+  rw [← Category.assoc]
+  exact hp _ _
+  all_goals apply proof_irrel_heq
 
 @[simp]
 theorem snd_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
