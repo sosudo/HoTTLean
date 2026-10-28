@@ -1214,6 +1214,7 @@ lemma whiskerLeftInvLamObjObjSimgaMap_comp_aux {A A' B B' C C' : Type*}
       whiskerLeft G.inv lamG ≫
       eqToHom (by aesop) := by aesop_cat
 
+set_option backward.isDefEq.respectTransparency false in
 lemma whiskerLeftInvLamObjObjSigMap_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     whiskerLeftInvLamObjObjSigMap A β (f ≫ g)
     = eqToHom (by simp [Functor.assoc, sigmaMap_comp])
