@@ -74,8 +74,12 @@ variable {x y : C} (f : x ⟶ y)
     (pt fst x)
   m2 ≫ m1
 
+-- The fiber transports reduce through bundled category morphisms.
+set_option backward.isDefEq.respectTransparency false in
 theorem liftMapFiber_id (x : C) : liftMapFiber w (𝟙 x) = eqToHom (by simp) := by
-  simp [eqToHom_map]
+  simp
+  rw [eqToHom_map]
+  simp
 
 theorem liftMapFiber_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     liftMapFiber w (f ≫ g) =
