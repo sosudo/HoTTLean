@@ -1476,6 +1476,8 @@ instance {C : Type u} [Category.{v} C] :
 
 end AsSmall
 
+-- Allow simplification to unfold the bundled Cat functors in the naturality proof.
+set_option backward.isDefEq.respectTransparency false in
 variable {F G} in
 /-- Mapping a Grothendieck construction along the whiskering of any natural transformation
 `α : F ⟶ G` with the functor `asSmallFunctor : Cat ⥤ Cat` is naturally isomorphic to conjugating
@@ -1491,7 +1493,9 @@ def mapWhiskerRightAsSmallFunctor (α : F ⟶ G) :
         comp_obj, forget_obj, comp_map, forget_map, compAsSmallFunctorEquivalence_inverse,
         compAsSmallFunctorEquivalenceInverse, CategoryTheory.Iso.refl_hom, Category.comp_id,
         Category.id_comp]
-      apply Hom.ext <;> simp
+      apply Hom.ext <;> simp [compAsSmallFunctorEquivalence,
+        compAsSmallFunctorEquivalenceInverse, compAsSmallFunctorEquivalenceFunctor, functorTo, map]
+      rfl
       )
 
 end AsSmall
