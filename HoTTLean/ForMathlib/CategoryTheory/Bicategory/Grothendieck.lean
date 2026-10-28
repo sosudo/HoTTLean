@@ -726,14 +726,14 @@ end Transport
 
 section functorTo
 variable (A : D ⥤ C) (fibObj : (x : D) → (A ⋙ F).obj x)
-    (fibMap : {x y : D} → (f : x ⟶ y) → ((A ⋙ F).map f).obj (fibObj x) ⟶ fibObj y)
+    (fibMap : {x y : D} → (f : x ⟶ y) → ((A ⋙ F).map f).toFunctor.obj (fibObj x) ⟶ fibObj y)
 
-theorem functorTo_map_id_aux (x : D) : ((A ⋙ F).map (𝟙 x)).obj (fibObj x) = fibObj x := by
+theorem functorTo_map_id_aux (x : D) : ((A ⋙ F).map (𝟙 x)).toFunctor.obj (fibObj x) = fibObj x := by
   simp
 
 theorem functorTo_map_comp_aux {x y z : D} (f : x ⟶ y) (g : y ⟶ z) :
-    ((A ⋙ F).map (f ≫ g)).obj (fibObj x)
-    = (F.map (A.map g)).obj (((A ⋙ F).map f).obj (fibObj x)) := by
+    ((A ⋙ F).map (f ≫ g)).toFunctor.obj (fibObj x)
+    = (F.map (A.map g)).toFunctor.obj (((A ⋙ F).map f).toFunctor.obj (fibObj x)) := by
   simp
 
 section
@@ -742,8 +742,10 @@ variable
       = eqToHom (functorTo_map_id_aux A fibObj x))
     (map_comp : {x y z : D} → (f : x ⟶ y) → (g : y ⟶ z) → fibMap (f ≫ g)
       = eqToHom (functorTo_map_comp_aux A fibObj f g)
-      ≫ (F.map (A.map g)).map (fibMap f) ≫ fibMap g)
+      ≫ (F.map (A.map g)).toFunctor.map (fibMap f) ≫ fibMap g)
 
+-- Wrapped Cat functors require the older transparency behavior for transport simplification.
+set_option backward.isDefEq.respectTransparency false in
 /--
 Define a functor into `∫ F` by providing a functor into the base cateogry,
 as well as the actions on fibers. -/
