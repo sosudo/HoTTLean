@@ -472,8 +472,20 @@ noncomputable def pullbackHomEquiv {A B C: 𝒞} {Γ : 𝒞} {f : A ⟶ C} {g : 
     (fst : Γ ⟶ A) × (snd : Γ ⟶ B) ×' (fst ≫ f = snd ≫ g) where
   toFun h := ⟨h ≫ pullback.fst f g, h ≫ pullback.snd f g, by simp[pullback.condition]⟩
   invFun x := pullback.lift x.1 x.2.1 x.2.2
-  left_inv _ := pullback.hom_ext (by simp) (by simp)
-  right_inv := by rintro ⟨_,_,_⟩; congr!; simp; simp
+  left_inv _ := pullback.hom_ext (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
+  right_inv := by
+    rintro ⟨a, b, h⟩
+    change (⟨pullback.lift a b h ≫ pullback.fst f g,
+      pullback.lift a b h ≫ pullback.snd f g, _⟩ :
+      (fst : Γ ⟶ A) × (snd : Γ ⟶ B) ×' (fst ≫ f = snd ≫ g)) = ⟨a, b, h⟩
+    have aux : ∀ (x y : Γ ⟶ A) (z w : Γ ⟶ B)
+        (p : x ≫ f = z ≫ g) (q : y ≫ f = w ≫ g), x = y → z = w →
+        (⟨x, z, p⟩ : (fst : Γ ⟶ A) × (snd : Γ ⟶ B) ×' (fst ≫ f = snd ≫ g)) = ⟨y, w, q⟩ := by
+      intro x y z w p q hx hz
+      cases hx
+      cases hz
+      rfl
+    exact aux _ _ _ _ _ _ (pullback.lift_fst a b h) (pullback.lift_snd a b h)
 
 end CategoryTheory.Limits
 
