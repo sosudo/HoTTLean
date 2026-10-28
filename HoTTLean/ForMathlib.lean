@@ -657,10 +657,9 @@ lemma Discrete.functor_eq {X C : Type*} [Category C] {F : Discrete X ⥤ C} :
   · aesop
   · intro x y f
     cases x ; rcases f with ⟨⟨h⟩⟩
-    cases h
     simp
 
-lemma Discrete.functor_ext {X C : Type*} [Category C] (F G : Discrete X ⥤ C)
+lemma Discrete.functor_ext_explicit {X C : Type*} [Category C] (F G : Discrete X ⥤ C)
     (h : ∀ x : X, F.obj ⟨x⟩ = G.obj ⟨x⟩) :
     F = G :=
   calc F
