@@ -165,14 +165,17 @@ end
 instance category : Category (∫ F) where
   toCategoryStruct := Pseudofunctor.Grothendieck.categoryStruct
   id_comp {a b} f := by
-    ext
-    · simp
-    · simp [F.mapComp_id_left_hom_app, PrelaxFunctor.map₂_eqToHom, Strict.leftUnitor_eqToIso,
-        ← Functor.map_comp_assoc]
+    -- Match transports through bundled Cat operations.
+    set_option backward.isDefEq.respectTransparency false in
+      ext
+      · simp
+      · simp [F.mapComp_id_left_hom_app, PrelaxFunctor.map₂_eqToHom, Strict.leftUnitor_eqToIso,
+          ← Functor.map_comp_assoc]
   comp_id {a b} f := by
-    ext
-    · simp
-    · simp [F.mapComp_id_right_hom_app, PrelaxFunctor.map₂_eqToHom, Strict.rightUnitor_eqToIso]
+    set_option backward.isDefEq.respectTransparency false in
+      ext
+      · simp
+      · simp [F.mapComp_id_right_hom_app, PrelaxFunctor.map₂_eqToHom, Strict.rightUnitor_eqToIso]
   assoc f g h := by
     ext
     · simp
