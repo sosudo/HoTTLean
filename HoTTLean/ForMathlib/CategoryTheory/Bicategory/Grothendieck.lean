@@ -1105,9 +1105,11 @@ def preEquivalence (G : D ≌ C) : ∫ (G.functor ⋙ F) ≌ ∫ F where
       Equivalence.counitInv_functor_comp]
   counitIso := preNatIso F G.counitIso.symm |>.symm
   functor_unitIso_comp X := by
-    simp only [preInv, Grothendieck.preUnitIso, pre_id, CategoryTheory.Iso.trans_hom,
-      eqToIso.hom, eqToHom_app, eqToHom_refl, isoWhiskerLeft_hom, NatTrans.comp_app]
-    fapply Hom.ext <;> simp [preNatIso, transportIso]
+    -- Reduce the dependent Cat transport in this triangle only.
+    set_option backward.isDefEq.respectTransparency false in
+      simp only [preInv, Grothendieck.preUnitIso, pre_id, CategoryTheory.Iso.trans_hom,
+        eqToIso.hom, eqToHom_app, eqToHom_refl, isoWhiskerLeft_hom, NatTrans.comp_app]
+      fapply Hom.ext <;> simp [preNatIso, transportIso, isoMk, pre, map, functorTo, forget]
 
 variable {F} in
 /--
