@@ -524,6 +524,8 @@ theorem unLam_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].
   convert PtpEquiv.snd_mk s[i] A B using 2
   exact (s.Pi_pb ilen jlen).lift_snd ..
 
+-- The pullback projections unfold the semireducible mkPi in their proof arguments.
+set_option backward.isDefEq.respectTransparency false in
 theorem comp_unLam {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     (A : y(Γ) ⟶ s[i].Ty) (σA) (eq : ym(σ) ≫ A = σA) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (f : y(Γ) ⟶ s[max i j].Tm) (f_tp : f ≫ s[max i j].tp = s.mkPi ilen jlen A B) :
