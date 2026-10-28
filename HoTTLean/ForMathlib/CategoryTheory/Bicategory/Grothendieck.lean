@@ -1336,12 +1336,12 @@ lemma whiskerRight_ιNatTrans_functorFrom {x y} (f : x ⟶ y) :
 
 section
 variable (A : E ⥤ C) (fibObj : (x : E) → (A ⋙ F).obj x)
-    (fibMap : {x y : E} → (f : x ⟶ y) → ((A ⋙ F).map f).obj (fibObj x) ⟶ fibObj y)
+    (fibMap : {x y : E} → (f : x ⟶ y) → ((A ⋙ F).map f).toFunctor.obj (fibObj x) ⟶ fibObj y)
     (map_id : (x : E) → fibMap (CategoryStruct.id x)
       = eqToHom (functorTo_map_id_aux A fibObj x))
     (map_comp : {x y z : E} → (f : x ⟶ y) → (g : y ⟶ z) → fibMap (f ≫ g)
       = eqToHom (functorTo_map_comp_aux A fibObj f g)
-      ≫ (F.map (A.map g)).map (fibMap f) ≫ fibMap g)
+      ≫ (F.map (A.map g)).toFunctor.map (fibMap f) ≫ fibMap g)
 
 @[simps!]
 def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
@@ -1352,7 +1352,7 @@ def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
       (fib (A.obj y)).map (fibMap f) ≍ f)
     (obj_fib_obj : ∀ c x, A.obj ((fib c).obj x) = c)
     (map_hom_app : ∀ {c c'} (f : c ⟶ c') x, A.map ((hom f).app x) ≍ f)
-    (fibMap_hom_app : ∀ {c c'} (f : c ⟶ c') x, fibMap ((hom f).app x) ≍ 𝟙 ((F.map f).obj x)) :
+    (fibMap_hom_app : ∀ {c c'} (f : c ⟶ c') x, fibMap ((hom f).app x) ≍ 𝟙 ((F.map f).toFunctor.obj x)) :
     ∫ F ≅≅ E where
   hom := functorFrom fib hom hom_id hom_comp
   inv := functorTo A fibObj fibMap map_id map_comp
@@ -1504,18 +1504,18 @@ instance : IsIso f.base := by
   · simp [← Grothendieck.Hom.comp_base]
   · simp [← Grothendieck.Hom.comp_base]
 
-def invFiber : y.fiber ⟶ (F.map f.base).obj x.fiber :=
+def invFiber : y.fiber ⟶ (F.map f.base).toFunctor.obj x.fiber :=
   eqToHom (by simp [← Functor.comp_obj, ← Cat.comp_eq_comp, ← Functor.map_comp,
       ← Grothendieck.Hom.comp_base]) ≫
-    (F.map f.base).map (CategoryTheory.inv f).fiber
+    (F.map f.base).toFunctor.map (CategoryTheory.inv f).fiber
 
 @[simp]
-lemma fiber_comp_invFiber : f.fiber ≫ invFiber f = 𝟙 ((F.map f.base).obj x.fiber) := by
+lemma fiber_comp_invFiber : f.fiber ≫ invFiber f = 𝟙 ((F.map f.base).toFunctor.obj x.fiber) := by
   have h := Functor.Grothendieck.Hom.comp_fiber f (CategoryTheory.inv f)
   rw! [IsIso.hom_inv_id] at h
-  have h0 : F.map (CategoryTheory.inv f).base ⋙ F.map f.base = 𝟭 _ := by
+  have h0 : (F.map (CategoryTheory.inv f).base).toFunctor ⋙ (F.map f.base).toFunctor = 𝟭 _ := by
     simp [← Cat.comp_eq_comp, ← Functor.map_comp, ← Grothendieck.Hom.comp_base, Cat.id_eq_id]
-  have h1 := Functor.congr_map (F.map f.base) h
+  have h1 := Functor.congr_map (F.map f.base).toFunctor h
   simp [← heq_eq_eq, eqToHom_map, ← Functor.comp_map, Functor.congr_hom h0] at h1
   dsimp [invFiber]
   rw! [← h1]
