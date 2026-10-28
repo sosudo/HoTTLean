@@ -406,6 +406,8 @@ lemma snd_mk (b : Γ ⟶ B) (x : pullback b P.p ⟶ X) :
     snd P X (mk P X b x) = eqToHom (by simp) ≫ x := by
   apply eq_of_heq; rw [heq_eqToHom_comp_iff]; apply snd_mk_heq
 
+-- The fan point is definitionally the polynomial object.
+set_option backward.isDefEq.respectTransparency false in
 theorem snd'_comp_left (pair : Γ ⟶ P @ X)
     {R f g} (H : IsPullback (P := R) f g (fst P X pair) P.p)
     {Δ} (σ : Δ ⟶ Γ)
@@ -413,10 +415,8 @@ theorem snd'_comp_left (pair : Γ ⟶ P @ X)
     snd' P X (σ ≫ pair) (by convert H'; rw [fst_comp_left]) =
     H.lift (f' ≫ σ) g' (by simp [H'.w]) ≫ snd' P X pair H := by
   simp only [snd'_eq, ← Category.assoc]
-  congr 2
-  ext
-  · simp
-  · simp
+  apply congrArg (fun k => k ≫ (fan P X).snd)
+  apply pullback.hom_ext <;> simp [Category.assoc]
 
 theorem snd'_comp_right (pair : Γ ⟶ P @ X)
     {R f1 f2} (H : IsPullback (P := R) f1 f2 (fst P X pair) P.p) :
