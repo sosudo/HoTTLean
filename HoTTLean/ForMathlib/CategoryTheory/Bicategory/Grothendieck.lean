@@ -217,7 +217,7 @@ def map (α : F ⟶ G) : ∫ F ⥤ ∫ G where
     · simp only [categoryStruct_comp_base, Quiver.Hom.comp_toLoc,
         StrongTrans.naturality_comp_inv_app_assoc, ← Functor.map_comp]
       have := (α.naturality g.base.toLoc).inv.toNatTrans.naturality_assoc
-      simp only [Cat.comp_map] at this
+      simp only [Cat.Hom.comp_map] at this
       simp [this]
 
 @[simp]
