@@ -1321,6 +1321,8 @@ lemma comp_reflCase {Δ} (σ : Δ ⟶ Γ) : reflCase (ym(σ) ≫ ar) = ym(σ) �
     simp
   · simp
 
+-- Keep dependent pullback projections at semireducible transparency.
+set_option backward.isDefEq.respectTransparency false in
 include hrC in
 lemma reflCase_comp_tp : reflCase ar ≫ N.tp =
     ym(ii.reflSubst (ie.equivFst aC)) ≫ motive aC := by
@@ -1332,8 +1334,8 @@ lemma reflCase_comp_tp : reflCase ar ≫ N.tp =
       (M.var (ie.equivFst aC ≫ M.tp)) (by simp)) ≫
       M.disp (ie.equivFst aC ≫ M.tp))
     (ie.toI (ie.equivFst aC)) (UvPoly.Equiv.fst ie.iUvPoly N.Ty aC) ie.iUvPoly.p := by
-    convert (ie.motiveCtx_isPullback' (ie.equivFst aC)).flip
-    simp
+    change IsPullback _ _ (ie.equivFst aC) _
+    simpa only [Functor.map_comp] using (ie.motiveCtx_isPullback' (ie.equivFst aC)).flip
   -- FIXME: `transparency := .default` is like `erw` and should be avoided
   rw! (transparency := .default) [UvPoly.snd'_verticalNatTrans_app
     (R := y(ii.motiveCtx (ie.equivFst aC)))
@@ -1346,12 +1348,13 @@ lemma reflCase_comp_tp : reflCase ar ≫ N.tp =
   congr 1
   apply (M.disp_pullback _).hom_ext <;>
     simp only [reflSubst, substCons_var, substCons_disp_functor_map, substCons_var]
-  · simp [← ie.toI_comp_i1 (ie.equivFst aC), fst_eq_fst ar aC hrC, mkRefl]
+  · conv => lhs; rw [← toI_comp_i1 ie]
+    simp [comparison, mkRefl]
+    exact congrArg (fun f => f ≫ ii.refl) (fst_eq_fst ar aC hrC)
   · apply (M.disp_pullback _).hom_ext
-    · rw! [fst_eq_fst ar aC hrC]
-      slice_lhs 3 4 => rw [← ii.toK_comp_k1]
+    · slice_lhs 3 4 => rw [← ii.toK_comp_k1]
       slice_lhs 2 3 => rw [← ie.toI_comp_i2]
-      simp
+      simp [fst_eq_fst ar aC hrC]
     · simp
 
 def lift : y(Γ) ⟶ (IdElimBase.iFunctor ie).obj N.Tm :=
