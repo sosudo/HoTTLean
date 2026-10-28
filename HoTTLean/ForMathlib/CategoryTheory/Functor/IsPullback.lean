@@ -148,6 +148,8 @@ The universal lift of the chosen pullback `Chosen` commutes with projections.
 theorem fac_right : lift Cn Cw hC ⋙ west = Cw :=
   rfl
 
+-- The projection equations unfold the chosen wide subcategory during rewriting.
+set_option backward.isDefEq.respectTransparency false in
 /--
 Lifts of the chosen pullback `Chosen` are unique.
 -/
@@ -164,12 +166,12 @@ theorem hom_ext {l0 l1 : C ⥤ Chosen east south} (hnorth : l0 ⋙ north = l1 �
     apply (wideSubcategory.faithful _).map_injective
     apply (ObjectProperty.faithful_ι _).map_injective
     apply Prod.hom_ext
-    · convert congr_hom hnorth f
-      simp only [Functor.map_comp, eqToHom_map]
-      simp [north]
-    · convert congr_hom hwest f
-      simp only [Functor.map_comp, eqToHom_map]
-      simp [west]
+    · change (l0 ⋙ north).map f = north.map (eqToHom _ ≫ l1.map f ≫ eqToHom _)
+      rw [Functor.map_comp, Functor.map_comp, eqToHom_map, eqToHom_map]
+      exact congr_hom hnorth f
+    · change (l0 ⋙ west).map f = west.map (eqToHom _ ≫ l1.map f ≫ eqToHom _)
+      rw [Functor.map_comp, Functor.map_comp, eqToHom_map, eqToHom_map]
+      exact congr_hom hwest f
 
 end Chosen
 
