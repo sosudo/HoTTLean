@@ -1325,7 +1325,8 @@ include hrC in
 lemma reflCase_comp_tp : reflCase ar ≫ N.tp =
     ym(ii.reflSubst (ie.equivFst aC)) ≫ motive aC := by
   dsimp [reflCase, motive]
-  rw! [← UvPoly.Equiv.snd'_comp_right, hrC]
+  -- Polynomial functor notation requires default transparency for these rewrites.
+  rw! (transparency := .default) [← UvPoly.Equiv.snd'_comp_right, hrC]
   have H : IsPullback ym(M.disp (ii.mkId
       (ym(M.disp (ie.equivFst aC ≫ M.tp)) ≫ ie.equivFst aC)
       (M.var (ie.equivFst aC ≫ M.tp)) (by simp)) ≫
