@@ -58,7 +58,7 @@ variable {C : Type*} [Category C]
 abbrev pt (x : C) := (fst.obj x).fiber
 
 abbrev point {x y : C} (f : x ⟶ y) :
-    (fst.map f)⟱.obj (pt fst x) ⟶ pt fst y :=
+    (fst.map f)⟱.toFunctor.obj (pt fst x) ⟶ pt fst y :=
   (fst.map f).fiber
 
 variable {A} {fst} {snd}
