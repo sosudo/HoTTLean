@@ -220,11 +220,13 @@ theorem comp_up_inj {C : Type u} [Category.{v} C]
     (h : F ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D) =
       G ⋙ AsSmall.up)
     : F = G := by
-  convert_to F ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D)
-    ⋙ AsSmall.down
-    = G ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D)
-    ⋙ AsSmall.down
-  simp only [← Functor.assoc, h]
+  have h' := congrArg (fun K : C ⥤ AsSmall.{w} D => K ⋙ AsSmall.down) h
+  have h'' : F ⋙ (AsSmall.up ⋙ AsSmall.down) =
+      G ⋙ (AsSmall.up ⋙ AsSmall.down) := by
+    simpa only [← Functor.assoc] using h'
+  have h₀ : AsSmall.up ⋙ AsSmall.down = Functor.id D := rfl
+  rw [h₀, Functor.comp_id] at h''
+  exact h''
 
 theorem comp_down_inj {C : Type u} [Category.{v} C]
   {D : Type u₁} [Category.{v₁} D]
