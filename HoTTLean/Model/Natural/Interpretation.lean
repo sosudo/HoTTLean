@@ -855,13 +855,16 @@ theorem mem_ofTerm_toSb {e l l' hl} (hl' : l' < s.length + 1)
 
 theorem tp_sound {Γ i A l} (H : Lookup Γ i A l) {sΓ} (hΓ : sΓ ∈ I.ofCtx Γ) :
     ∃ llen, ∃ sA ∈ sΓ.tp llen i, sA ∈ I.ofType sΓ l A llen := by
-  induction H generalizing sΓ with (
-    obtain ⟨_, hΓ', _, _, hB, rfl⟩ := I.mem_ofCtx_snoc.1 hΓ
-    simp [UHomSeq.CObj.tp, UHomSeq.ExtSeq.tp, *] at *)
-  | zero => exact I.mem_ofType_wk _ hB
+  induction H generalizing sΓ with
+  | zero =>
+    obtain ⟨_, hΓ', llen, _, hB, rfl⟩ := I.mem_ofCtx_snoc.1 hΓ
+    refine ⟨llen, _, ?_, I.mem_ofType_wk _ hB⟩
+    exact Part.mem_assert rfl (Part.mem_some _)
   | succ _ _ ih =>
-    have ⟨_, _, _, _⟩ := ih hΓ'
-    exact ⟨‹_›, _, ‹_›, I.mem_ofType_wk _ ‹_›⟩
+    obtain ⟨_, hΓ', _, _, hB, rfl⟩ := I.mem_ofCtx_snoc.1 hΓ
+    obtain ⟨llen, sA, hA, hA'⟩ := ih hΓ'
+    refine ⟨llen, _, ?_, I.mem_ofType_wk _ hA'⟩
+    exact Part.mem_bind hA (Part.mem_some _)
 
 theorem var_sound {Γ i A l} (H : Lookup Γ i A l) {sΓ} (hΓ : sΓ ∈ I.ofCtx Γ) :
     ∃ llen, ∃ st ∈ sΓ.var llen i, st ≫ s[l].tp ∈ I.ofType sΓ l A llen := by
