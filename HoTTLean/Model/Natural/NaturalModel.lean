@@ -1190,6 +1190,8 @@ lemma lift_comp_left {Δ} (σ : Δ ⟶ Γ) : i.lift (ym(σ) ≫ a) (ym(ii.motive
     · simp
   · rw [motive_comp_left]
 
+-- Keep the polynomial objects and motive context at the same transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma equivFst_lift_eq : ie.equivFst (i.lift a C r r_tp) = a :=
   calc ie.equivFst (i.lift a C r r_tp)
   _ = ie.equivFst (i.lift a C r r_tp ≫ ie.iFunctor.map N.tp) := by
