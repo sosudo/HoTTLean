@@ -1568,12 +1568,13 @@ lemma mapStrongTrans_map_inversion_fiber {x y} (f : x ⟶ y) (a) :
   rw! (castMode := .all) [h]
   simp [mapStrongTrans_map_fiber B s hs, strongTrans.twoCell_app_inversion]
 
+-- Match bundled groupoid coercions in the dependent fiber projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap_app_inversion {x y} (f : x ⟶ y) (a) :
     lamObjFiberObjCompSigMap.app A (inversion B s hs) f ((A.map (CategoryTheory.inv f)).obj a) ≍
     (strongTrans.twoCell B s hs f).app a := by
   have h := mapStrongTrans_map_inversion_fiber A B s hs f a
-  simp [← heq_eq_eq] at h
-  apply HEq.trans _ h
+  apply HEq.trans _ ((heq_of_eq h).trans (comp_eqToHom_heq ..))
   fapply Functor.Groupoidal.Hom.hext'
   · simp
   · simp only [Functor.map_inv, Functor.comp_obj, mapStrongTrans_obj_base, ι_obj_base, sigma_obj,
@@ -1609,6 +1610,8 @@ lemma whiskerLeftInvLamObjObjSigMap_inversion_app {x y} (f : x ⟶ y) (a) :
     Functor.Groupoidal.forget_obj, Functor.id_obj] at h
   exact (comp_eqToHom_heq ..).trans (lamObjFiberObjCompSigMap_app_inversion ..)
 
+-- Match bundled groupoid coercions in the dependent fiber projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma lamMapFiber_inversion_heq {x y} (f : x ⟶ y) :
     lamMapFiber A (pi.inversion B s hs) f ≍ PGrpd.mapFiber s f := by
   refine HEq.trans ?_ (PGrpd.mapFiber'_heq hs f)
