@@ -840,12 +840,25 @@ lemma strongTrans.naturality_inv_app_base {x y} (f : x ⟶ y) (a) :
   rw [strongTrans.naturality_inv_app, comp_base, base_eqToHom]
   simp
 
+-- Reduce bundled groupoid projections in the dependent fiber equation.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.naturality_inv_app_fiber {x y} (f : x ⟶ y) (a) :
     ((strongTrans.naturality B s hs f).inv.app a).fiber =
-    eqToHom (by simp only [← Functor.comp_obj, naturality_inv_app_base, twoCell_app_base,
-      ← Grpd.comp_eq_comp]; rw! [← Functor.map_comp_assoc, IsIso.hom_inv_id,
-      CategoryTheory.Functor.map_id, Category.id_comp]) ≫
+    eqToHom (by
+      simp only [← Functor.comp_obj, naturality_inv_app_base, twoCell_app_base,
+      ← Grpd.comp_eq_comp]
+      have h : A.map f ≫ A.map (inv f) ≫ app B s hs x ≫ sigmaMap B f =
+          app B s hs x ≫ sigmaMap B f := by
+        rw [← Functor.map_comp_assoc, IsIso.hom_inv_id,
+          CategoryTheory.Functor.map_id, Category.id_comp]
+      apply eq_of_heq
+      simp only [Grpd.map_eqToHom_obj, heq_cast_iff_heq, cast_heq_iff_heq]
+      have hf : ∀ {p q : ∫ (ι A y ⋙ B)}, p = q → p.fiber ≍ q.fiber := by
+        intro p q hpq
+        cases hpq
+        rfl
+      exact (hf (Functor.congr_obj h a)).symm) ≫
     Hom.fiber ((twoCell B s hs f).app ((A.map f).obj a)) := by
   rw! [strongTrans.naturality_inv_app, comp_fiber, fiber_eqToHom, eqToHom_map]
   simp
