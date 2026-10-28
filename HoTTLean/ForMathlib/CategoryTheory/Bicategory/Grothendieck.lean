@@ -211,17 +211,19 @@ def map (α : F ⟶ G) : ∫ F ⥤ ∫ G where
     base := f.1
     fiber := (α.naturality f.1.toLoc).inv.toNatTrans.app a.fiber ≫ (α.app ⟨b.base⟩).toFunctor.map f.2 }
   map_id a := by
-    ext
-    · dsimp
-    · simp [StrongTrans.naturality_id_inv_app, ← Functor.map_comp]
+    set_option backward.isDefEq.respectTransparency false in
+      ext
+      · dsimp
+      · simp [StrongTrans.naturality_id_inv_app, ← Functor.map_comp]
   map_comp {a b c} f g := by
-    ext
-    · dsimp
-    · simp only [categoryStruct_comp_base, Quiver.Hom.comp_toLoc,
+    set_option backward.isDefEq.respectTransparency false in
+      ext
+      · dsimp
+      · simp only [categoryStruct_comp_base, Quiver.Hom.comp_toLoc,
         StrongTrans.naturality_comp_inv_app_assoc, ← Functor.map_comp]
-      have := (α.naturality g.base.toLoc).inv.toNatTrans.naturality_assoc
-      simp only [Cat.Hom.comp_map] at this
-      simp [this]
+        have := (α.naturality g.base.toLoc).inv.toNatTrans.naturality_assoc
+        simp only [Cat.Hom.comp_map] at this
+        simp [this]
 
 @[simp]
 lemma map_id_map {x y : ∫ F} (f : x ⟶ y) : (map (𝟙 F)).map f = f := by
@@ -1309,7 +1311,7 @@ def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
       · simp only [Functor.assoc, functorTo_forget, Functor.id_comp, fib_comp]
       · apply fibObj_fib_obj
       · intro x y f
-        simp only [comp_obj, functorTo_obj_base, comp_map, functorTo_map_base, functorTo_obj_fiber,
+         simp only [comp_obj, functorTo_obj_base, comp_map, functorTo_map_base, functorTo_obj_fiber,
           functorTo_map_fiber, id_obj, ι_obj_base, id_map, ι_map_base, ι_obj_fiber, ι_map_fiber]
         rw! [eqToHom_comp_heq, heq_cast_iff_heq]
         apply fibMap_fib_map
