@@ -226,7 +226,8 @@ lemma conjugatingObjNatTransEquiv'_comp {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶ 
     eqToHom (by simp [Grpd.Functor.iso, ← Grpd.comp_eq_comp]) ≫
     (A.map f1 ⋙ A.map f2).whiskerLeft g ≫
     eqToHom (by simp [Grpd.Functor.iso, ← Grpd.comp_eq_comp]) := by
-  simp [conjugatingObjNatTransEquiv', Grpd.Functor.iso]
+  dsimp only [conjugatingObjNatTransEquiv', Equiv.coe_fn_mk]
+  simp [Grpd.Functor.iso, Grpd.functorIsoOfIso]
   rw! [Functor.map_comp A f1 f2]
   simp
 
