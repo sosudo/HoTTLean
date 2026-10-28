@@ -943,8 +943,7 @@ def equivFst (pair : y(Γ) ⟶ ie.iFunctor.obj X) :
 lemma equivFst_comp_left (pair : y(Γ) ⟶ ie.iFunctor.obj X)
     {Δ} (σ : Δ ⟶ Γ) :
     ie.equivFst (ym(σ) ≫ pair) = ym(σ) ≫ ie.equivFst pair := by
-  dsimp [equivFst]
-  rw [UvPoly.Equiv.fst_comp_left]
+  exact UvPoly.Equiv.fst_comp_left ie.iUvPoly X pair ym(σ)
 
 def equivSnd (pair : y(Γ) ⟶ ie.iFunctor.obj X) :
     y(ii.motiveCtx (equivFst ie pair)) ⟶ X :=
