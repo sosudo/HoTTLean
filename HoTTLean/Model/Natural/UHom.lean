@@ -819,7 +819,8 @@ theorem mkPair_mkFst_mkSnd {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A)
   have := compDomEquiv.eta ((s.Sig_pb ilen jlen).lift p (PtpEquiv.mk _ A B) p_tp)
     (eq := by rw [← mkFst.eq_def, mkFst_tp])
   conv at this => enter [1, 3]; apply s.dependent_eq
-  simp [this]
+  rw [this]
+  exact (s.Sig_pb ilen jlen).lift_fst p (PtpEquiv.mk _ A B) p_tp
 
 end Sigma
 
