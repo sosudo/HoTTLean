@@ -289,8 +289,14 @@ theorem snd_comp_left {A} (eqA : fst M AB = A) {σA} (eqσ : ym(σ) ≫ A = σA)
   have H2 : IsPullback ym(M.disp σA) (M.var σA)
     (ym(σ) ≫ UvPoly.Equiv.fst M.uvPolyTp X AB) M.uvPolyTp.p := by
     rw [← fst, eqA, eqσ]; exact (M.disp_pullback _).flip
-  convert UvPoly.Equiv.snd'_comp_left M.uvPolyTp X AB H1 _ H2
-  apply H1.hom_ext <;> simp [← Functor.map_comp, substWk]
+  have hlift : H1.lift (ym(M.disp σA) ≫ ym(σ)) (M.var σA)
+      (by simpa only [Category.assoc] using H2.w) = ym(M.substWk σ A _ eqσ) := by
+    apply H1.hom_ext
+    · simp only [IsPullback.lift_fst, ← Functor.map_comp, substWk_disp]
+    · simp
+  have h := UvPoly.Equiv.snd'_comp_left M.uvPolyTp X AB H1 ym(σ) H2
+  rw [hlift] at h
+  exact h
 
 theorem mk_comp_left {Δ Γ : Ctx} (M : Universe Ctx) (σ : Δ ⟶ Γ)
     {X : Psh Ctx} (A : y(Γ) ⟶ M.Ty) (σA) (eq : ym(σ) ≫ A = σA) (B : y(M.ext A) ⟶ X) :
