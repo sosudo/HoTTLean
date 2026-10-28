@@ -386,6 +386,8 @@ lemma assocFibMap_assocFib_map (c : Γ) {x y : sigmaObj B c} (f : x ⟶ y) :
   rw! (castMode := .all) [pre_map_base]
   apply Hom.hext' <;> simp
 
+-- The extensionality proof crosses bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFib_forget_comp_forget_obj (x : ∫ B) :
     (assocFib B ((forget ⋙ forget).obj x)).obj
     (assocFibObj x) = x := by
