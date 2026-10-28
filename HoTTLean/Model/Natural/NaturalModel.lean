@@ -1220,6 +1220,8 @@ lemma j_tp : j i a C r r_tp ≫ N.tp = C := by
   rw! [equivFst_lift_eq]
   simp
 
+-- Unfold dependent polynomial projections consistently while rewriting the lift.
+set_option backward.isDefEq.respectTransparency false in
 lemma comp_j : ym(ii.motiveSubst σ _) ≫ j i a C r r_tp =
     j i (ym(σ) ≫ a) (ym(ii.motiveSubst σ _) ≫ C) (ym(σ) ≫ r) (by
       simp [r_tp, IdIntro.comp_reflSubst'_assoc]) := by
