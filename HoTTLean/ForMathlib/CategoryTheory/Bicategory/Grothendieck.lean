@@ -840,27 +840,27 @@ variable (G : C ⥤ Type w)
 /-- Auxiliary definition for `grothendieckTypeToCat`, to speed up elaboration. -/
 @[simps!]
 def grothendieckTypeToCatFunctor : ∫(G ⋙ typeToCat) ⥤ G.Elements where
-  obj X := ⟨X.1, X.2.as⟩
-  map f := ⟨f.1, f.2.1.1⟩
+  obj X := ⟨X.fiber.as⟩
+  map f := ⟨f.base, f.fiber.eq⟩
 
 /-- Auxiliary definition for `grothendieckTypeToCat`, to speed up elaboration. -/
 def grothendieckTypeToCatInverse : G.Elements ⥤ ∫(G ⋙ typeToCat) where
-  obj X := mk X.1 ⟨X.2⟩
-  map f := Hom.mk f.1 ⟨⟨f.2⟩⟩
+  obj X := mk X.obj ⟨X.val⟩
+  map f := Hom.mk f.hom ⟨f.map_val⟩
 
 @[simp]
 lemma grothendieckTypeToCatInverse_obj_base (X : G.Elements) :
-    ((grothendieckTypeToCatInverse G).obj X).base = X.1 :=
+    ((grothendieckTypeToCatInverse G).obj X).base = X.obj :=
   rfl
 
 @[simp]
 lemma grothendieckTypeToCatInverse_obj_fiber_as (X : G.Elements) :
-    ((grothendieckTypeToCatInverse G).obj X).fiber.as = X.2 :=
+    ((grothendieckTypeToCatInverse G).obj X).fiber.as = X.val :=
   rfl
 
 @[simp]
 lemma grothendieckTypeToCatInverse_map_base {X Y : G.Elements} (f : X ⟶ Y) :
-    ((grothendieckTypeToCatInverse G).map f).base = f.1 :=
+    ((grothendieckTypeToCatInverse G).map f).base = f.hom :=
   rfl
 
 /-- The Grothendieck construction applied to a functor to `Type`
