@@ -1151,6 +1151,8 @@ theorem EqTmIH.fst_snd_pair {Γ A B t u l l'} :
        ⟨_, hΓ, _, _, I.mem_ofType_toSb _ ht ttp hB, _,
         I.mem_ofTerm_snd.2 ⟨_, _, hA, _, hB, _, hp, tp, (mkSnd_mkPair ..).symm⟩, hu, utp⟩⟩
 
+-- Keep the semantic context projections transparent in this dependent proof.
+set_option backward.isDefEq.respectTransparency false in
 theorem EqTmIH.idRec_refl {Γ A M t r l l'} :
     I.WfTmIH Γ l A t →
     I.WfTpIH ((.Id l (.subst .wk A) (.subst .wk t) (.bvar 0), l) :: (A, l) :: Γ) l' M →
@@ -1178,6 +1180,8 @@ theorem EqTmIH.idRec_refl {Γ A M t r l l'} :
     ⟨_, hΓ, _, _, sM, _, ir, hr, sr⟩
   simp [Beq, comp_mkId, sAeq]
 
+-- Keep the semantic context projections transparent in this dependent proof.
+set_option backward.isDefEq.respectTransparency false in
 theorem EqTmIH.lam_app {Γ A B f l l'} :
     I.WfTmIH Γ (max l l') (.pi l l' A B) f →
     I.EqTmIH Γ (max l l') (.pi l l' A B) f
@@ -1193,6 +1197,8 @@ theorem EqTmIH.lam_app {Γ A B f l l'} :
       ⟨_, hΓ, _, _, hF, _, hf, hl, ftp⟩
     simp [ftp, comp_mkPi]
 
+-- Keep the semantic context projections transparent in this dependent proof.
+set_option backward.isDefEq.respectTransparency false in
 theorem EqTmIH.pair_fst_snd {Γ A B p l l'} :
     I.WfTmIH Γ (max l l') (Expr.sigma l l' A B) p →
     I.EqTmIH Γ (max l l') (Expr.sigma l l' A B) p
