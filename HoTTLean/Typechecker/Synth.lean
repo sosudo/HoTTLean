@@ -72,8 +72,11 @@ partial def lookupAxiom (E : Q(Axioms Lean.Name)) (c : Q(Lean.Name)) : Lean.Meta
         {Lean.indentD "="}\
           {Lean.indentExpr c |>.nest 2}"
   | ~q(CheckedAx.snocAxioms _) =>
-    let E ← Lean.Meta.unfoldDefinition E
-    lookupAxiom E c
+    let E' : Q(Axioms Lean.Name) ← Lean.Meta.unfoldDefinition E
+    have : $E' =Q $E := .unsafeIntro
+    match ← lookupAxiom E' c with
+    | .inl ⟨A, l, h⟩ => return .inl ⟨A, l, q($h)⟩
+    | .inr h => return .inr q($h)
   | _ => throwError "unsupported axiom environment{Lean.indentExpr E}"
 
 partial def checkAxiomsLe (E E' : Q(Axioms Lean.Name)) : Lean.MetaM Q($E ≤ $E') := do
