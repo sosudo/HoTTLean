@@ -35,8 +35,13 @@ theorem Limits.PullbackCone.IsLimit.comp_lift {C : Type*} [Category C]
     (σ : W' ⟶ W) (ht : Limits.IsLimit t) (h : W ⟶ X) (k : W ⟶ Y) (w : h ≫ f = k ≫ g) :
     σ ≫ ht.lift (PullbackCone.mk h k w) =
       ht.lift (PullbackCone.mk (σ ≫ h) (σ ≫ k) (by simp [w])) := by
-  refine ht.hom_ext fun j => ?_
-  rcases j with _ | _ | _ <;> simp
+  apply PullbackCone.IsLimit.hom_ext ht
+  · exact (Category.assoc _ _ _).trans
+      ((congrArg (σ ≫ ·) (ht.fac _ WalkingCospan.left)).trans
+        (ht.fac (PullbackCone.mk (σ ≫ h) (σ ≫ k) (by simp [w])) WalkingCospan.left).symm)
+  · exact (Category.assoc _ _ _).trans
+      ((congrArg (σ ≫ ·) (ht.fac _ WalkingCospan.right)).trans
+        (ht.fac (PullbackCone.mk (σ ≫ h) (σ ≫ k) (by simp [w])) WalkingCospan.right).symm)
 
 end CategoryTheory
 
