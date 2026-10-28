@@ -907,6 +907,8 @@ def mkIdRec {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty)
     apply (s[i].disp_pullback _).hom_ext <;> simp [IdIntro.reflSubst, mkRefl, substWk, sec]
   · simp [h_tp, mkId, IdIntro.mkId]
 
+-- Unfold motiveCtx when checking dependent substitution equations.
+set_option backward.isDefEq.respectTransparency false in
 theorem comp_mkIdRec {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     (A : y(Γ) ⟶ s[i].Ty) (σA) (σA_eq : ym(σ) ≫ A = σA)
     (t t_tp B B_eq σB) (σB_eq : ym(s[i].substWk σ _ _ σA_eq) ≫ B = σB)
@@ -952,6 +954,8 @@ theorem comp_mkIdRec {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     · simp [substWk_disp_functor_map_assoc]
     · simp [substWk_disp_functor_map, substWk_disp_functor_map_assoc]
 
+-- Unfold motiveCtx when checking dependent substitution equations.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem mkIdRec_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty)
     (t t_tp B B_eq M) (r : y(Γ) ⟶ s[j].Tm) (r_tp u u_tp h h_tp) :
