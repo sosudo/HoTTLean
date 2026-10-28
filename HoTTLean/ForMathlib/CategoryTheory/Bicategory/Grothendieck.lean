@@ -203,10 +203,10 @@ induces a functor `Grothendieck.map : ∫ F ⥤ ∫ G`.
 def map (α : F ⟶ G) : ∫ F ⥤ ∫ G where
   obj a := {
     base := a.base
-    fiber := (α.app ⟨a.base⟩).obj a.fiber }
+    fiber := (α.app ⟨a.base⟩).toFunctor.obj a.fiber }
   map {a b} f := {
     base := f.1
-    fiber := (α.naturality f.1.toLoc).inv.app a.fiber ≫ (α.app ⟨b.base⟩).map f.2 }
+    fiber := (α.naturality f.1.toLoc).inv.toNatTrans.app a.fiber ≫ (α.app ⟨b.base⟩).toFunctor.map f.2 }
   map_id a := by
     ext
     · dsimp
@@ -216,7 +216,7 @@ def map (α : F ⟶ G) : ∫ F ⥤ ∫ G where
     · dsimp
     · simp only [categoryStruct_comp_base, Quiver.Hom.comp_toLoc,
         StrongTrans.naturality_comp_inv_app_assoc, ← Functor.map_comp]
-      have := (α.naturality g.base.toLoc).inv.naturality_assoc
+      have := (α.naturality g.base.toLoc).inv.toNatTrans.naturality_assoc
       simp only [Cat.comp_map] at this
       simp [this]
 
