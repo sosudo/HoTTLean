@@ -1256,6 +1256,8 @@ lemma asFunctorFromHom_comp (c₁ c₂ c₃ : C) (f : c₁ ⟶ c₂) (g: c₂ �
   ext p
   simp [asFunctorFromHom, eqToHom_map, ιNatTrans_comp_app]
 
+-- Normalize dependent wrapped Cat projections in the reconstruction proof.
+set_option backward.isDefEq.respectTransparency false in
 theorem asFunctorFrom : Grothendieck.functorFrom (asFunctorFromFib K) (asFunctorFromHom K)
     (asFunctorFromHom_id K) (asFunctorFromHom_comp K) = K := by
   fapply CategoryTheory.Functor.ext
@@ -1265,10 +1267,12 @@ theorem asFunctorFrom : Grothendieck.functorFrom (asFunctorFromFib K) (asFunctor
     simp only [functorFrom_obj, asFunctorFromFib, Functor.comp_obj, functorFrom_map,
       asFunctorFromHom, Functor.whiskerRight_app, Functor.comp_map, ← Functor.map_comp,
       eqToHom_refl, Category.comp_id, Category.id_comp]
-    congr
+    change K.map ((ιNatTrans f.base).app x.fiber ≫ (ι F y.base).map f.fiber) = K.map f
+    apply congrArg K.map
     fapply Hom.ext
-    · simp
-    · simp
+    · change f.base ≫ 𝟙 y.base = f.base
+      exact Category.comp_id _
+    · simp [ι, ιNatTrans, Functor.map_id]
 
 section
 
