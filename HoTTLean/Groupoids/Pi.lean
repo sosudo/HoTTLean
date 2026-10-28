@@ -764,11 +764,14 @@ lemma strongTrans.twoCell_app_base {x y : Γ} (g : x ⟶ y) (a) :
     Category.id_comp, eqToHom_trans, eqToHom_app] at this
   rw [twoCell, this]
 
+-- Map the section transport through its typed inclusion into the functor category.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.twoCell_id (x) :
     twoCell B s hs (𝟙 x) = eqToHom (by simp) := by
-  simp [twoCell]
-  rfl
+  have h := congrArg ((Section.ι ((sigma.fstNatTrans A B).app x)).map)
+    (PGrpd.mapFiber'_id hs (x := x))
+  exact h.trans (eqToHom_map _ _)
 
 set_option maxHeartbeats 400000 in
 lemma strongTrans.pi_map_map {x y z} (f : x ⟶ y) (g : y ⟶ z) :
@@ -778,6 +781,8 @@ lemma strongTrans.pi_map_map {x y z} (f : x ⟶ y) (g : y ⟶ z) :
   Section.functor_map_map (A := A)
     (B := sigma A B) (sigma.fstNatTrans A B) g (PGrpd.mapFiber' hs f)
 
+-- Use the same typed inclusion for the composite section transport.
+set_option backward.isDefEq.respectTransparency false in
 set_option maxHeartbeats 300000 in
 /--
 ```
@@ -795,10 +800,14 @@ lemma strongTrans.twoCell_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     Functor.whiskerLeft (A.map (CategoryTheory.inv g))
       (Functor.whiskerRight (twoCell B s hs f) (sigmaMap B g)) ≫
     twoCell B s hs g := by
-  conv => left; simp only [twoCell, sigma_obj, pi_obj_α, Set.mem_setOf_eq,
-    PGrpd.mapFiber'_comp' hs f g, MorphismProperty.WideSubcategory.comp_def,
-    MorphismProperty.WideSubcategory.coe_eqToHom, pi_map_map]
-  rfl
+  have h := congrArg ((Section.ι ((sigma.fstNatTrans A B).app z)).map)
+    (PGrpd.mapFiber'_comp' hs f g)
+  simp only [Functor.map_comp, eqToHom_map] at h
+  change twoCell B s hs (f ≫ g) =
+    eqToHom _ ≫ (((pi A B).map g).map (PGrpd.mapFiber' hs f)).1.hom ≫
+      twoCell B s hs g at h
+  rw [strongTrans.pi_map_map] at h
+  exact h
 
 def strongTrans.naturality {x y : Γ} (g : x ⟶ y) :
     A.map g ⋙ strongTrans.app B s hs y ≅ strongTrans.app B s hs x ⋙ sigmaMap B g :=
