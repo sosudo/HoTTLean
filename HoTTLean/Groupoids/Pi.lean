@@ -613,20 +613,24 @@ def sigma.fstNatTrans : sigma A B ⟶ A where
 lemma sigma.fstNatTrans_app (x) : (fstNatTrans A B).app x = Functor.Groupoidal.forget :=
   rfl
 
+-- The associator projections cross bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma sigma.map_fstNatTrans_eq : map (fstNatTrans A B) = (assoc B).inv ⋙ forget := by
   apply Functor.Groupoidal.FunctorTo.hext
   · simp [Functor.assoc, assoc_inv_comp_forget_comp_forget, map_forget]
   · intro x
     simp only [fstNatTrans, map_obj_fiber, sigma_obj, Functor.Groupoidal.forget_obj, assoc,
-      Functor.Iso.symm_inv, Functor.comp_obj, functorIsoFrom_hom_obj, assocFib, heq_eq_eq]
+      Functor.Iso.symm_inv, Functor.comp_obj, functorIsoFrom,
+      Functor.Grothendieck.functorIsoFrom, Functor.Grothendieck.functorFrom, assocFib, heq_eq_eq]
     rw! (castMode := .all) [pre_obj_base]
     simp
     rfl
   · intro x y f
     simp only [fstNatTrans, map_map_fiber, sigma_obj, Grpd.comp_eq_comp, Functor.comp_obj,
       Functor.Groupoidal.forget_obj, sigma_map, sigmaMap_obj_base, eqToHom_refl, forget_map,
-      Category.id_comp, assoc, Functor.Iso.symm_inv, functorIsoFrom_hom_obj, assocFib,
-      Functor.comp_map, functorIsoFrom_hom_map, comp_base, Functor.Groupoidal.comp_fiber,
+      Category.id_comp, assoc, Functor.Iso.symm_inv, functorIsoFrom,
+      Functor.Grothendieck.functorIsoFrom, Functor.Grothendieck.functorFrom, assocFib,
+      Functor.comp_map, comp_base, Functor.Groupoidal.comp_fiber,
       heq_eqToHom_comp_iff]
     rw! [pre_map_base]
     simp only [ι_map_base, ι_obj_base, assocHom, assocFib, assocIso, ι_map_fiber, ι_obj_fiber]
