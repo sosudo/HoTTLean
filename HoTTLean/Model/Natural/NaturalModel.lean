@@ -1289,11 +1289,14 @@ variable {Γ} (ar : y(Γ) ⟶ (UvPoly.id M.Tm).functor.obj N.Tm)
 
 include hrC in
 lemma fst_eq_fst : UvPoly.Equiv.fst _ _ ar = ie.equivFst aC :=
+  -- The polynomial functor notation requires default transparency for these rewrites.
   calc _
   _ = UvPoly.Equiv.fst _ _ (ar ≫ (UvPoly.id M.Tm).functor.map N.tp) := by
-    rw [UvPoly.Equiv.fst_comp_right]
+    rw! (transparency := .default) [UvPoly.Equiv.fst_comp_right]
+    rfl
   _ = UvPoly.Equiv.fst _ _  (aC ≫ (IdElimBase.verticalNatTrans ie).app N.Ty) := by
-    rw [hrC]
+    rw! (transparency := .default) [hrC]
+    rfl
   _ = _ := by
     rw [ie.equivFst_verticalNatTrans_app]
 
