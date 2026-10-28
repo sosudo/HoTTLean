@@ -737,8 +737,7 @@ lemma strongTrans.app_map_base (y) {a a'} (f : a ⟶ a') :
     ((strongTrans.app B s hs y).map f).base = eqToHom (by simp) ≫
     f ≫ eqToHom (by simp) := by
   have := Functor.congr_hom (PGrpd.objFiber' hs y).obj.property f
-  simp at this
-  simp [strongTrans.app, this]
+  exact this
 
 def strongTrans.twoCell {x y : Γ} (g : x ⟶ y) :
     A.map (CategoryTheory.inv g) ⋙ strongTrans.app B s hs x ⋙ sigmaMap B g ⟶
