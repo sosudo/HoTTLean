@@ -106,9 +106,9 @@ namespace CategoryTheory.Cat
 
 /-- This is the proof of equality used in the eqToHom in `Cat.eqToHom_hom` -/
 theorem eqToHom_hom_aux {C1 C2 : Cat.{v,u}} (x y: C1) (eq : C1 = C2) :
-    (x ⟶ y) = ((eqToHom eq).obj x ⟶ (eqToHom eq).obj y) := by
+    (x ⟶ y) = ((eqToHom eq).toFunctor.obj x ⟶ (eqToHom eq).toFunctor.obj y) := by
   cases eq
-  simp[CategoryStruct.id]
+  rfl
 
 /-- This is the turns the hom part of eqToHom functors into a cast-/
 theorem eqToHom_hom {C1 C2 : Cat.{v,u}} {x y: C1} (f : x ⟶ y) (eq : C1 = C2) :
