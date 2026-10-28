@@ -582,8 +582,8 @@ def compDomEquiv {Γ E B D A : 𝒞} {P : UvPoly E B} {Q : UvPoly D A} :
           apply Eq.congr_right
           congr 1
           apply pullback.hom_ext
-          · simp [pullbackHomEquiv]
-          · simp [pullbackHomEquiv]))
+          · exact (pullback.lift_fst (f := P.fstProj A) (g := P.p) _ _ _).symm
+          · exact (pullback.lift_snd (f := P.fstProj A) (g := P.p) _ _ _).symm))
   _ ≃ _ := {
       -- TODO should be general tactic for this?
       toFun x := ⟨ x.2.1.1, x.2.1.2.1 , x.1 , x.2.1.2.2, x.2.2 ⟩
@@ -599,9 +599,16 @@ def compP {E B D A : C} (P : UvPoly E B) (Q : UvPoly D A) : compDom P Q ⟶ P @ 
     (β : Γ ⟶ D) (w : AB ≫ P.fstProj A = α ≫ P.p)
     (h : β ≫ Q.p = pullback.lift AB α w ≫ (PartialProduct.fan P A).snd) :
     compDomEquiv.symm ⟨AB, α, β, w, h⟩ ≫ P.compP Q = AB := by
-   simp [compDomEquiv, compP, Equiv.psigmaCongrProp, Equiv.sigmaCongrRight_symm,
-    Equiv.coe_fn_symm_mk, pullbackHomEquiv]
+  change pullback.lift β (pullback.lift AB α w) h ≫
+    (pullback.snd Q.p (fan P A).snd ≫ pullback.fst (P.fstProj A) P.p) = AB
+  exact (Category.assoc _ _ _).symm.trans
+    ((congrArg (fun k => k ≫ pullback.fst (P.fstProj A) P.p)
+      (pullback.lift_snd (f := Q.p) (g := (fan P A).snd) β
+        (pullback.lift AB α w) h)).trans
+      (pullback.lift_fst (f := P.fstProj A) (g := P.p) AB α w))
 
+-- Reduce the polynomial functor objects when elaborating the pullback squares.
+set_option backward.isDefEq.respectTransparency false in
 def compDomMap {E B D A E' B' D' A' : 𝒞} {P : UvPoly E B} {Q : UvPoly D A}
     {P' : UvPoly E' B'} {Q' : UvPoly D' A'}
     (e : E ⟶ E') (d : D ⟶ D') (b : B ⟶ B') (a : A ⟶ A')
@@ -612,6 +619,8 @@ def compDomMap {E B D A E' B' D' A' : 𝒞} {P : UvPoly E B} {Q : UvPoly D A}
   let r := pullback.map (P.fstProj A) P.p (P'.fstProj A') P'.p pa e b (by simp [pa, p]) hp.w
   refine pullback.map _ _ _ _ d r a hq.w (fan_snd_map _ _ _ hp).symm
 
+-- Reduce the same functor objects in the pasted pullback squares.
+set_option backward.isDefEq.respectTransparency false in
 theorem compDomMap_isPullback {E B D A E' B' D' A' : 𝒞} {P : UvPoly E B} {Q : UvPoly D A}
     {P' : UvPoly E' B'} {Q' : UvPoly D' A'}
     (e : E ⟶ E') (d : D ⟶ D') (b : B ⟶ B') (a : A ⟶ A')
@@ -626,7 +635,7 @@ theorem compDomMap_isPullback {E B D A E' B' D' A' : 𝒞} {P : UvPoly E B} {Q :
   · refine hq.flip.back_face_of_comm_cube _ _ _ _ _ _ _ _ _ _ _ _ (by simp [compDomMap]) ?_ ?_
       (.of_hasPullback ..) (.of_hasPullback ..)
     · exact ⟨fan_snd_map _ _ a hp⟩
-    · constructor; simp [compDomMap]; ext <;> simp [p]
+    · constructor; simp [compDomMap]; ext <;> simp [p, fan]
   · exact hp.flip.back_face_of_comm_cube _ _ _ _ _ _ _ _ _ _ _ _
       (by simp) (by simp [p]) (by simp) (.flip (.of_hasPullback ..)) (.flip (.of_hasPullback ..))
 
