@@ -1134,23 +1134,27 @@ section ιNatTrans
 
 variable {X Y : C} (f : X ⟶ Y)
 
+-- Unfold bundled Cat morphisms locally when simplifying dependent transports.
+set_option backward.isDefEq.respectTransparency false in
 /-- Every morphism `f : X ⟶ Y` in the base category induces a natural transformation from the fiber
 inclusion `ι F X` to the composition `F.map f ⋙ ι F Y`. -/
 @[simps!]
-def ιNatTrans : ι F X ⟶ F.map f ⋙ ι F Y where
+def ιNatTrans : ι F X ⟶ (F.map f).toFunctor ⋙ ι F Y where
   app _ := Hom.mk f (𝟙 _)
-  naturality _ _ _ := Hom.ext _ _ (by simp) (by simp [eqToHom_map])
+  naturality _ _ _ := Hom.ext _ _ (by exact (Category.id_comp f).trans (Category.comp_id f).symm) (by simp [eqToHom_map])
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem ιNatTrans_id_app {X : C} {a : F.obj X} :
     (@ιNatTrans _ _ F _ _ (𝟙 X)).app a = eqToHom (by simp) :=
-  Hom.ext _ _ (by simp) (by simp)
+  Hom.ext _ _ (by simp [ιNatTrans, ι_obj_base]) (by simp [ι, ιNatTrans])
 
+set_option backward.isDefEq.respectTransparency false in
 lemma ιNatTrans_comp_app {X Y Z : C} {f : X ⟶ Y} {g : Y ⟶ Z} {a} :
     (@ιNatTrans _ _ F _ _ (f ≫ g)).app a =
     (@ιNatTrans _ _ F _ _ f).app a ≫
-    (@ιNatTrans _ _ F _ _ g).app ((F.map f).obj a) ≫ eqToHom (by simp) :=
-  Hom.ext _ _ (by simp) (by simp)
+    (@ιNatTrans _ _ F _ _ g).app ((F.map f).toFunctor.obj a) ≫ eqToHom (by simp) :=
+  Hom.ext _ _ (by simp) (by simp [ιNatTrans])
 
 end ιNatTrans
 
