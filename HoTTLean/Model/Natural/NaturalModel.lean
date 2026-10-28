@@ -301,13 +301,14 @@ theorem snd_comp_left {A} (eqA : fst M AB = A) {σA} (eqσ : ym(σ) ≫ A = σA)
 theorem mk_comp_left {Δ Γ : Ctx} (M : Universe Ctx) (σ : Δ ⟶ Γ)
     {X : Psh Ctx} (A : y(Γ) ⟶ M.Ty) (σA) (eq : ym(σ) ≫ A = σA) (B : y(M.ext A) ⟶ X) :
     ym(σ) ≫ PtpEquiv.mk M A B = PtpEquiv.mk M σA (ym(M.substWk σ A _ eq) ≫ B) := by
-  dsimp [PtpEquiv.mk]
-  have h := UvPoly.Equiv.mk'_comp_left M.uvPolyTp X A (M.disp_pullback A).flip B ym(σ)
-    σA eq (M.disp_pullback σA).flip
-  convert h
-  apply (M.disp_pullback _).hom_ext
-  · simp
-  · simp [← Functor.map_comp, substWk_disp]
+  apply UvPoly.Equiv.ext' M.uvPolyTp X
+    (R := y(M.ext σA)) (f := ym(M.disp σA)) (g := M.var σA)
+    (by rw [← fst, fst_comp_left, fst_mk, eq]; exact (M.disp_pullback σA).flip)
+  · change snd M (ym(σ) ≫ mk M A B) σA (by rw [fst_comp_left, fst_mk, eq]) =
+      snd M (mk M σA _) σA (fst_mk ..)
+    rw [snd_comp_left M (fst_mk M A B) eq, snd_mk, snd_mk]
+  · change fst M (ym(σ) ≫ mk M A B) = fst M (mk M σA _)
+    rw [fst_comp_left, fst_mk, fst_mk, eq]
 
 theorem mk_comp_right {Γ : Ctx} (M : Universe Ctx)
     {X Y : Psh Ctx} (σ : X ⟶ Y) (A : y(Γ) ⟶ M.Ty) (B : y(M.ext A) ⟶ X) :
