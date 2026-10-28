@@ -21,8 +21,8 @@ namespace CategoryTheory.PGrpd
 def pGrpdToGroupoidalAsSmallFunctor : PGrpd.{v, v} ⥤
     ∫(Grpd.asSmallFunctor.{w, v, v}) :=
   Grothendieck.functorTo PGrpd.forgetToGrpd
-  (fun x => AsSmall.up.obj.{v, v, w} x.fiber)
-  (fun f => AsSmall.up.map f.fiber)
+  (fun x => ⟨x.fiber⟩)
+  (fun f => ⟨f.fiber⟩)
   (by aesop_cat)
   (by aesop_cat)
 
