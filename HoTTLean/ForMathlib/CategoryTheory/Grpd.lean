@@ -238,8 +238,8 @@ def mkIso' {Δ Γ : Type u} [Groupoid.{v} Δ] [Groupoid.{v} Γ] (F : Δ ≅≅ �
     Grpd.of Δ ≅ Grpd.of Γ where
   hom := F.hom
   inv := F.inv
-  hom_inv_id := by simp
-  inv_hom_id := by simp
+  hom_inv_id := F.hom_inv_id
+  inv_hom_id := F.inv_hom_id
 
 open MonoidalCategory
 
