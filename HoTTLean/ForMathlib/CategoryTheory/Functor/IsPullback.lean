@@ -159,7 +159,7 @@ theorem hom_ext {l0 l1 : C ⥤ Chosen east south} (hnorth : l0 ⋙ north = l1 �
   · intro x y f
     apply (wideSubcategory.faithful _).map_injective
     apply (ObjectProperty.faithful_ι _).map_injective
-    apply prod.hom_ext
+    apply Prod.hom_ext
     · convert congr_hom hnorth f
       simp only [Functor.map_comp, eqToHom_map]
       simp [north]
