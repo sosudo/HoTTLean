@@ -356,8 +356,10 @@ theorem fst_comp_right (pair : Γ ⟶ P @ X) : fst P Y (pair ≫ P.functor.map f
   exact (Category.assoc pair (P.functor.map f) (P.fstProj Y)).trans
     (congrArg (fun k => pair ≫ k) (UvPoly.map_fstProj P f))
 
+-- Simplification must see the apex of the polynomial fan.
+set_option backward.isDefEq.respectTransparency false in
 lemma snd'_eq (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (fst P X pair) P.p) :
-    snd' P X pair H = pullback.lift (f ≫ pair) g (by simpa using H.w) ≫ (fan P X).snd := by
+    snd' P X pair H = pullback.lift (f ≫ pair) g (by simpa only [fst_eq, fan_fst, Category.assoc] using H.w) ≫ (fan P X).snd := by
   simp [snd', snd]
   simp only [← Category.assoc]; congr! 2
   ext <;> simp
