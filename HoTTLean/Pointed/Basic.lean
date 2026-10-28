@@ -1,4 +1,4 @@
-import Mathlib.CategoryTheory.Category.Grpd
+import Mathlib.CategoryTheory.Groupoid.Grpd.Basic
 import HoTTLean.ForMathlib
 import HoTTLean.Grothendieck.Groupoidal.Basic
 import HoTTLean.ForMathlib.CategoryTheory.Functor.IsPullback
