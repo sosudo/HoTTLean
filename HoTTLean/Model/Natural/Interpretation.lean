@@ -554,6 +554,18 @@ theorem mem_ofTerm_idRec {Γ l i j t M r u h} {llen : l < s.length + 1} {x} :
     ∃ h_tp : h' ≫ s[i].tp = s.mkId ilen A' t' u' t_tp u_tp,
     x = s.mkIdRec ilen llen A' t' t_tp B' B_eq M' r' r_tp u' u_tp h' h_tp := by
   dsimp only [ofTerm]; simp_part; simp only [exists_prop_eq']
+  apply exists_congr
+  intro ilen
+  apply exists_congr
+  intro t'
+  apply and_congr_right
+  intro ht
+  constructor
+  · intro h
+    exact ⟨_, rfl, h⟩
+  · rintro ⟨B', B_eq, h⟩
+    subst B'
+    exact h
 
 @[simp]
 theorem mem_ofTerm_code {Γ l t} {llen : l < s.length + 1} {x} :
