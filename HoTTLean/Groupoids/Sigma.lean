@@ -358,6 +358,8 @@ lemma assocFibMap_comp {x y z : ∫ B} (f : x ⟶ y) (g : y ⟶ z) :
     simp [← heq_eq_eq]
     rfl
 
+-- The functor associativity rewrites cross the bundled Grpd coercion.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFib_comp_forget (c : Γ) : assocFib B c ⋙ forget ⋙
     forget = ι (sigma A B) c ⋙ forget := by
   dsimp [assocFib]
