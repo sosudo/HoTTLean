@@ -26,8 +26,7 @@ lemma functor_obj_fiberInclusion_obj (a : Fiber p S) :
 lemma functor_map_fiberInclusion_map {a b : Fiber p S}
     (f : a ⟶ b) :
     p.map (Fiber.fiberInclusion.map f) = eqToHom (by simp) := by
-  have H := f.2
-  simpa using IsHomLift.fac' p (𝟙 S) f.1
+  simp [IsHomLift.fac' p (𝟙 S) (Fiber.fiberInclusion.map f)]
 
 lemma hext {S'} (hS : S' ≍ S) {a : Fiber p S}
     {a' : Fiber p S'} (h : Fiber.fiberInclusion.obj a ≍ Fiber.fiberInclusion.obj a') : a ≍ a' := by
