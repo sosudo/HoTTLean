@@ -259,13 +259,17 @@ lemma assocIso_hom_app_fiber {x y} (f : x ⟶ y) (p) :
   simp [assocIso, preNatIso_congr B (ιNatIso_id A x), preNatIso_eqToIso]
   apply eqToIso_trans
 
+-- Let projection simp lemmas unfold the bundled groupoid in this proof.
+set_option backward.isDefEq.respectTransparency false in
 theorem assocIso_comp {x y z : Γ} (f : x ⟶ y) (g : y ⟶ z) : assocIso B (f ≫ g) =
     assocIso B f ≪≫ Functor.isoWhiskerLeft (sigmaMap B f) (assocIso B g)
-    ≪≫ eqToIso (by simp [sigmaMap_comp, Functor.assoc]) := by
-  simp only [assocFib, sigmaMap, assocIso, preNatIso_congr B (ιNatIso_comp A f g), Iso.trans_hom,
-    Functor.isoWhiskerLeft_hom, eqToIso.hom, pre_comp, preNatIso_comp, preNatIso_eqToIso,
-    isoWhiskerLeft_eqToIso, eqToIso_trans, Functor.isoWhiskerLeft_trans, Iso.trans_assoc]
-  rfl
+    ≪≫ eqToIso (by simp only [sigmaMap_comp]; exact (Functor.assoc _ _ _).symm) := by
+  ext p
+  fapply Hom.ext
+  · simp [assocIso, ιNatIso_comp]
+  · simp only [assocIso, Iso.trans_hom, eqToIso.hom, NatTrans.comp_app]
+    rw! [eqToHom_app]
+    simp
 
 abbrev assocHom {x y : Γ} (f : x ⟶ y) :
     assocFib B x ⟶ sigmaMap B f ⋙ assocFib B y :=
