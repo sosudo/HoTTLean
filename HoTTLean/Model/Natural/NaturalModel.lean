@@ -260,13 +260,12 @@ def mk (A : y(Γ) ⟶ M.Ty) (B : y(M.ext A) ⟶ X) : y(Γ) ⟶ M.Ptp.obj X :=
 @[simp]
 lemma fst_mk (A : y(Γ) ⟶ M.Ty) (B : y(M.ext A) ⟶ X) :
     fst M (mk M A B) = A := by
-  simp [fst, mk]
+  exact UvPoly.Equiv.fst_mk' M.uvPolyTp X A (M.disp_pullback A).flip B
 
 @[simp]
 lemma snd_mk (A : y(Γ) ⟶ M.Ty) (B : y(M.ext A) ⟶ X) :
     snd M (mk M A B) _ (fst_mk ..) = B := by
-  dsimp only [snd, mk]
-  rw! [UvPoly.Equiv.snd'_mk']
+  exact UvPoly.Equiv.snd'_mk' M.uvPolyTp X A (M.disp_pullback A).flip B
 
 section
 variable {Δ : Ctx} {σ : Δ ⟶ Γ} {AB : y(Γ) ⟶ M.Ptp.obj X}
@@ -326,7 +325,7 @@ end PtpEquiv
 theorem PtpEquiv.mk_map {Γ : Ctx} {X Y : Psh Ctx}
     (A : y(Γ) ⟶ M.Ty) (x : y(M.ext A) ⟶ X) (α : X ⟶ Y) :
     mk M A x ≫ M.Ptp.map α = mk M A (x ≫ α) := by
-  simp [mk, Ptp, UvPoly.Equiv.mk'_comp_right]
+  exact PtpEquiv.mk_comp_right M α A x
 
 /-! ## Polynomial composition `M.tp ▸ N.tp` -/
 
