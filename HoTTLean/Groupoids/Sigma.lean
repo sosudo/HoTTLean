@@ -66,6 +66,8 @@ theorem sigmaMap_map_fiber_aux {a b : sigmaObj B x} {p : a ⟶ b} :
   exact congrArg (fun k => (B.map k).obj a.fiber)
     ((ιNatTrans f).naturality p.base).symm
 
+-- Let the projection lemmas unfold the bundled groupoid in this proof.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem sigmaMap_map_fiber {a b : sigmaObj B x} {p : a ⟶ b} :
     ((sigmaMap B f).map p).fiber =
     eqToHom (sigmaMap_map_fiber_aux B f) ≫ (B.map ((ιNatTrans f).app (base b))).map p.fiber := by
