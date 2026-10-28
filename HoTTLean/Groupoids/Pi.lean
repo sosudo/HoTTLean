@@ -970,12 +970,11 @@ lemma assocHom_app_base_fiber
 
 lemma mapStrongTrans_comp_map_fstNatTrans :
     mapStrongTrans B s hs ⋙ map (sigma.fstNatTrans A B) = 𝟭 _ := by
-  convert Section.mapStrongTrans_comp_map_self (sigma.fstNatTrans A B)
+  exact Section.mapStrongTrans_comp_map_self (sigma.fstNatTrans A B)
     (strongTrans.app B s hs) (strongTrans.naturality B s hs)
-    (strongTrans.naturality_id_hom B s hs) (strongTrans.naturality_comp_hom B s hs) _ _
-  · apply strongTrans.app_comp_fstNatTrans_app
-  · intro x y f a
-    apply strongTrans.app_map_naturality_hom_app
+    (strongTrans.naturality_id_hom B s hs) (strongTrans.naturality_comp_hom B s hs)
+    (strongTrans.app_comp_fstNatTrans_app B s hs)
+    (fun f a => strongTrans.app_map_naturality_hom_app B s hs f a)
 
 @[simp]
 lemma inversion_comp_forgetToGrpd : inversion B s hs ⋙ PGrpd.forgetToGrpd = B := by
