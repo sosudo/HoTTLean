@@ -72,14 +72,25 @@ lemma _root_.CategoryTheory.Functor.toPseudofunctor'_map₂ {C : Type u₁} [Cat
       exact congrArg F.map (eq_of_hom η)) := by
   rfl
 
+-- Match the bundled Cat operations while elaborating these coherence laws.
+set_option backward.isDefEq.respectTransparency false in
 @[simps]
 def _root_.CategoryTheory.NatTrans.toStrongTrans' {C : Type u₁} [Category.{v₁} C] (F G : C ⥤ Cat) (α : F ⟶ G) :
     F.toPseudofunctor' ⟶ G.toPseudofunctor' where
   app x := α.app x.as
   naturality _ := eqToIso (α.naturality _)
-  naturality_naturality η := by simp [Functor.toPseudofunctor'_map₂]
-  naturality_id _ := by ext; simp [Bicategory.leftUnitor, Bicategory.rightUnitor]
-  naturality_comp _ _ := by ext; simp [Bicategory.associator]
+  naturality_naturality {a b} f g η := by
+    have h : f = g := Discrete.ext (eq_of_hom η)
+    subst g
+    simp [Functor.toPseudofunctor'_map₂]
+  naturality_id _ := by
+    ext
+    dsimp
+    simp [Cat.Hom₂.eqToHom_toNatTrans, eqToHom_map]
+  naturality_comp _ _ := by
+    ext
+    dsimp
+    simp [Cat.Hom₂.eqToHom_toNatTrans, eqToHom_map]
 
 /-- An `eqToHom` in the category `Cat` is a functor that acts on maps by casts. -/
 theorem _root_.CategoryTheory.Cat.map_eqToHom {C1 C2 : Cat} {x y : C1} (f : x ⟶ y) (eq : C1 = C2) :
