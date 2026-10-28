@@ -69,7 +69,7 @@ theorem pushforwardPullbackIsoSquare_eq {C} [Category C] [HasPullbacks C] {X Y Z
       ((adj f).comp (Over.mapPullbackAdj h))
       (asIso (Over.pullbackMapTwoSquare h f g k pb.toCommSq)) := by
   simp [pushforwardPullbackIsoSquare, Over.pushforwardPullbackTwoSquare]
-  ext1; simp
+  ext1; rfl
 
 open ExponentiableMorphism Functor in
 theorem ev_naturality {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
@@ -623,7 +623,7 @@ instance preservesConnectedLimitsOfShape_of_hasLimitsOfShape {J : Type v₁} [Sm
   unfold UvPoly.functor
   infer_instance
 
-instance preservesPullbacks (P : UvPoly E B)
+theorem preservesPullbacks (P : UvPoly E B)
     {Pb X Y Z : C} (fst : Pb ⟶ X) (snd : Pb ⟶ Y)
     (f : X ⟶ Z) (g : Y ⟶ Z)
     (h: IsPullback fst snd f g) :
