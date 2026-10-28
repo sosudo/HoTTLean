@@ -102,8 +102,8 @@ lemma of.map_comp {X Y Z : C} (f : X ⟶ Y) (g : Y ⟶ Z) :
 /-- The localization map from the category `C` to the groupoid `Category.FreeGroupoid C` -/
 def of : C ⥤ Category.FreeGroupoid C where
   __ := Quiver.FreeGroupoid.of C ⋙q (Quotient.functor (FreeGroupoid.homRel C)).toPrefunctor
-  map_id X := by simp
-  map_comp {X Y Z} f g := by simp
+  map_id X := of.map_id C X
+  map_comp f g := of.map_comp C f g
 
 section UniversalProperty
 
