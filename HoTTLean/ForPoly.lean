@@ -11,6 +11,9 @@ open Limits PartialProduct
 universe v u
 variable {C : Type u} [Category.{v} C] [HasPullbacks C]
 
+-- These local settings let simp reduce the slice functor types in the mate construction.
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
 theorem η_naturality {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     (e : E ⟶ E') (b : B ⟶ B') (hp : IsPullback P.p e b P'.p) :
     Functor.whiskerLeft (Over.pullback P.p) (Over.mapPullbackAdj e).unit ≫
@@ -20,8 +23,9 @@ theorem η_naturality {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
         |>.trans (Over.pullbackComp e P'.p)).inv =
     Functor.whiskerRight (Over.mapPullbackAdj b).unit (Over.pullback P.p) := by
   ext X
-  simp [pullbackMapIsoSquare, ← pullback_map_eq_eqToHom rfl hp.w.symm, Over.pullbackComp]
-  ext <;> simp [pullback.condition]
+  simp [pullbackMapIsoSquare, asIso, ← pullback_map_eq_eqToHom rfl hp.w.symm,
+    Over.pullbackComp, Over.pullback, Over.map]
+  ext <;> simp [Category.assoc, pullback.map, pullback.condition]
 
 theorem η_naturality' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     (e : E ⟶ E') (b : B ⟶ B')
@@ -40,22 +44,7 @@ theorem η_naturality' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     Functor.whiskerRight α.hom ebk ≫
     Functor.whiskerLeft bmap bb.inv =
     Functor.whiskerRight (Over.mapPullbackAdj b).unit pbk := by
-  intro bmap emap pbk ebk bbk p'bk α bb
-  ext X
-  simp[bb,α,pullbackMapIsoSquare,pbk,bmap,ebk,emap,bbk,Category.assoc]
-  ext
-  · simp[← Category.assoc,← pullback_map_eq_eqToHom rfl hp.w.symm]
-    simp[Over.pullbackComp]
-    slice_lhs 2 3 => apply pullback.lift_fst
-    simp[← Category.assoc]
-  · rw[← pullback_map_eq_eqToHom rfl hp.w.symm]
-    simp[Over.pullbackComp]
-    slice_lhs 2 3 => apply pullback.lift_snd
-    simp[← Category.assoc,pullback.condition]
-  rw[← Category.assoc,← pullback_map_eq_eqToHom rfl hp.w.symm]
-  simp[Over.pullbackComp,pullback.map]
-  slice_lhs 2 3 => apply pullback.lift_snd
-  simp
+  exact η_naturality e b hp
 
 
 open ExponentiableMorphism in
