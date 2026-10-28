@@ -1407,6 +1407,8 @@ lemma strongTrans.app_lam_map_base {x y : ∫ A} (f : x ⟶ y) :
     f.fiber :=
   rfl
 
+-- Match bundled groupoid coercions in the section projections.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.app_lam_map_fiber {x y : ∫ A} (f : x ⟶ y) :
     ((strongTrans.app (β ⋙ PGrpd.forgetToGrpd) (lam A β)
