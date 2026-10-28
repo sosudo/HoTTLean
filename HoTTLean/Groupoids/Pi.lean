@@ -379,6 +379,8 @@ section
 
 variable {x y : Γ} (f : x ⟶ y)
 
+-- Allow the bundled groupoid projections to unfold when elaborating section maps.
+set_option backward.isDefEq.respectTransparency false in
 /-- The functorial action of `pi` on a morphism `f : x ⟶ y` in `Γ`
 is given by "conjugation".
 Since `piObj B x` is a subcategory of `sigma A B x ⥤ A x`,
@@ -400,30 +402,38 @@ def functorMap : functorObj φ x ⥤ functorObj φ y :=
   ((Section.ι _ ⋙ conjugating A B f))
   (by
     intro s
-    have := s.obj.property
-    simp only [IsSection, ← Grpd.comp_eq_comp, ← Grpd.id_eq_id, Functor.comp_obj,
-      MorphismProperty.wideSubcategoryInclusion.obj, ObjectProperty.ι_obj, conjugating_obj,
-      Functor.map_inv, Category.assoc, NatTrans.naturality] at *
-    slice_lhs 2 3 => rw [this]
-    simp [- Grpd.comp_eq_comp, - Grpd.id_eq_id]))
+    have hsec := s.obj.property
+    change (A.map (inv f) ⋙ s.obj.obj ⋙ B.map f) ⋙ φ.app y = 𝟭 _
+    change s.obj.obj ⋙ φ.app x = 𝟭 _ at hsec
+    have hn : B.map f ⋙ φ.app y = φ.app x ⋙ A.map f := by
+      simpa only [Grpd.comp_eq_comp] using φ.naturality f
+    calc
+      _ = A.map (inv f) ⋙ (s.obj.obj ⋙ φ.app x) ⋙ A.map f := by
+        rw [Functor.assoc, Functor.assoc, hn]
+        simp only [Functor.assoc]
+      _ = _ := by rw [hsec]; simp [← Grpd.comp_eq_comp, ← A.map_comp]
+    )
+  )
   (by
     intro s t α
-    have := α.property
-    simp only [IsOverId, ← Grpd.comp_eq_comp, Category.id_comp, eqToHom_trans, Set.mem_setOf_eq,
-      ObjectProperty.lift_obj_obj, Functor.comp_obj, MorphismProperty.wideSubcategoryInclusion.obj,
-      ObjectProperty.ι_obj, ObjectProperty.lift_map, Functor.comp_map,
+    have h := α.property
+    ext a
+    simp only [IsOverId, Set.mem_setOf_eq] at h ⊢
+    simp only [ObjectProperty.lift_map, Functor.comp_map,
       MorphismProperty.wideSubcategoryInclusion.map, ObjectProperty.ι_map, conjugating_map,
-      Functor.whiskerRight_twice, Functor.associator_eq, Iso.refl_hom, Iso.refl_inv] at *
-    rw [Functor.whiskerRight_whiskerLeft]
-    conv => left; left; rw! (castMode := .all) [φ.naturality, Grpd.comp_eq_comp]
-    erw [Functor.comp_whiskerRight, this, Category.comp_id]
-    simp only [Grpd.comp_eq_comp, Functor.eqToHom_whiskerRight, Functor.whiskerLeft_eqToHom,
-      ← heq_eq_eq, eqRec_heq_iff_heq]
-    congr! 1
-    · simp only [← Grpd.comp_eq_comp, ← φ.naturality]
-      rfl
-    · simp only [← Grpd.comp_eq_comp, ← φ.naturality]
-      rfl)
+      Functor.whiskerRight_app, Functor.whiskerLeft_app, NatTrans.comp_app,
+      NatTrans.id_app, Category.comp_id, Category.id_comp, eqToHom_app] at *
+    dsimp only [ObjectProperty.homMk] at *
+    simp only [Functor.comp_map, MorphismProperty.wideSubcategoryInclusion.map,
+      ObjectProperty.ι_map, conjugating_map, Functor.whiskerRight_app, Functor.whiskerLeft_app,
+      eqToHom_app] at *
+    have hn : B.map f ⋙ φ.app y = φ.app x ⋙ A.map f := by
+      simpa only [Grpd.comp_eq_comp] using φ.naturality f
+    have hh := congrArg (fun η => η.app ((A.map (inv f)).obj a)) h
+    simp only [Functor.whiskerRight_app, NatTrans.comp_app, eqToHom_app] at hh
+    rw [← Functor.comp_map, Functor.congr_hom hn, Functor.comp_map, hh]
+    simp only [Functor.map_comp, eqToHom_map, Category.assoc, eqToHom_trans]
+    )
 
 def functor : Γ ⥤ Grpd.{u₁,u₁} where
   obj := functorObj φ
