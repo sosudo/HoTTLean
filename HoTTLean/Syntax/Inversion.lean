@@ -252,7 +252,8 @@ theorem comp : WfSb E Θ σ Δ → WfSb E Δ σ' Γ → WfSb E Θ (Expr.comp σ 
   intro σ σ'
   apply mk σ.wf_dom σ'.wf_cod
   intro _ _ _ lk
-  exact autosubst% σ'.lookup lk |>.subst σ
+  rw [← Expr.subst_subst]
+  exact σ'.lookup lk |>.subst σ
 
 theorem toSb : E ∣ Γ ⊢[l] t : A → WfSb E Γ t.toSb ((A, l) :: Γ) :=
   fun t => SubstProof.wfSb_toSb t.wf_ctx t.wf_tp t
