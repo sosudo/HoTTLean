@@ -579,11 +579,13 @@ variable (F) in
 -/
 def yonedaIso : yoneda.op ⋙ yoneda.obj F ≅ F :=
   NatIso.ofComponents (fun _ => Equiv.toIso yonedaEquiv)
-    (fun f => by ext : 1; dsimp; rw [yonedaEquiv_naturality'])
+    (fun f => by
+      ext α
+      exact (yonedaEquiv_naturality' α f).symm)
 
 def yonedaIsoMap : yoneda.op ⋙ yoneda.obj F ⟶ yoneda.op ⋙ yoneda.obj G where
-  app _ := app
-  naturality _ _ _ := by ext : 1; apply naturality
+  app _ := ↾app
+  naturality _ _ _ := by ext α; apply naturality
 
 /-- Build natural transformations between presheaves on a small category
   by defining their action when precomposing by a morphism with
