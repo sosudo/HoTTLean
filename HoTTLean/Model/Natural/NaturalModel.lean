@@ -1134,6 +1134,8 @@ Ty <-- y(motiveCtx) ----> i
 abbrev motive : y(Γ) ⟶ ie.iFunctor.obj N.Ty :=
   ie.equivMk a C
 
+-- The motive context and polynomial application need semireducible unfolding here.
+set_option backward.isDefEq.respectTransparency false in
 lemma motive_comp_left : ym(σ) ≫ motive ie a C =
     motive ie (ym(σ) ≫ a) (ym(motiveSubst ii σ a) ≫ C) := by
   dsimp [motive, equivMk]
