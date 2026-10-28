@@ -68,9 +68,9 @@ variable {A} {fst} {snd}
 
 variable {x y : C} (f : x ⟶ y)
 
-@[simp] def liftMapFiber : ((snd ⋙ A).map f).obj (liftObjFiber w x) ⟶ liftObjFiber w y :=
-  let m1 := ((eqToHom w).app y).map (point fst f)
-  let m2 := (eqToHom ((eqToHom w).naturality f).symm).app
+@[simp] def liftMapFiber : ((snd ⋙ A).map f).toFunctor.obj (liftObjFiber w x) ⟶ liftObjFiber w y :=
+  let m1 := ((eqToHom w).app y).toFunctor.map (point fst f)
+  let m2 := (eqToHom ((eqToHom w).naturality f).symm).toNatTrans.app
     (pt fst x)
   m2 ≫ m1
 
