@@ -1278,12 +1278,16 @@ def functorFromCompHom {c c' : C} (f : c ⟶ c') :
     functorFromCompFib fib G c ⟶ (F.map f).toFunctor ⋙ functorFromCompFib fib G c' :=
   Functor.whiskerRight (hom f) G
 
+-- Normalize the dependent Cat functor projection transports locally.
+set_option backward.isDefEq.respectTransparency false in
 include hom_id in
 lemma functorFromCompHom_id (c : C) : functorFromCompHom fib hom G (𝟙 c)
     = eqToHom (by simp [Cat.id_eq_id, Functor.id_comp]) := by
   ext x
   simp [hom_id, functorFromCompHom]
 
+-- Normalize the dependent Cat functor projection transports locally.
+set_option backward.isDefEq.respectTransparency false in
 include hom_comp in
 lemma functorFromCompHom_comp (c₁ c₂ c₃ : C) (f : c₁ ⟶ c₂) (g : c₂ ⟶ c₃):
     functorFromCompHom fib hom G (f ≫ g)
@@ -1293,6 +1297,8 @@ lemma functorFromCompHom_comp (c₁ c₂ c₃ : C) (f : c₁ ⟶ c₂) (g : c₂
   ext
   simp [functorFromCompHom, hom_comp]
 
+-- Normalize the dependent Cat functor projection transports locally.
+set_option backward.isDefEq.respectTransparency false in
 theorem functorFrom_comp : functorFrom fib hom hom_id hom_comp ⋙ G =
     functorFrom (functorFromCompFib fib G) (functorFromCompHom fib hom G)
   (functorFromCompHom_id fib hom hom_id G)
