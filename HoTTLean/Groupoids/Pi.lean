@@ -1669,6 +1669,7 @@ lemma equivInv_equivFun (F : Δ ⥤ ∫ pi A B) (hF : F ⋙ forget = σ) :
   apply (isPullback _).hom_ext
   · rw [Functor.IsPullback.fac_left, Functor.IsPullback.fac_left, lam_inversion]
   · rw! [Functor.IsPullback.fac_right, hF]
+    rfl
 
 lemma equivFun_equivInv (G : ∫ σ ⋙ A ⥤ ∫ B) (hG : G ⋙ forget = pre A σ) :
     equivFun B (equivInv B G hG) (equivInv_comp_forget B G hG) = G := by
@@ -1677,6 +1678,7 @@ lemma equivFun_equivInv (G : ∫ σ ⋙ A ⥤ ∫ B) (hG : G ⋙ forget = pre A 
   · have : pre A σ ⋙ B = (G ⋙ toPGrpd B) ⋙ PGrpd.forgetToGrpd := by
       rw [Functor.assoc, toPGrpd_forgetToGrpd, ← Functor.assoc, hG]
     rw! [Functor.IsPullback.fac_left, Functor.IsPullback.fac_left, this, inversion_lam]
+    rfl
   · rw [Functor.IsPullback.fac_right, hG]
 
 lemma equivFun_comp {Δ' : Type u} [Groupoid.{v} Δ'] {σ' : Δ' ⥤ Γ} (τ : Δ' ⥤ Δ) (hτ : τ ⋙ σ = σ')
