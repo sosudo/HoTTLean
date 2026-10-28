@@ -418,6 +418,7 @@ theorem snd'_comp_left (pair : Γ ⟶ P @ X)
   apply congrArg (fun k => k ≫ (fan P X).snd)
   apply pullback.hom_ext <;> simp [Category.assoc]
 
+set_option backward.isDefEq.respectTransparency false in
 theorem snd'_comp_right (pair : Γ ⟶ P @ X)
     {R f1 f2} (H : IsPullback (P := R) f1 f2 (fst P X pair) P.p) :
     snd' P Y (pair ≫ P.functor.map f) (by rwa [fst_comp_right]) =
