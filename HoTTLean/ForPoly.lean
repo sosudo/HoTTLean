@@ -256,6 +256,9 @@ theorem fan_snd_map' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
   simp [α, Over.starPullbackIsoStar]
   simp [pullback.map, sE', Over.star]
 
+-- The slice functor and polynomial application reduce to the same object.
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
 open ExponentiableMorphism in
 theorem fan_snd_map {E B A E' B' A' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     (e : E ⟶ E') (b : B ⟶ B') (a : A ⟶ A')
