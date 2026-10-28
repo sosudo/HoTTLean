@@ -60,15 +60,19 @@ instance {A B : Type*} [Category A] [Groupoid B] (F : B ⥤ A) :
     IsGroupoid ((IsSection F).FullSubcategory) :=
   InducedCategory.isGroupoid (A ⥤ B) (ObjectProperty.ι _).obj
 
+-- Let transport simplification unfold the section predicate in proof types.
+set_option backward.isDefEq.respectTransparency false in
 instance {A B : Type*} [Category A] [Groupoid B] (F : B ⥤ A) :
     IsGroupoid (Section F) where
   all_isIso {x y} f := {
     out := ⟨⟨ CategoryTheory.inv f.1,
       by
-        simp only [IsOverId, Category.id_comp, eqToHom_trans, Set.mem_setOf_eq]
-        erw [← Functor.inv_whiskerRight]
+        simp only [IsOverId, Category.id_comp, eqToHom_trans, Set.mem_ofPred_eq]
+        change Functor.whiskerRight ((ObjectProperty.ι (IsSection F)).map (inv f.1)) F = _
+        rw [Functor.map_inv, ← Functor.inv_whiskerRight]
+        change inv (Functor.whiskerRight f.1.hom F) = _
         rw! [f.2]
-        simp⟩,
+        simp only [Category.id_comp, eqToHom_trans, inv_eqToHom]⟩,
       by apply MorphismProperty.WideSubcategory.hom_ext; simp,
       by apply MorphismProperty.WideSubcategory.hom_ext; simp⟩
   }
