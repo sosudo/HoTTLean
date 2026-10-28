@@ -33,7 +33,7 @@ variable {A B : Type*} [Category A] [Category B] (F : B ⥤ A)
 def IsSection : ObjectProperty (A ⥤ B) := fun s => s ⋙ F = Functor.id A
 
 def IsOverId : MorphismProperty ((IsSection F).FullSubcategory) :=
-  fun s t α => Functor.whiskerRight α F = eqToHom s.property ≫ 𝟙 (𝟭 A) ≫ eqToHom t.property.symm
+  fun s t α => Functor.whiskerRight α.hom F = eqToHom s.property ≫ 𝟙 (𝟭 A) ≫ eqToHom t.property.symm
 
 instance : (IsOverId F).IsMultiplicative where
   id_mem := by
