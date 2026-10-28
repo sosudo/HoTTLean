@@ -1447,6 +1447,8 @@ lemma strongTrans.app_lam_map_fiber {x y : ∫ A} (f : x ⟶ y) :
     PGrpd.mapFiber (ι A y.base ⋙ β) (Hom.fiber f) := by
   simp [lam, app, PGrpd.objFiber]
 
+-- Reduce bundled groupoid projections in the dependent lambda equation.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.twoCell_lam_app {x y : ∫ A} (f : x ⟶ y) :
     ((strongTrans.twoCell (β ⋙ PGrpd.forgetToGrpd) (lam A β) (lam_comp_forgetToGrpd ..)
       (Hom.base f)).app ((A.map (Hom.base f)).obj x.fiber)) =
@@ -1459,24 +1461,46 @@ lemma strongTrans.twoCell_lam_app {x y : ∫ A} (f : x ⟶ y) :
           Functor.Grothendieck.base_eqToHom, sigmaMap_obj_fiber, Grpd.eqToHom_obj, ← heq_eq_eq,
           cast_heq_iff_heq]
         simp only [← Functor.comp_obj, ← Grpd.comp_eq_comp]
-        rw! [← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, Category.id_comp]
-        rfl) ≫
+        have h : (A.map (inv f.base)).obj ((A.map f.base).obj x.fiber) = x.fiber := by
+          simp [← Functor.comp_obj, ← Grpd.comp_eq_comp]
+        have hf : ∀ {a b : A.obj x.base}, a = b →
+            (β.map ((ιNatTrans f.base).app a)).base.obj (((ι A x.base ⋙ β).obj a).fiber) ≍
+            (β.map ((ιNatTrans f.base).app b)).base.obj (((ι A x.base ⋙ β).obj b).fiber) := by
+          intro a b hab
+          cases hab
+          rfl
+        exact hf h) ≫
         (β.map ((ιNatTrans (Hom.base f)).app x.fiber)).fiber) := by
   simp only [sigma_obj, lam, comp_obj, twoCell, sigma.fstNatTrans_app, pi_obj_α,
     PGrpd.objFiber'_rfl, Set.mem_setOf_eq, PGrpd.mapFiber'_rfl, sigmaMap_obj_base,
     Functor.Grothendieck.forget_obj, Functor.comp_map, Functor.Grothendieck.forget_map,
     sigmaMap_obj_fiber]
-  convert_to (whiskerLeftInvLamObjObjSigMap A β f.base).app ((A.map f.base).obj x.fiber) = _
+  change (whiskerLeftInvLamObjObjSigMap A β f.base).app ((A.map f.base).obj x.fiber) = _
   simp only [comp_obj, whiskerLeftInvLamObjObjSigMap, lamObjFiberObjCompSigMap, NatTrans.comp_app,
     whiskerLeft_app, lamObjFiberObjCompSigMap.app, sigmaMap_obj_base,
     Functor.Grothendieck.forget_obj, Functor.comp_map, Functor.Grothendieck.forget_map,
     sigmaMap_obj_fiber, eqToHom_app]
   have h : (A.map (CategoryTheory.inv (Hom.base f))).obj ((A.map (Hom.base f)).obj x.fiber) =
       x.fiber := by simp [← Functor.comp_obj, ← Grpd.comp_eq_comp]
-  rw! [h]
-  simp only [eqToHom_refl, Category.comp_id, ← heq_eq_eq]
-  congr 1
+  apply eq_of_heq
+  apply (comp_eqToHom_heq ..).trans
+  have hf : ∀ {a b : A.obj x.base}, a = b →
+      lamObjFiberObjCompSigMap.app A β f.base a ≍
+      lamObjFiberObjCompSigMap.app A β f.base b := by
+    intro a b hab
+    cases hab
+    rfl
+  apply (hf h).trans
+  apply Hom.hext' rfl
+  · exact heq_of_eq (congrArg
+      (lamObjFiberObj A β x.base ⋙ sigmaMap (β ⋙ PGrpd.forgetToGrpd) f.base).obj h).symm
+  · rfl
+  · simp only [lamObjFiberObjCompSigMap.app, homMk_base]
+    exact (eqToHom_heq_id_cod _ _ _).symm
+  · simp [lamObjFiberObjCompSigMap.app, eqToHom_comp_heq_iff]
 
+-- Reduce bundled groupoid projections in the fiber projection.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.twoCell_lam_app_fiber {x y : ∫ A} (f : x ⟶ y) :
     ((strongTrans.twoCell (β ⋙ PGrpd.forgetToGrpd) (lam A β) (lam_comp_forgetToGrpd ..)
       (Hom.base f)).app ((A.map (Hom.base f)).obj x.fiber)).fiber =
@@ -1485,8 +1509,18 @@ lemma strongTrans.twoCell_lam_app_fiber {x y : ∫ A} (f : x ⟶ y) :
         twoCell_app_base, Functor.comp_map, eqToHom_map, Functor.Grothendieck.forget_map,
         Functor.Grothendieck.base_eqToHom, sigmaMap_obj_fiber]
       simp only [← Functor.comp_obj, ← Grpd.comp_eq_comp]
-      rw! [← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, Category.id_comp]
-      rfl
+      apply eq_of_heq
+      simp only [Grpd.comp_eq_comp, Functor.comp_obj, Grpd.eqToHom_obj,
+        heq_cast_iff_heq, cast_heq_iff_heq]
+      have h : (A.map (inv f.base)).obj ((A.map f.base).obj x.fiber) = x.fiber := by
+        simp [← Functor.comp_obj, ← Grpd.comp_eq_comp]
+      have hf : ∀ {a b : A.obj x.base}, a = b →
+          (β.map ((ιNatTrans f.base).app a)).base.obj (((ι A x.base ⋙ β).obj a).fiber) ≍
+          (β.map ((ιNatTrans f.base).app b)).base.obj (((ι A x.base ⋙ β).obj b).fiber) := by
+        intro a b hab
+        cases hab
+        rfl
+      exact hf h
       ) ≫ (β.map ((ιNatTrans (Hom.base f)).app x.fiber)).fiber := by
   rw! [twoCell_lam_app]
   simp
