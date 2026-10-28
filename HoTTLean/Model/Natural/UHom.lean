@@ -717,6 +717,8 @@ theorem comp_mkPair {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
         (ym(σ) ≫ u) (by simp [u_tp, comp_sec_functor_map_assoc]) := by
   simp only [← Category.assoc, mkPair]; rw [compDomEquiv.comp_mk]
 
+-- The nested pullback presentation needs reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem mkPair_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (t : y(Γ) ⟶ s[i].Tm) (t_tp : t ≫ s[i].tp = A)
