@@ -141,8 +141,8 @@ variable {Γ : Type u} [Groupoid Γ] {Δ : Type u₁} [Groupoid.{v₁} Δ]
 def Grpd.functorIsoOfIso {A B : Grpd} (F : A ≅ B) : A ≅≅ B where
   hom := F.hom
   inv := F.inv
-  hom_inv_id := by simp
-  inv_hom_id := by simp
+  hom_inv_id := F.hom_inv_id
+  inv_hom_id := F.inv_hom_id
 
 noncomputable section
 
