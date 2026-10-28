@@ -1062,6 +1062,8 @@ theorem EqTmIH.refl_tm {Γ A t t' l} :
       I.mem_ofTerm_refl.2 ⟨_, ht', rfl⟩,
       mkRefl_tp ..⟩
 
+-- The dependent context projections need reducible transparency during elaboration.
+set_option backward.isDefEq.respectTransparency false in
 theorem EqTmIH.idRec {Γ A M M' t t' r r' u u' h h' l l'} :
     I.EqTmIH Γ l A t t' →
     I.EqTpIH ((.Id l (.subst .wk A) (.subst .wk t) (.bvar 0), l) :: (A, l) :: Γ) l' M M' →
