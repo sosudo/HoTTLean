@@ -60,17 +60,9 @@ def isoExtAsSmallClosedTypeInv :
     ∫(toCoreAsSmallEquiv (asSmallClosedType.{v, max u (v + 2)})) ⥤
     Core (AsSmall.{max u (v+2)} Grpd.{v,v}) where
   obj X := ⟨AsSmall.up.obj (AsSmall.down.obj.{_,_,v+1} X.fiber.of)⟩
-  map {X Y} F := ⟨{
-    hom := AsSmall.up.map.{_,_,max u (v+2)}
-      (AsSmall.down.map F.fiber.iso.hom)
-    inv := AsSmall.up.map.{_,_,max u (v+2)}
-      (AsSmall.down.map F.fiber.iso.inv)
-    hom_inv_id := by
-      simp only [← Functor.map_comp, Iso.hom_inv_id]
-      rfl
-    inv_hom_id := by
-      simp only [← Functor.map_comp, Iso.inv_hom_id]
-      rfl }⟩
+  map {X Y} F := by
+    let e : X.fiber.of ≅ Y.fiber.of := F.fiber.iso
+    exact ⟨(AsSmall.down ⋙ AsSmall.up).mapIso e⟩
 
 def isoExtAsSmallClosedType :
     Ty.{v,max u (v+2)}
@@ -98,14 +90,17 @@ variable {Γ : Grpd} {C : Type (v+1)} [Category.{v} C] {Δ : Grpd} (σ : Δ ⟶ 
 
 namespace U
 
+-- Reduce the universe projections when applying the pullback equations.
+set_option backward.isDefEq.respectTransparency false in
 theorem substWk_eq (A : Γ ⟶ U.Ty.{v}) (σA : Δ ⟶ U.Ty.{v}) (eq) :
     U.substWk σ A σA eq =
     map (eqToHom (by subst eq; rfl)) ⋙ pre (toCoreAsSmallEquiv A) σ := by
   apply (U.disp_pullback A).hom_ext
   · rw [substWk_var]
     simp [var, Grpd.comp_eq_comp]
-    rw [← toCoreAsSmallEquiv_symm_apply_comp_left, Functor.assoc, pre_toPGrpd,
+    erw [← toCoreAsSmallEquiv_symm_apply_comp_left, Functor.assoc, pre_toPGrpd,
       map_eqToHom_toPGrpd]
+    rfl
   · rw [substWk_disp]
     simp [Grpd.comp_eq_comp, Functor.assoc]
     erw [pre_comp_forget, ← Functor.assoc, map_forget]
