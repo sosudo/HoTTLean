@@ -1019,6 +1019,8 @@ lemma equivSnd_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx}
         simp [reflSubst]
       · simp [reflSubst]
 
+-- Keep pullback projections at semireducible transparency during rewriting.
+set_option backward.isDefEq.respectTransparency false in
 lemma equivMk_comp_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx} (a : y(Γ) ⟶ M.Tm)
     (x : y(ii.motiveCtx a) ⟶ X) :
     ie.equivMk a x ≫ (ie.verticalNatTrans).app X =
