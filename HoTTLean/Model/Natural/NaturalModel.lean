@@ -362,6 +362,8 @@ def fst (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) : y(Γ) ⟶ M.Tm :=
   ab ≫ pullback.snd N.tp (UvPoly.PartialProduct.fan M.uvPolyTp N.Ty).snd ≫
     pullback.snd (M.uvPolyTp.fstProj N.Ty) M.uvPolyTp.p
 
+-- The presheaf category and polynomial projection require reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 /-- Computation of `comp` (part 1).
 
 `fst_tp` is (part 1) of the computation that
@@ -379,8 +381,14 @@ theorem fst_tp (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) :
   have : pullback.snd (M.uvPolyTp.fstProj N.Ty) M.tp ≫ M.tp =
     pullback.fst (M.uvPolyTp.fstProj N.Ty) M.tp ≫ M.uvPolyTp.fstProj N.Ty :=
       Eq.symm pullback.condition
-  simp [PtpEquiv.fst, fst, this]
-  rfl
+  change fst ab ≫ M.tp = UvPoly.Equiv.fst M.uvPolyTp N.Ty _
+  rw [UvPoly.Equiv.fst_eq]
+  simp only [fst, UvPoly.compP, Category.assoc]
+  change ab ≫ (pullback.snd N.tp (PartialProduct.fan M.uvPolyTp N.Ty).snd ≫
+      (pullback.snd (M.uvPolyTp.fstProj N.Ty) M.tp ≫ M.tp)) =
+    ab ≫ (pullback.snd N.tp (PartialProduct.fan M.uvPolyTp N.Ty).snd ≫
+      (pullback.fst (M.uvPolyTp.fstProj N.Ty) M.tp ≫ M.uvPolyTp.fstProj N.Ty))
+  rw [this]
 
 theorem comp_fst (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) (σ : y(Δ) ⟶ y(Γ)) :
     σ ≫ fst ab = fst (σ ≫ ab) := by simp [fst]
