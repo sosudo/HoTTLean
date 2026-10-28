@@ -818,16 +818,18 @@ theorem mem_ofType_wk {e l l' hl} (hl' : l' < s.length + 1)
     ym(s[l'].disp X) ≫ se ∈ I.ofType (Γ.snoc hl' X) l (Expr.subst Expr.wk e) hl :=
   (I.mem_ofType_ofTerm_subst hl (.wk hl' X) rfl).1 H
 
+-- Let category rewrite lemmas reduce the contextual-object projections.
+set_option backward.isDefEq.respectTransparency false in
 theorem mem_ofType_of_isClosed {e l} (e_cl : e.isClosed)
     (Γ : s.CObj) (hl : l < s.length + 1) {se} (se_mem : se ∈ I.ofType s.nilCObj l e hl) :
     isTerminal_yUnit.from y(Γ.1) ≫ se ∈ I.ofType Γ l e hl := by
   rcases Γ with ⟨_, ext⟩
   induction ext
-  · convert se_mem; simp
+  · simpa only [UHomSeq.nilCObj, IsTerminal.from_self, Category.id_comp] using se_mem
   · rename_i X se_mem
     have := I.mem_ofType_wk (X := X) (by omega) se_mem
-    convert this using 1 <;>
-      simp [e.subst_of_isClosed _ e_cl, UHomSeq.CObj.snoc]
+    simpa only [e.subst_of_isClosed _ e_cl, UHomSeq.CObj.snoc,
+      ← Category.assoc, IsTerminal.comp_from] using this
 
 theorem mem_ofTerm_wk {e l l' hl} (hl' : l' < s.length + 1)
     {Γ : s.CObj} {X : y(Γ.1) ⟶ s[l'].Ty}
