@@ -38,7 +38,7 @@ lemma core_comp_inclusion (F : C ⥤ D) :
 
 def map : Cat.{v,u} ⥤ Grpd.{v,u} where
   obj C := Grpd.of (Core C)
-  map F := Grpd.homOf (F.core)
+  map F := Grpd.homOf (F.toFunctor.core)
 
 variable {Γ : Type u} [Groupoid.{v} Γ]
 
