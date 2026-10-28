@@ -648,6 +648,8 @@ def reflSubst (a : y(Γ) ⟶ M.Tm) : Γ ⟶ idIntro.motiveCtx a :=
     congr 1
     apply idIntro.isKernelPair.hom_ext <;> simp)
 
+-- Allow the pullback projections to unfold the motive context during elaboration.
+set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 theorem comp_reflSubst' {Γ Δ} (σ : Δ ⟶ Γ) (a : y(Γ) ⟶ M.Tm) :
     ym(σ) ≫ ym(idIntro.reflSubst a) =
