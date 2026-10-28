@@ -1824,6 +1824,8 @@ lemma lam_comp {Γ Δ : Ctx} (σ : Δ ⟶ Γ) {A : Γ ⟶ U.{v}.Ty} {σA : Δ �
     lam (U.substWk σ A σA eq ≫ b) = σ ≫ lam b :=
   USig.SigAux_comp pi.lam (by intros; rw [pi.lam_comp]) σ eq b
 
+-- Allow reduction of bundled groupoid coercions in this proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma lam_tp {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (b : U.ext A ⟶ U.{v}.Tm)
     (b_tp : b ≫ U.tp = B) : UPi.lam b ≫ U.tp = Pi B := by
   subst b_tp
@@ -1831,6 +1833,8 @@ lemma lam_tp {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (b : U.ext 
   rw [← toCoreAsSmallEquiv_symm_apply_comp_right]
   rfl
 
+-- Allow reduction of bundled groupoid coercions in this proof.
+set_option backward.isDefEq.respectTransparency false in
 def unLam {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (f : Γ ⟶ U.Tm)
     (f_tp : f ≫ U.tp = UPi.Pi B) : U.ext A ⟶ U.{v}.Tm :=
   toCoreAsSmallEquiv.symm <| pi.inversion (toCoreAsSmallEquiv B) (toCoreAsSmallEquiv f) (by
@@ -1838,6 +1842,8 @@ def unLam {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (f : Γ ⟶ U.
     rw [← toCoreAsSmallEquiv_apply_comp_right, f_tp]
     simp [Pi])
 
+-- Allow reduction of bundled groupoid coercions in this proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma unLam_tp {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (f : Γ ⟶ U.Tm)
     (f_tp : f ≫ U.tp = UPi.Pi B) : UPi.unLam B f f_tp ≫ U.tp = B := by
   dsimp [unLam, U.tp]
@@ -1845,6 +1851,8 @@ lemma unLam_tp {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (f : Γ �
     pi.inversion_comp_forgetToGrpd]
   rfl
 
+-- Allow reduction of bundled groupoid coercions in this proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma unLam_lam {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (b : U.ext A ⟶ U.Tm)
     (b_tp : b ≫ U.tp = B) : UPi.unLam B (UPi.lam b) (lam_tp _ _ b_tp) = b := by
   subst b_tp
@@ -1854,6 +1862,8 @@ lemma unLam_lam {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (b : U.e
   rw [pi.inversion_lam (toCoreAsSmallEquiv A) (toCoreAsSmallEquiv b)]
   rfl
 
+-- Allow reduction of bundled groupoid coercions in this proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma lam_unLam {Γ : Ctx} {A : Γ ⟶ U.{v}.Ty} (B : U.ext A ⟶ U.Ty) (f : Γ ⟶ U.Tm)
     (f_tp : f ≫ U.tp = UPi.Pi B) : UPi.lam (UPi.unLam B f f_tp) = f := by
   simp only [U_Tm, lam, USig.SigAux, unLam, toCoreAsSmallEquiv.symm_apply_eq]
