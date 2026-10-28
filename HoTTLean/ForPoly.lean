@@ -367,13 +367,16 @@ lemma snd'_eq (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (fst P 
     exact H.isoPullback_hom_fst
   · exact H.isoPullback_hom_snd
 
+-- The fan apex is definitionally the polynomial object; expose it during elaboration.
+set_option backward.isDefEq.respectTransparency false in
 /-- Switch the selected pullback `R` used in `UvPoly.Equiv.snd'` with a different pullback `R'`. -/
 lemma snd'_eq_snd' (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (fst P X pair) P.p)
     {R' f' g'} (H' : IsPullback (P := R') f' g' (fst P X pair) P.p) :
     snd' P X pair H = (H.isoIsPullback _ _ H').hom ≫ snd' P X pair H' := by
-  simp [snd'_eq, ← Category.assoc]
-  congr 2
-  ext <;> simp
+  simp only [snd'_eq]
+  simp only [← Category.assoc]
+  apply congrArg (fun k => k ≫ (fan P X).snd)
+  apply pullback.hom_ext <;> simp
 
 @[simp]
 lemma snd'_mk' (b : Γ ⟶ B) {R f g} (H : IsPullback (P := R) f g b P.p) (x : R ⟶ X) :
