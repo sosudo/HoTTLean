@@ -298,9 +298,12 @@ theorem mk_comp_cartesianNatTransTm {i0 i1 j0 j1 ii ilen jj jlen}
 theorem cartesianNatTransTm_fstProj {i0 i1 j0 j1 ii ilen jj jlen} :
     s.cartesianNatTransTm i0 i1 j0 j1 ii ilen jj jlen ≫ s[i1].uvPolyTp.fstProj s[j1].Tm =
     s[i0].uvPolyTp.fstProj s[j0].Tm ≫ (s.homOfLe i0 i1).mapTy := by
-  simp [cartesianNatTransTm]
-  slice_lhs 2 3 => apply UvPoly.map_fstProj
-  apply cartesianNatTrans_fstProj
+  let α := (s.cartesianNatTrans i0 i1 ii ilen).app s[j0].Tm
+  let f := (s.homOfLe j0 j1 jj jlen).mapTm
+  exact (Category.assoc α (s[i1].Ptp.map f) (s[i1].uvPolyTp.fstProj s[j1].Tm)).trans
+    ((congrArg (fun k => α ≫ k) (UvPoly.map_fstProj s[i1].uvPolyTp f)).trans
+      (s.cartesianNatTrans_fstProj (i := i0) (j := i1) (ij := ii) (jlen := ilen)
+        (X := s[j0].Tm)))
 
 def cartesianNatTransTy (i0 i1 j0 j1 : Nat)
     (i0len : i0 ≤ i1 := by get_elem_tactic) (i1len : i1 < s.length + 1 := by get_elem_tactic)
@@ -320,9 +323,12 @@ theorem mk_comp_cartesianNatTransTy {i0 i1 j0 j1 ii ilen jj jlen}
 theorem cartesianNatTransTy_fstProj {i0 i1 j0 j1 ii ilen jj jlen} :
     s.cartesianNatTransTy i0 i1 j0 j1 ii ilen jj jlen ≫ s[i1].uvPolyTp.fstProj s[j1].Ty =
     s[i0].uvPolyTp.fstProj s[j0].Ty ≫ (s.homOfLe i0 i1).mapTy := by
-  simp only [cartesianNatTransTy]
-  slice_lhs 2 3 => apply UvPoly.map_fstProj
-  apply cartesianNatTrans_fstProj
+  let α := (s.cartesianNatTrans i0 i1 ii ilen).app s[j0].Ty
+  let f := (s.homOfLe j0 j1 jj jlen).mapTy
+  exact (Category.assoc α (s[i1].Ptp.map f) (s[i1].uvPolyTp.fstProj s[j1].Ty)).trans
+    ((congrArg (fun k => α ≫ k) (UvPoly.map_fstProj s[i1].uvPolyTp f)).trans
+      (s.cartesianNatTrans_fstProj (i := i0) (j := i1) (ij := ii) (jlen := ilen)
+        (X := s[j0].Ty)))
 
 theorem hom_comp_trans (s : UHomSeq Ctx) (i j k : Nat) (ij : i < j) (jk : j < k)
     (klen : k < s.length + 1) :
