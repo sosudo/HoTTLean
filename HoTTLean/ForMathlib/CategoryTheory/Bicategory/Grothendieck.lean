@@ -1571,6 +1571,8 @@ def invFiber : y.fiber ⟶ (F.map f.base).toFunctor.obj x.fiber :=
       ← Grothendieck.Hom.comp_base]) ≫
     (F.map f.base).toFunctor.map (CategoryTheory.inv f).fiber
 
+-- Normalize dependent transports through the wrapped Cat functor.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma fiber_comp_invFiber : f.fiber ≫ invFiber f = 𝟙 ((F.map f.base).toFunctor.obj x.fiber) := by
   have h := Functor.Grothendieck.Hom.comp_fiber f (CategoryTheory.inv f)
