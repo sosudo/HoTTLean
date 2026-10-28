@@ -525,6 +525,8 @@ lemma strongTrans_comp_toStrongTrans'_self_aux (happ : ∀ x, app x ⋙ φ.app x
   erw [Functor.congr_obj (happ x)]
   simp
 
+-- Unfold bundled groupoid projections in the Cat 2-cell equations.
+set_option backward.isDefEq.respectTransparency false in
 open CategoryTheory.Pseudofunctor.StrongTrans in
 lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = 𝟭 _)
     (hnaturality : ∀ {x y} (f : x ⟶ y) (a : A.obj x),
@@ -539,18 +541,39 @@ lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = �
     apply Cat.ext
     exact happ x.as
   · intro x y f
+    change Discrete (x.as ⟶ y.as) at f
+    obtain ⟨g⟩ := f
+    apply Cat.Hom₂.ext
     ext a
     simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, Cat.of_α,
       Functor.toPseudofunctor'_map, Functor.comp_map, id_eq, strongTrans, comp_app,
       NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, categoryStruct_id_app,
       categoryStruct_comp_naturality_hom, Bicategory.associator,
       NatTrans.toStrongTrans'_naturality, eqToIso.hom, Bicategory.whiskerLeft_eqToHom,
-      Category.assoc, Functor.associator_inv_app, Cat.whiskerRight_app,
-      Functor.associator_hom_app, Cat.eqToHom_app, Category.id_comp, eqToHom_trans,
+      Cat.Hom.toNatTrans_comp, Cat.Hom₂.eqToHom_toNatTrans,
+      Cat.whiskerLeft_toNatTrans, Cat.whiskerRight_toNatTrans,
+      NatTrans.comp_app, Functor.whiskerLeft_app, Functor.whiskerRight_app,
+      Category.assoc, Functor.associator_inv_app,
+      Functor.associator_hom_app, eqToHom_app, Category.id_comp, eqToHom_trans,
       categoryStruct_id_naturality_hom, Bicategory.rightUnitor, Bicategory.leftUnitor,
       Functor.rightUnitor_hom_app, Functor.leftUnitor_inv_app, Category.comp_id, ← heq_eq_eq,
       comp_eqToHom_heq_iff]
+    dsimp only [Cat.Hom.isoMk, NatTrans.toCatHom₂, Functor.toCatHom,
+      NatTrans.toStrongTrans', Functor.whiskerRight, Functor.toPseudofunctor',
+      pseudofunctorOfIsLocallyDiscrete, Grpd.forgetToCat]
+    simp only [Cat.Hom.toNatTrans_comp, Cat.Hom₂.eqToHom_toNatTrans,
+      Cat.whiskerLeft_toNatTrans, Cat.whiskerRight_toNatTrans, NatTrans.comp_app,
+      Functor.whiskerLeft_app, Functor.whiskerRight_app, Functor.associator_inv_app,
+      Functor.associator_hom_app, Functor.leftUnitor_inv_app,
+      Functor.rightUnitor_hom_app, Category.id_comp, Category.comp_id,
+      eqToHom_app, eqToHom_trans, comp_eqToHom_heq_iff]
     rw! [hnaturality]
+    dsimp only [Functor.comp_map, Grpd.forgetToCat, Functor.toCatHom, Functor.comp_obj]
+    -- Fix the category before simplifying the identity and transport maps.
+    change (𝟙 _ ≫ eqToHom _ ≫ 𝟙 _ ≫ eqToHom _ ≫ 𝟙 _ ≫ eqToHom _ :
+      _ ⟶ (A.map g).obj a) ≍
+      (eqToHom _ ≫ 𝟙 _ : _ ⟶ (A.map g).obj a)
+    simp only [Category.id_comp, Category.comp_id, eqToHom_trans]
     apply eqToHom_heq_eqToHom
     rfl
 
