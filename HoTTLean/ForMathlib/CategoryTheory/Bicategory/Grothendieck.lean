@@ -959,8 +959,14 @@ lemma map_eq_pseudofunctor_map {G} (α : F ⟶ G) : map α = (toPseudofunctor'Is
     (toPseudofunctor'Iso G).inv := by
   fapply Functor.ext
   · aesop
-  · intro _
-    aesop
+  · intro X Y f
+    -- Match the wrapped Cat transports before applying naturality.
+    set_option backward.isDefEq.respectTransparency false in
+      apply Hom.ext
+      · simp [map, toPseudofunctor'Iso, toPseudofunctor'Iso.hom, toPseudofunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
+        rw [← NatIso.naturality_2 (eqToIso (congrArg Cat.Hom.toFunctor (G.map_id Y.base))) ((α.app Y.base).toFunctor.map f.fiber)]
+        simp
+      · simp [map, toPseudofunctor'Iso, toPseudofunctor'Iso.hom, toPseudofunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
 
 end Pseudofunctor
 
