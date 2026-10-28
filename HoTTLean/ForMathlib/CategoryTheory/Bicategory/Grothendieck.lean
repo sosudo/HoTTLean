@@ -1445,21 +1445,18 @@ namespace AsSmall
 theorem comp_up_inj {C : Type u} [Category.{v} C]
   {D : Type u₁} [Category.{v₁} D] {F G : C ⥤ D}
     (h : F ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D) = G ⋙ AsSmall.up) : F = G := by
-  convert_to F ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D)
-    ⋙ AsSmall.down
-    = G ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D)
-    ⋙ AsSmall.down
-  rw [← Functor.assoc, h, Functor.assoc]
+  have h' := congrArg (fun H : C ⥤ AsSmall.{w} D => H ⋙ AsSmall.down) h
+  change F = G at h'
+  exact h'
 
 theorem comp_down_inj {C : Type u} [Category.{v} C]
   {D : Type u₁} [Category.{v₁} D]
     {F G : C ⥤ AsSmall.{w} D}
     (h : F ⋙ AsSmall.down = G ⋙ AsSmall.down)
     : F = G := by
-  convert_to F ⋙ AsSmall.down
-    ⋙ AsSmall.up
-    = G ⋙ AsSmall.down ⋙ AsSmall.up
-  rw [← Functor.assoc, h, Functor.assoc]
+  have h' := congrArg (fun H : C ⥤ D => H ⋙ (AsSmall.up : D ⥤ AsSmall.{w} D)) h
+  change F = G at h'
+  exact h'
 
 @[simp] theorem up_comp_down
     {C : Type u₁} [Category.{v₁, u₁} C] :
