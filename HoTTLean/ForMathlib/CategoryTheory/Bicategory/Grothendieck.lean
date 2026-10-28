@@ -648,45 +648,47 @@ lemma toTransport_comp (x : ∫ F) {c d: C} (t : x.base ⟶ c) (t': c ⟶ d):
     symm
     apply eqToHom_heq_id_dom
 
+-- Allow simplification to unfold the bundled Cat functors in transport coherence.
+set_option backward.isDefEq.respectTransparency false in
 /--
 Construct an isomorphism in a Grothendieck construction from isomorphisms in its base and fiber.
 -/
 def isoMk {X Y : ∫ F} (e₁ : X.base ≅ Y.base)
-    (e₂ : (F.map e₁.hom).obj X.fiber ≅ Y.fiber) :
+    (e₂ : (F.map e₁.hom).toFunctor.obj X.fiber ≅ Y.fiber) :
     X ≅ Y where
   hom := Hom.mk e₁.hom e₂.hom
-  inv := Hom.mk e₁.inv ((F.map e₁.inv).map e₂.inv ≫
-    eqToHom (Functor.congr_obj (F.mapIso e₁).hom_inv_id X.fiber))
+  inv := Hom.mk e₁.inv ((F.map e₁.inv).toFunctor.map e₂.inv ≫
+    eqToHom (Functor.congr_obj (congrArg Cat.Hom.toFunctor (F.mapIso e₁).hom_inv_id) X.fiber))
   hom_inv_id := by apply Hom.ext; all_goals simp
   inv_hom_id := by
     apply Hom.ext
-    · have := Functor.congr_hom (F.mapIso e₁).inv_hom_id e₂.inv
-      simp only [mapIso_inv, mapIso_hom, Cat.comp_map] at this
+    · have := Functor.congr_hom (congrArg Cat.Hom.toFunctor (F.mapIso e₁).inv_hom_id) e₂.inv
+      simp only [mapIso_inv, mapIso_hom, Cat.Hom.comp_map] at this
       simp [this]
     · simp
 
 @[simp]
 lemma isoMk_hom_base {X Y : ∫ F} (e₁ : X.base ≅ Y.base)
-    (e₂ : (F.map e₁.hom).obj X.fiber ≅ Y.fiber) :
+    (e₂ : (F.map e₁.hom).toFunctor.obj X.fiber ≅ Y.fiber) :
     (isoMk e₁ e₂).hom.base = e₁.hom :=
   rfl
 
 @[simp]
 lemma isoMk_hom_fiber {X Y : ∫ F} (e₁ : X.base ≅ Y.base)
-    (e₂ : (F.map e₁.hom).obj X.fiber ≅ Y.fiber) :
+    (e₂ : (F.map e₁.hom).toFunctor.obj X.fiber ≅ Y.fiber) :
     (isoMk e₁ e₂).hom.fiber = e₂.hom :=
   rfl
 
 @[simp]
 lemma isoMk_inv_base {X Y : ∫ F} (e₁ : X.base ≅ Y.base)
-    (e₂ : (F.map e₁.hom).obj X.fiber ≅ Y.fiber) :
+    (e₂ : (F.map e₁.hom).toFunctor.obj X.fiber ≅ Y.fiber) :
     (isoMk e₁ e₂).inv.base = e₁.inv :=
   rfl
 
 @[simp]
 lemma isoMk_inv_fiber {X Y : ∫ F} (e₁ : X.base ≅ Y.base)
-    (e₂ : (F.map e₁.hom).obj X.fiber ≅ Y.fiber) :
-    (isoMk e₁ e₂).inv.fiber = (F.map e₁.inv).map e₂.inv ≫ eqToHom (by
+    (e₂ : (F.map e₁.hom).toFunctor.obj X.fiber ≅ Y.fiber) :
+    (isoMk e₁ e₂).inv.fiber = (F.map e₁.inv).toFunctor.map e₂.inv ≫ eqToHom (by
       simp [← Functor.comp_obj, ← Cat.comp_eq_comp, ← Functor.map_comp]) :=
   rfl
 
@@ -705,7 +707,7 @@ lemma transportIso_hom_base (x : ∫ F) {c : C} (α : x.base ≅ c) :
 @[simp]
 lemma transportIso_hom_fiber (x : ∫ F) {c : C} (α : x.base ≅ c) :
     (x.transportIso α).hom.fiber =
-    eqToHom (by simp [transportIso, ← Functor.comp_obj, ← Cat.comp_eq_comp]) := by
+    eqToHom (by simp [transportIso, ← Functor.comp_obj]) := by
   simp only [transportIso, CategoryTheory.Iso.symm_hom, isoMk_inv_fiber, CategoryTheory.Iso.refl_inv]
   erw [Functor.map_id]
   simp
@@ -717,7 +719,7 @@ lemma transportIso_inv_base (x : ∫ F) {c : C} (α : x.base ≅ c) :
 
 @[simp]
 lemma transportIso_inv_fiber (x : ∫ F) {c : C} (α : x.base ≅ c) :
-    (x.transportIso α).inv.fiber = 𝟙 ((F.map α.hom).obj x.fiber) :=
+    (x.transportIso α).inv.fiber = 𝟙 ((F.map α.hom).toFunctor.obj x.fiber) :=
   rfl
 
 end Transport
