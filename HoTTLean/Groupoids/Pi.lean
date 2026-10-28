@@ -446,9 +446,11 @@ lemma functor_comp {Δ : Type u₃} [Groupoid.{v₃} Δ] (σ : Δ ⥤ Γ) :
     σ ⋙ functor φ := by
   fapply CategoryTheory.Functor.ext
   · intro x
-    simp [functor, functorObj]
+    rfl
   · intro x y f
-    simp [functor, functorMap]
+    -- The object equalities above are definitionally reflexive at full transparency.
+    set_option backward.isDefEq.respectTransparency false in
+      simp [functor, functorMap]
 
 @[simp]
 lemma functor_map_map {s t} (α : s ⟶ t) : (((functor φ).map f).map α).1 =
