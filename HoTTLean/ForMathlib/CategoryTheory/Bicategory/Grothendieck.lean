@@ -1441,12 +1441,14 @@ end
 
 end FunctorFrom
 
+-- Normalize wrapped Cat projections in the inclusion naturality equation.
+set_option backward.isDefEq.respectTransparency false in
 /-- The fiber inclusion `ι F c` composed with `map α` is isomorphic to `(α.app c).toFunctor ⋙ ι F' c`. -/
 @[simps!]
 def ιCompMap {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α ≅ (α.app c).toFunctor ⋙ ι F' c :=
   NatIso.ofComponents (fun X => CategoryTheory.Iso.refl _) (fun f => by
     simp only [CategoryTheory.Iso.refl_hom, Category.comp_id]
-    apply Hom.ext <;> simp)
+    apply Hom.ext <;> simp [map, functorTo, ι, forget])
 
 lemma ι_comp_map {F' : C ⥤ Cat} (α : F ⟶ F') (c : C) : ι F c ⋙ map α = (α.app c).toFunctor ⋙ ι F' c :=
   Functor.ext_of_iso (ιCompMap ..) (by intro; rfl)
