@@ -572,14 +572,19 @@ theorem comp_mkApp {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
 theorem mkLam_unLam {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (f : y(Γ) ⟶ s[max i j].Tm) (f_tp : f ≫ s[max i j].tp = s.mkPi ilen jlen A B) :
     s.mkLam ilen jlen A (s.unLam ilen jlen A B f f_tp) = f := by
+  change f ≫ s[max i j].tp = PtpEquiv.mk s[i] A B ≫ s.Pi ilen jlen at f_tp
   let total : y(Γ) ⟶ s[i].Ptp.obj s[j].Tm :=
     (s.Pi_pb ilen jlen).lift f (PtpEquiv.mk s[i] A B) f_tp
   simp [mkLam, unLam]
   have : PtpEquiv.fst s[i] total = A := by
-    simp [total, PtpEquiv.fst, UvPoly.Equiv.fst]
+    change total ≫ s[i].uvPolyTp.fstProj s[j].Tm = A
     rw [← s[i].uvPolyTp.map_fstProj s[j].tp]
-    slice_lhs 1 2 => apply (s.Pi_pb ilen jlen).lift_snd
-    apply PtpEquiv.fst_mk
+    change (s.Pi_pb ilen jlen).lift f (PtpEquiv.mk s[i] A B) f_tp ≫
+      s[i].Ptp.map s[j].tp ≫ s[i].uvPolyTp.fstProj s[j].Ty = A
+    -- `Ptp` and the polynomial functor are definitionally equal but semireducible.
+    set_option backward.isDefEq.respectTransparency false in
+      rw [(s.Pi_pb ilen jlen).lift_snd_assoc]
+    exact PtpEquiv.fst_mk s[i] A B
   slice_lhs 1 1 => equals total =>
     apply PtpEquiv.ext _ (A := A) (by simp) (by simp [this]) (by simp [total])
   apply (s.Pi_pb ilen jlen).lift_fst
