@@ -967,6 +967,8 @@ variable (F)
 section
 
 variable {G H : D ⥤ C} (α : G ≅ H)
+-- The bundled Cat projections require the earlier backward elaboration behavior here.
+set_option backward.isDefEq.respectTransparency false in
 /--
 An natural isomorphism between functors `G ≅ H` induces a natural isomorphism between the canonical
 morphism `pre F G` and `pre F H`, up to composition with
@@ -982,17 +984,19 @@ def preNatIso : pre F G ≅ map (whiskerRight α.hom F) ⋙ (pre F H) :=
         Hom.comp_fiber, pre_map_fiber,
         eqToHom_trans_assoc, map_map_fiber, whiskerRight_app]
         erw [Category.comp_id, Functor.map_id,
-          Functor.congr_hom (F.congr_map (transportIso_inv_base (mk (G.obj Y.base) Y.fiber)
-          (α.app Y.base)))]
+          Functor.congr_hom (congrArg Cat.Hom.toFunctor (F.congr_map (transportIso_inv_base (mk (G.obj Y.base) Y.fiber)
+          (α.app Y.base))))]
         simp)
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem preNatIso_hom_app_base (x) :
     ((preNatIso F α).hom.app x).base = α.hom.app x.base := by
   simp [preNatIso]
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem preNatIso_hom_app_fiber (x) :
     ((preNatIso F α).hom.app x).fiber = 𝟙 _ := by
-  simp [preNatIso]
+  simp [preNatIso, pre, functorTo]
 
 theorem preNatIso_congr {G H : D ⥤ C} {α β : G ≅ H} (h : α = β) :
     preNatIso F α = preNatIso F β ≪≫ eqToIso (by subst h; simp) := by
@@ -1099,12 +1103,14 @@ section FunctorFrom
 
 variable {E : Type*} [Category E] (c : C)
 
+-- Cat identity functors are bundled; permit the local dependent transport simplification.
+set_option backward.isDefEq.respectTransparency false in
 /-- The inclusion of a fiber `F.obj c` of a functor `F : C ⥤ Cat` into its Grothendieck
 construction. -/
 @[simps!]
 def ι : F.obj c ⥤ ∫ F :=
   functorTo ((const (F.obj c)).obj c) id (fun f => eqToHom (by simp) ≫ f) (by simp)
-  (by simp [Functor.congr_hom (F.map_id _)])
+  (by simp [Functor.congr_hom (congrArg Cat.Hom.toFunctor (F.map_id _))])
 
 instance faithful_ι (c : C) : (ι F c).Faithful where
   map_injective f := by
