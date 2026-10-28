@@ -40,6 +40,8 @@ def asSmallClosedType : (tensorUnit _ : Ctx) ⟶ Ty.{v+1, max u (v+2)} :=
   toCoreAsSmallEquiv.symm ((Functor.const _).obj
     (Grpd.of (Core (AsSmall.{v+1} Grpd.{v,v}))))
 
+-- The fiber maps reduce through bundled universe definitions in the functor laws.
+set_option backward.isDefEq.respectTransparency false in
 def isoExtAsSmallClosedTypeHom :
     Core (AsSmall.{max u (v+2)} Grpd.{v,v})
     ⥤ ∫(toCoreAsSmallEquiv (asSmallClosedType.{v, max u (v + 2)})) where
@@ -108,6 +110,8 @@ theorem substWk_eq (A : Γ ⟶ U.Ty.{v}) (σA : Δ ⟶ U.Ty.{v}) (eq) :
     simp [Grpd.comp_eq_comp, Functor.assoc]
     erw [pre_comp_forget, ← Functor.assoc, map_forget]
 
+-- Unfold the bundled universe projections while checking the section equation.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem sec_eq {Γ : Ctx} (α : Γ ⟶ U.{v}.Tm) (A : Γ ⟶ U.{v}.Ty) (hα : α ≫ U.tp = A) :
     U.sec _ α hα = sec (toCoreAsSmallEquiv A) (toCoreAsSmallEquiv α)
     (by rw [← hα, Grpd.comp_eq_comp, tp, toCoreAsSmallEquiv_apply_comp_right]) := by
