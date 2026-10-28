@@ -320,6 +320,8 @@ def assocFibMap {x y : ∫ B} (f : x ⟶ y) :
     (assocFibMap f).fiber = eqToHom (assocFibMap_aux ..) ≫ f.fiber := by
   rfl
 
+-- Expose the bundled fiber groupoid for the identity projection lemmas.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFibMap_id (x : ∫ B) : assocFibMap (𝟙 x) = eqToHom (by simp) := by
   apply Hom.ext <;> simp [sigmaObj]
 
