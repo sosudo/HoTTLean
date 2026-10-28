@@ -448,7 +448,8 @@ lemma assocFibMap_assocHom_app {c c' : Γ} (f : c ⟶ c') (x : sigmaObj B c) :
     rw! (transparency := .default) (castMode := .all) [homMk_fiber, preNatIso_hom_app_fiber]
     simp [ιNatIso_hom]
     rw! (transparency := .default) (castMode := .all) [homMk_fiber, Category.comp_id]
-    apply eqToHom_heq
+    apply eqToHom_heq_eqToHom
+    rfl
 
 end
 
