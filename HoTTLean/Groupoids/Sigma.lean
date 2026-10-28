@@ -516,6 +516,8 @@ lemma assoc_inv_obj_base_fiber (x) : ((assoc B).inv.obj x).base.fiber = x.fiber.
 lemma assoc_inv_obj_fiber (x) :  ((assoc B).inv.obj x).fiber = x.fiber.fiber :=
   rfl
 
+-- The inverse construction unfolds semireducible groupoid wrappers in this proof.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma assoc_inv_map_base_base {x y} (f : x ⟶ y) : ((assoc B).inv.map f).base.base = f.base := by
   simp only [assoc, Functor.Iso.symm_inv, functorIsoFrom_hom_obj, sigma_obj, assocFib,
