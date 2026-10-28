@@ -144,18 +144,21 @@ theorem whiskerRight_twice' {C D E B} [Category C] [Category D] [Category E] [Ca
 
 variable [HasTerminal C]
 
+-- This local setting lets simp reduce the mate through the TwoSquare wrapper.
 open Over ExponentiableMorphism Functor in
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma cartesianNatTrans_fstProj {E B E' B' : C} (P : UvPoly E B) (P' : UvPoly E' B')
     (e : E ⟶ E') (b : B ⟶ B') (pb : IsPullback P.p e b P'.p) (X : C) :
     (P.cartesianNatTrans P' b e pb).app X ≫ P'.fstProj X = P.fstProj X ≫ b := by
   let m := whiskerRight (Over.starPullbackIsoStar e).inv (pushforward P.p) ≫
     whiskerLeft (Over.star E') (pushforwardPullbackIsoSquare pb.flip).inv
-  simp [cartesianNatTrans, pullbackForgetTwoSquare, Adjunction.id, Over.mapForget]
+  simp [UvPoly.apply, fstProj, functor, cartesianNatTrans, pullbackForgetTwoSquare,
+    Adjunction.id, Over.mapForget, TwoSquare.vComp, TwoSquare.mk, TwoSquare.natTrans, mateEquiv]
   rw [← Category.assoc]
   change (m.app X).left ≫ pullback.fst (P'.fstProj X) b ≫ P'.fstProj X = P.fstProj X ≫ b
   rw [pullback.condition, ← Category.assoc]; congr 1
-  simpa using Over.w (m.app X)
+  simpa [fstProj, UvPoly.apply, functor] using Over.w (m.app X)
 
 open ExponentiableMorphism Functor in
 set_option maxHeartbeats 300000 in
