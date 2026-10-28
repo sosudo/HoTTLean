@@ -325,6 +325,8 @@ set_option backward.isDefEq.respectTransparency false in
 lemma assocFibMap_id (x : ∫ B) : assocFibMap (𝟙 x) = eqToHom (by simp) := by
   apply Hom.ext <;> simp [sigmaObj]
 
+-- Expose the bundled groupoid for dependent projection simplification.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFibMap_comp {x y z : ∫ B} (f : x ⟶ y) (g : y ⟶ z) :
     assocFibMap (f ≫ g) = eqToHom (by simp) ≫
     (sigmaMap B (Hom.base (Hom.base g))).map (assocFibMap f) ≫ assocFibMap g := by
