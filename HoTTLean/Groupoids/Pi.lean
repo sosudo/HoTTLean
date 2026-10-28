@@ -964,22 +964,14 @@ def inversion : ∫(A) ⥤ PGrpd := mapStrongTrans B s hs ⋙ (sigma.assoc B).in
 lemma assocHom_app_base_base
     {Γ : Type u₂} [Groupoid Γ] {A : Γ ⥤ Grpd} (B : ∫ A ⥤ Grpd)
     {x y : Γ} (f : x ⟶ y) (a) :
-    ((sigma.assocHom B f).app a).base.base = f := by
-  simp [sigma.assocHom, sigma.assocIso, ιNatIso_hom]
+    ((sigma.assocHom B f).app a).base.base = f :=
+  sigma.assocIso_hom_app_base_base B f a
 
 lemma assocHom_app_base_fiber
     {Γ : Type u₂} [Groupoid Γ] {A : Γ ⥤ Grpd} (B : ∫ A ⥤ Grpd)
     {x y : Γ} (f : x ⟶ y) (a) :
-    ((sigma.assocHom B f).app a).base.fiber = eqToHom (by
-      simp only [sigma.assocFib.eq_1, Functor.comp_obj, assocHom_app_base_base]
-      rw! (castMode := .all) [pre_obj_base B (ι A y) ((sigmaMap B f).obj a)]
-      rw! (castMode := .all) [pre_obj_base B (ι A x) a]
-      simp) := by
-  simp only [sigma.assocFib.eq_1, Functor.comp_obj, sigma.assocHom,
-    sigma.assocIso, eqToHom_refl]
-  rw! (castMode := .all) [preNatIso_hom_app_base, ιNatIso_hom]
-  simp
-  rfl
+    ((sigma.assocHom B f).app a).base.fiber = eqToHom (by rfl) := by
+  exact sigma.assocIso_hom_app_base_fiber B f a
 
 lemma mapStrongTrans_comp_map_fstNatTrans :
     mapStrongTrans B s hs ⋙ map (sigma.fstNatTrans A B) = 𝟭 _ := by
