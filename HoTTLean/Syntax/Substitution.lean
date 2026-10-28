@@ -62,8 +62,10 @@ theorem wk (Γ : Ctx χ) (A l) : WfRen ((A,l) :: Γ) Nat.succ Γ := by
   exact autosubst% Lookup.succ _ lk
 
 theorem comp : WfRen Θ ξ Δ → WfRen Δ ξ' Γ → WfRen Θ (ξ ∘ ξ') Γ := by
-  unfold WfRen; intro wf wf' _ _ _ lk
-  exact autosubst% wf <| wf' lk
+  unfold WfRen; intro wf wf' i A l lk
+  have h := wf (wf' lk)
+  have e : (A.rename ξ').rename ξ = A.rename (ξ ∘ ξ') := by autosubst
+  simpa only [e, Function.comp_apply] using h
 
 theorem upr : WfRen Δ ξ Γ → WfRen ((A.rename ξ, l) :: Δ) (Expr.upr ξ) ((A, l) :: Γ) := by
   unfold WfRen; intro wf _ _ _ lk
