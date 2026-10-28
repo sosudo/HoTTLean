@@ -949,6 +949,8 @@ def equivSnd (pair : y(Γ) ⟶ ie.iFunctor.obj X) :
     y(ii.motiveCtx (equivFst ie pair)) ⟶ X :=
   UvPoly.Equiv.snd' ie.iUvPoly X pair (ie.motiveCtx_isPullback' _).flip
 
+-- The polynomial functor and its object need semireducible unfolding for rewriting.
+set_option backward.isDefEq.respectTransparency false in
 lemma equivSnd_comp_left (pair : y(Γ) ⟶ ie.iFunctor.obj X)
     {Δ} (σ : Δ ⟶ Γ) :
     ie.equivSnd (ym(σ) ≫ pair) =
