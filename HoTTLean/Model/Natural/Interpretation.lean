@@ -270,6 +270,8 @@ theorem mem_var_zero {Γ : s.CObj} {l' l'len A l} {llen : l < s.length + 1} {x} 
   cases h
   simp_part
 
+-- Unfold CObj while matching membership through the dependent snoc projection.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem mem_var_succ {Γ : s.CObj} {l' l'len A l i} {llen : l < s.length + 1} {x} :
     x ∈ (Γ.snoc (l := l') l'len A).var llen (i+1) ↔
