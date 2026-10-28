@@ -890,24 +890,15 @@ lemma strongTrans.app_comp_fstNatTrans_app (x : Γ) :
     strongTrans.app B s hs x ⋙ (sigma.fstNatTrans A B).app x = 𝟭 ↑(A.obj x) := by
   simpa [strongTrans.app, IsSection] using (PGrpd.objFiber' hs x).obj.property
 
+-- Unfold bundled groupoid coercions in the inverse-base projection.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.app_map_naturality_hom_app {x y : Γ} (f : x ⟶ y) (a : (A.obj x)) :
     ((sigma.fstNatTrans A B).app y).map (((strongTrans.naturality B s hs) f).hom.app a) =
     eqToHom (Section.strongTrans_comp_toStrongTrans'_self_aux (sigma.fstNatTrans A B)
       (app B s hs) (app_comp_fstNatTrans_app B s hs) f a) := by
-  simp only [sigma_obj, sigma.fstNatTrans, Functor.comp_obj, Functor.Groupoidal.forget_obj,
-    sigmaMap_obj_base, naturality, sigma_map, conjugatingObjNatTransEquiv₁, Grpd.Functor.iso,
-    Grpd.functorIsoOfIso_inv, Functor.mapIso_inv, asIso_inv, Grpd.functorIsoOfIso_hom,
-    Functor.mapIso_hom, asIso_hom, conjugatingObjNatTransEquiv', Groupoid.isoEquivHom,
-    Groupoid.inv_eq_inv, Equiv.toFun_as_coe, Equiv.trans_apply, Equiv.coe_fn_mk,
-    Equiv.coe_fn_symm_mk, IsIso.inv_comp, Functor.inv_whiskerLeft, inv_eqToHom, Iso.symm_mk,
-    NatTrans.comp_app, Functor.whiskerLeft_app, NatIso.isIso_inv_app, eqToHom_app, forget_map]
-  rw [Functor.Groupoidal.comp_base, Functor.Groupoidal.base_eqToHom,
-    ← Functor.Groupoidal.inv_base]
-  have h := NatTrans.congr_app ((PGrpd.mapFiber' hs f)).2 ((A.map f).obj a)
-  simp only [Set.mem_setOf_eq, IsOverId, sigma.fstNatTrans] at h
-  simp only [sigma_obj, pi_obj_α, Functor.comp_obj, Functor.Groupoidal.forget_obj,
-    Functor.whiskerRight_app, forget_map, Category.id_comp, eqToHom_trans, eqToHom_app] at h
-  simp [twoCell, h]
+  change Hom.base ((strongTrans.naturality B s hs f).hom.app a) = _
+  rw [← NatIso.inv_inv_app, ← Functor.Groupoidal.inv_base]
+  simp only [strongTrans.naturality_inv_app_base, inv_eqToHom]
 
 def mapStrongTrans : ∫ A ⥤ ∫ sigma A B :=
   Section.mapStrongTrans (strongTrans.app B s hs) (strongTrans.naturality B s hs)
