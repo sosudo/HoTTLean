@@ -305,6 +305,8 @@ def conjugatingObjNatTransEquiv₁ {x y : Γ} (f : x ⟶ y) (S) (T) :
     (S ⋙ B.map f ≅ A.map f ⋙ T) := (conjugatingObjNatTransEquiv' A B f S T).trans
     (Groupoid.isoEquivHom (S ⋙ B.map f) (A.map f ⋙ T)).symm
 
+-- Dependent rewriting unfolds bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma conjugatingObjNatTransEquiv₁_id_inv {x : Γ} (S) (T)
     (g : A.map (inv (𝟙 x)) ⋙ S ⋙ B.map (𝟙 x) ⟶ T) :
