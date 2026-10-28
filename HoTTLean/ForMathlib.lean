@@ -123,7 +123,7 @@ theorem eqToHom_obj {C1 C2 : Cat.{v,u}} (x : C1) (eq : C1 = C2) :
   simp[CategoryStruct.id]
 
 abbrev homOf {C D : Type u} [Category.{v} C] [Category.{v} D] (F : C ⥤ D) :
-    Cat.of C ⟶ Cat.of D := F
+    Cat.of C ⟶ Cat.of D := F.toCatHom
 
 @[simps] def ULift_lte_iso_self {C : Type (max u u₁)} [Category.{v} C] :
     Cat.of (ULift.{u} C) ≅ Cat.of C where
