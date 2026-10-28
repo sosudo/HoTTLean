@@ -255,6 +255,7 @@ theorem mk_comp_cartesianNatTrans {i j ij jlen} {Γ X} (A : y(Γ) ⟶ s[i].Ty)
     PtpEquiv.mk s[i] A B ≫ (s.cartesianNatTrans i j).app X =
     PtpEquiv.mk s[j] (A ≫ (s.homOfLe i j).mapTy)
     (ym(substCons _ (s[j].disp _) _ (s.unliftVar i j ij jlen A rfl) (by simp)) ≫ B) := by
+  unfold cartesianNatTrans
   convert Hom.mk_comp_cartesianNatTrans _ _ _
   apply (IsPullback.paste_horiz (s[i].disp_pullback _) (s.homOfLe i j).pb).hom_ext
   · simp [unliftVar]
