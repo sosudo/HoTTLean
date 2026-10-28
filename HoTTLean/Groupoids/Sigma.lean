@@ -399,6 +399,8 @@ lemma assocFib_forget_comp_forget_obj (x : ∫ B) :
       simp
   · simp
 
+-- Dependent projections cross bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocHom_app_comp_pre_map_assocFibMap {x y : ∫ B} (f : x ⟶ y) :
     (assocHom B (Hom.base (Hom.base f))).app (assocFibObj x) ≫
       (pre B (ι A y.base.base)).map (assocFibMap f) ≍ f := by
