@@ -64,7 +64,7 @@ abbrev point {x y : C} (f : x ⟶ y) :
 variable {A} {fst} {snd}
 
 @[simp] def liftObjFiber (x : C) : A.obj (snd.obj x) :=
-  ((eqToHom w).app x).obj (pt fst x)
+  ((eqToHom w).app x).toFunctor.obj (pt fst x)
 
 variable {x y : C} (f : x ⟶ y)
 
