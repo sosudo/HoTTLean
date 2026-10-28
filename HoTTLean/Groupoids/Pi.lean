@@ -745,12 +745,16 @@ def strongTrans.twoCell {x y : Γ} (g : x ⟶ y) :
     A.map (CategoryTheory.inv g) ⋙ strongTrans.app B s hs x ⋙ sigmaMap B g ⟶
   strongTrans.app B s hs y := (PGrpd.mapFiber' hs g).1.hom
 
+-- The equality crosses the bundled groupoid coercion in functor composition.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.twoCell_app_base_aux {x y : Γ} (g : x ⟶ y) (a) :
     base ((A.map (CategoryTheory.inv g) ⋙ app B s hs x ⋙ sigmaMap B g).obj a) =
     base ((app B s hs y).obj a) := by
   simp only [Functor.map_inv, sigma_obj, Functor.comp_obj, sigmaMap_obj_base, app_obj_base]
   simp [← Functor.comp_obj, ← Grpd.comp_eq_comp]
 
+-- The bundled groupoid coercions in the whiskered component require backward unfolding.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.twoCell_app_base {x y : Γ} (g : x ⟶ y) (a) :
     ((strongTrans.twoCell B s hs g).app a).base = eqToHom (twoCell_app_base_aux ..) := by
