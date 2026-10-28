@@ -257,12 +257,18 @@ protected def tp {l : Nat} (Γ : s.CObj) (llen : l < s.length + 1) (i : ℕ) :
     Part (y(Γ.1) ⟶ s[l].Ty) :=
   Γ.2.tp llen i
 
+-- Unfold the CObj abbreviation when matching membership under the dependent transport.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem mem_var_zero {Γ : s.CObj} {l' l'len A l} {llen : l < s.length + 1} {x} :
     x ∈ (Γ.snoc (l := l') l'len A).var llen 0 ↔
     ∃ l'l : l' = l, x = l'l ▸ s[l'].var A := by
   dsimp only [UHomSeq.CObj.var, UHomSeq.CObj.snoc, UHomSeq.ExtSeq.var]
-  simp_part; exact exists_congr fun _ => by subst l'; simp_part
+  rw [Part.mem_assert_iff]
+  apply exists_congr
+  intro h
+  cases h
+  simp_part
 
 @[simp]
 theorem mem_var_succ {Γ : s.CObj} {l' l'len A l i} {llen : l < s.length + 1} {x} :
