@@ -863,25 +863,26 @@ variable {Libya Egypt Chad Sudan : Type u} [Category.{v} Libya]
   (h : Functor.IsPullback north west east south)
   (s : Limits.PullbackCone (homOf east) (homOf south))
 
-def lift : s.pt ⟶ of Libya := h.lift s.fst s.snd s.condition
+def lift : s.pt ⟶ of Libya := homOf (h.lift s.fst.toFunctor s.snd.toFunctor (congrArg Cat.Hom.toFunctor s.condition))
 
 def fac_left : lift h s ≫ (homOf north) = s.fst :=
-  h.fac_left _ _ _
+  Cat.Hom.ext (h.fac_left _ _ _)
 
 def fac_right : lift h s ≫ (homOf west) = s.snd :=
-  h.fac_right _ _ _
+  Cat.Hom.ext (h.fac_right _ _ _)
 
 def uniq (m : s.pt ⟶ of Libya) (hl : m ≫ homOf north = s.fst)
     (hr : m ≫ homOf west = s.snd) : m = lift h s := by
+  apply Cat.Hom.ext
   apply h.hom_ext
-  · convert (fac_left h s).symm
-  · convert (fac_right h s).symm
+  · exact (congrArg Cat.Hom.toFunctor hl).trans (congrArg Cat.Hom.toFunctor (fac_left h s)).symm
+  · exact (congrArg Cat.Hom.toFunctor hr).trans (congrArg Cat.Hom.toFunctor (fac_right h s)).symm
 
 variable (comm_sq) in
 def isPullback : IsPullback (homOf north) (homOf west) (homOf east)
     (homOf south) :=
   IsPullback.of_isLimit (PullbackCone.IsLimit.mk
-    comm_sq (lift h) (fac_left _) (fac_right _) (uniq _))
+    (Cat.Hom.ext comm_sq) (lift h) (fac_left _) (fac_right _) (uniq _))
 
 noncomputable def functorIsPullback
     (h : IsPullback (homOf north) (homOf west) (homOf east) (homOf south)) :
@@ -891,13 +892,13 @@ noncomputable def functorIsPullback
     (homOf south) :=
     isPullback Functor.IsPullback.Chosen.comm_sq (Functor.IsPullback.Chosen.isPullback east south)
   let i := IsPullback.isoIsPullback _ _ h hChosen
-  convert Functor.IsPullback.ofIsoChosen east south i.hom i.inv ?_ ?_
-  · symm
-    exact IsPullback.isoIsPullback_hom_fst _ _ h hChosen
-  · symm
-    exact IsPullback.isoIsPullback_hom_snd _ _ h hChosen
-  · exact i.hom_inv_id
-  · exact i.inv_hom_id
+  have hn : i.hom.toFunctor ⋙ IsPullback.Chosen.north = north :=
+    congrArg Cat.Hom.toFunctor (IsPullback.isoIsPullback_hom_fst _ _ h hChosen)
+  have hw : i.hom.toFunctor ⋙ IsPullback.Chosen.west = west :=
+    congrArg Cat.Hom.toFunctor (IsPullback.isoIsPullback_hom_snd _ _ h hChosen)
+  rw [← hn, ← hw]
+  exact Functor.IsPullback.ofIsoChosen east south i.hom.toFunctor i.inv.toFunctor
+    (congrArg Cat.Hom.toFunctor i.hom_inv_id) (congrArg Cat.Hom.toFunctor i.inv_hom_id)
 
 end
 end Cat
@@ -924,8 +925,8 @@ def fac_right : lift h s ≫ (homOf west) = s.snd :=
 def uniq (m : s.pt ⟶ of Libya) (hl : m ≫ homOf north = s.fst)
     (hr : m ≫ homOf west = s.snd) : m = lift h s := by
   apply h.hom_ext
-  · convert (fac_left h s).symm
-  · convert (fac_right h s).symm
+  · exact hl.trans (fac_left h s).symm
+  · exact hr.trans (fac_right h s).symm
 
 def isPullback : IsPullback (homOf north) (homOf west) (homOf east) (homOf south) :=
   IsPullback.of_isLimit (PullbackCone.IsLimit.mk
