@@ -706,10 +706,15 @@ lemma transportIso_hom_base (x : ∫ F) {c : C} (α : x.base ≅ c) :
     (x.transportIso α).hom.base = α.inv :=
   rfl
 
+-- Allow simplification to see through the bundled Cat and transport projections.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma transportIso_hom_fiber (x : ∫ F) {c : C} (α : x.base ≅ c) :
     (x.transportIso α).hom.fiber =
-    eqToHom (by simp [transportIso, ← Functor.comp_obj]) := by
+    eqToHom (by
+      change (F.map α.inv).toFunctor.obj ((F.map α.hom).toFunctor.obj x.fiber) = x.fiber
+      rw [← Cat.Hom.comp_obj, ← F.map_comp, α.hom_inv_id, F.map_id]
+      rfl) := by
   simp only [transportIso, CategoryTheory.Iso.symm_hom, isoMk_inv_fiber, CategoryTheory.Iso.refl_inv]
   erw [Functor.map_id]
   simp
