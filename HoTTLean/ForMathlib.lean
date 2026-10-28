@@ -118,7 +118,7 @@ theorem eqToHom_hom {C1 C2 : Cat.{v,u}} {x y: C1} (f : x ⟶ y) (eq : C1 = C2) :
 
 /-- This turns the object part of eqToHom functors into casts -/
 theorem eqToHom_obj {C1 C2 : Cat.{v,u}} (x : C1) (eq : C1 = C2) :
-    (eqToHom eq).obj x = cast (congrArg Bundled.α eq) x := by
+    (eqToHom eq).toFunctor.obj x = cast (congrArg Bundled.α eq) x := by
   cases eq
   simp[CategoryStruct.id]
 
