@@ -312,7 +312,7 @@ def fst (pair : Γ ⟶ P @ X) :
     Γ ⟶ B :=
   fan P X |>.extend pair |>.fst
 
-lemma fst_eq (pair : Γ ⟶ P @ X) : fst P X pair = pair ≫ P.fstProj X := by simp [fst]
+lemma fst_eq (pair : Γ ⟶ P @ X) : fst P X pair = pair ≫ P.fstProj X := rfl
 
 def snd (pair : Γ ⟶ P @ X) :
     pullback (fst P X pair) P.p ⟶ X :=
