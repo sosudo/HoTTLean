@@ -989,7 +989,8 @@ lemma equivFst_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx}
     ie.equivFst pair = UvPoly.Equiv.fst (UvPoly.id M.Tm) X
     (pair ≫ ie.verticalNatTrans.app X) := by
   dsimp [equivFst, verticalNatTrans]
-  rw [← UvPoly.fst_verticalNatTrans_app]
+  exact (UvPoly.fst_verticalNatTrans_app (UvPoly.id M.Tm) ie.iUvPoly
+    ie.comparison (by simp [iUvPoly]) X pair).symm
 
 lemma equivSnd_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx}
     (pair : y(Γ) ⟶ ie.iFunctor.obj X) :
