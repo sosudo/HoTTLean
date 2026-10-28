@@ -424,7 +424,8 @@ def snd (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) : y(Γ) ⟶ N.Tm :=
   ab ≫ pullback.fst N.tp (PartialProduct.fan M.uvPolyTp N.Ty).snd
 
 theorem comp_snd (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) (σ : y(Δ) ⟶ y(Γ)) :
-    σ ≫ snd ab = snd (σ ≫ ab) := by simp [snd]
+    σ ≫ snd ab = snd (σ ≫ ab) := by
+  exact (Category.assoc σ ab _).symm
 
 /-- Universal property of `compDom`, decomposition (part 4).
 
