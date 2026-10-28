@@ -149,7 +149,10 @@ def UHom.ofTarskiU (M : Universe Ctx) (U : y(𝟭_ Ctx) ⟶ M.Ty) (El : y(M.ext 
       (Iso.refl _)
       (Iso.refl _)
       (Iso.refl _)
-      (by simp) (isTerminal_yUnit.hom_ext ..)
+      (by
+        change M.var U ≫ 𝟙 M.Tm = 𝟙 y(M.ext U) ≫ M.var U
+        simp only [Category.comp_id, Category.id_comp])
+      (isTerminal_yUnit.hom_ext ..)
       (by simp) (by simp)
 
 /-! ## Universe embeddings -/
