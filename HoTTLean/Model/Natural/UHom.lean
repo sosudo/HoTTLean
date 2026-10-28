@@ -46,6 +46,8 @@ protected def pullbackHom (M : Universe Ctx) {Γ : Ctx} (A : y(Γ) ⟶ M.Ty) :
   mapTy := A
   pb := M.disp_pullback A
 
+-- The pullback projections need semireducible unfolding during elaboration.
+set_option backward.isDefEq.respectTransparency false in
 /-- Given `M : Universe`, a semantic type `A : y(Γ) ⟶ M.Ty`,
 and a substitution `σ : Δ ⟶ Γ`, construct a Hom for the substitution `A[σ]`.
 -/
@@ -54,11 +56,13 @@ def Hom.subst (M : Universe Ctx)
     Hom (M.pullback (ym(σ) ≫ A)) (M.pullback A) :=
   let Aσ := ym(σ) ≫ A
   { mapTm :=
-    (M.disp_pullback A).lift (M.var Aσ) ym(M.disp Aσ ≫ σ) (by aesop_cat)
+    (M.disp_pullback A).lift (M.var Aσ) ym(M.disp Aσ ≫ σ) (by
+      rw [(M.disp_pullback Aσ).w]
+      simp [Aσ, Category.assoc])
     mapTy := ym(σ)
     pb := by
-      convert IsPullback.of_right' (M.disp_pullback Aσ) (M.disp_pullback A)
-      simp }
+      simpa [Universe.pullback, Aσ] using
+        IsPullback.of_right' (M.disp_pullback Aσ) (M.disp_pullback A) }
 
 def Hom.cartesianNatTrans {M N : Universe Ctx} (h : Hom M N) :
     M.Ptp ⟶ N.Ptp :=
