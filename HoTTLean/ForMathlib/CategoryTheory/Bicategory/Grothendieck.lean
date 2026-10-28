@@ -794,18 +794,27 @@ theorem map_comp_forget {α : F ⟶ G} :
     Grothendieck.map α ⋙ Grothendieck.forget G = Grothendieck.forget F :=
   rfl
 
-theorem map_id_eq : map (𝟙 F) = 𝟙 (Cat.of <| Grothendieck <| F) := by
+theorem map_id_eq : map (𝟙 F) = 𝟭 (Grothendieck F) := by
+  -- Unfold the wrapped Cat functors when comparing dependent fiber maps.
+  set_option backward.isDefEq.respectTransparency false in
   apply FunctorTo.hext
-  all_goals simp [Cat.id_eq_id, Functor.id_comp]
+  · simp [Functor.id_comp]
+  · simp [map, functorTo, forget]
+  · intro x y f
+    simp [map, functorTo, forget]
 
 /-- Making the equality of functors into an isomorphism. Note: we should avoid equality of functors
 if possible, and we should prefer `mapIdIso` to `map_id_eq` whenever we can. -/
-def mapIdIso : map (𝟙 F) ≅ 𝟙 (Cat.of <| Grothendieck <| F) := eqToIso map_id_eq
+def mapIdIso : map (𝟙 F) ≅ 𝟭 (Grothendieck F) := eqToIso map_id_eq
 
 theorem map_comp_eq (α : F ⟶ G) (β : G ⟶ H) :
     map (α ≫ β) = map α ⋙ map β := by
+  -- The fiber equality requires the same local transparency compatibility.
+  set_option backward.isDefEq.respectTransparency false in
   apply FunctorTo.hext
-  all_goals simp [Functor.assoc]
+  · simp [Functor.assoc]
+  · simp [map, functorTo, forget]
+  · simp [map, functorTo, forget]
 
 /-- Making the equality of functors into an isomorphism. Note: we should avoid equality of functors
 if possible, and we should prefer `map_comp_iso` to `map_comp_eq` whenever we can. -/
@@ -816,8 +825,8 @@ end
 /-- The Grothendieck construction as a functor from the functor category `E ⥤ Cat` to the
 over category `Over E`. -/
 def functor {E : Cat.{v, u}} : (E ⥤ Cat.{v,u}) ⥤ Over (T := Cat.{v,u}) E where
-  obj F := Over.mk (X := E) (Y := Cat.of (∫ F)) (Grothendieck.forget F)
-  map {_ _} α := Over.homMk (X:= E) (Grothendieck.map α) Grothendieck.map_comp_forget
+  obj F := Over.mk (X := E) (Y := Cat.of (∫ F)) (Grothendieck.forget F).toCatHom
+  map {_ _} α := Over.homMk (X:= E) (Grothendieck.map α).toCatHom (congrArg Functor.toCatHom Grothendieck.map_comp_forget)
   map_id F := by
     ext
     exact Grothendieck.map_id_eq (F := F)
