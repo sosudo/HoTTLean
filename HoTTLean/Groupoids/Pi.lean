@@ -1460,6 +1460,8 @@ lemma strongTrans.twoCell_lam_app_fiber {x y : ∫ A} (f : x ⟶ y) :
   rw! [twoCell_lam_app]
   simp
 
+-- Match bundled groupoid coercions when projecting the composite fiber.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapStrongTrans_map_lam_map_fiber_fiber_heq {x y} (f : x ⟶ y) :
     ((mapStrongTrans (β ⋙ PGrpd.forgetToGrpd) (lam A β)
       (lam_comp_forgetToGrpd ..)).map f).fiber.fiber ≍
@@ -1487,7 +1489,10 @@ lemma mapStrongTrans_map_lam_map_fiber_fiber_heq {x y} (f : x ⟶ y) :
   simp only [Grothendieck.Hom.id_base, Grpd.id_eq_id, id_obj, eqToHom_refl, Functor.id_map,
     Category.id_comp, heq_eq_eq]
   erw [Category.comp_id]
+  rfl
 
+-- Match bundled groupoid coercions in the dependent fiber projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma inversion_lam : inversion (β ⋙ PGrpd.forgetToGrpd) (lam A β)
     (lam_comp_forgetToGrpd ..) = β := by
   apply PGrpd.Functor.hext
