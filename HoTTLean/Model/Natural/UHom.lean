@@ -768,6 +768,8 @@ def mkSnd {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     y(Γ) ⟶ s[j].Tm :=
   compDomEquiv.snd ((s.Sig_pb ilen jlen).lift p (PtpEquiv.mk _ A B) p_tp)
 
+-- The pullback projections require reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem mkSnd_mkPair {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (t : y(Γ) ⟶ s[i].Tm) (t_tp : t ≫ s[i].tp = A)
