@@ -353,7 +353,8 @@ theorem fst_comp_left (pair : Γ ⟶ P @ X) {Δ} (f : Δ ⟶ Γ) :
     fst P X (f ≫ pair) = f ≫ fst P X pair := by simp [fst_eq]
 
 theorem fst_comp_right (pair : Γ ⟶ P @ X) : fst P Y (pair ≫ P.functor.map f) = fst P X pair := by
-  simp [fst_eq]
+  exact (Category.assoc pair (P.functor.map f) (P.fstProj Y)).trans
+    (congrArg (fun k => pair ≫ k) (UvPoly.map_fstProj P f))
 
 lemma snd'_eq (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (fst P X pair) P.p) :
     snd' P X pair H = pullback.lift (f ≫ pair) g (by simpa using H.w) ≫ (fan P X).snd := by
