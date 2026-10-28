@@ -992,6 +992,8 @@ lemma equivFst_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx}
   exact (UvPoly.fst_verticalNatTrans_app (UvPoly.id M.Tm) ie.iUvPoly
     ie.comparison (by simp [iUvPoly]) X pair).symm
 
+-- The pullback projections require semireducible unfolding during rewriting.
+set_option backward.isDefEq.respectTransparency false in
 lemma equivSnd_verticalNatTrans_app {Γ : Ctx} {X : Psh Ctx}
     (pair : y(Γ) ⟶ ie.iFunctor.obj X) :
     UvPoly.Equiv.snd' (UvPoly.id M.Tm) X (pair ≫ ie.verticalNatTrans.app X)
