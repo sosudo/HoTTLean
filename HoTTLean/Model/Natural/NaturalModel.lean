@@ -914,11 +914,14 @@ lemma toI_comp_i2 : ie.toI a ≫ ie.i2 = ym(M.disp _) ≫ ii.toK a :=
 
 lemma toI_comp_left {Δ} (σ : Δ ⟶ Γ) : toI ie (ym(σ) ≫ a) =
     ym(ii.motiveSubst σ a) ≫ toI ie a := by
-  dsimp [toI]
   apply ie.i_isPullback.hom_ext
-  · simp [motiveSubst]
-  · simp [toK_comp_left, motiveSubst, substWk, substCons]
-    rfl
+  · simp only [Category.assoc, toI_comp_i1, motiveSubst]
+    exact (M.substWk_var _ _ _ _).symm
+  · simp only [Category.assoc, toI_comp_i2, toK_comp_left, motiveSubst]
+    -- Unfold the context definitions only for this projection rewrite.
+    rw! (transparency := .default) [substWk_disp_functor_map_assoc]
+    dsimp only [motiveCtx]
+    congr 2
 
 theorem motiveCtx_isPullback :
     IsPullback (ie.toI a) ym(M.disp _) ie.i2 (toK ii a) :=
