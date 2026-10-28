@@ -1305,7 +1305,7 @@ abbrev motive : y(ii.motiveCtx (ie.equivFst aC)) ⟶ N.Ty :=
 
 lemma comp_motive {Δ} (σ : Δ ⟶ Γ) : motive (ym(σ) ≫ aC) =
     ym(ii.motiveSubst σ (ie.equivFst aC)) ≫ motive aC := by
-  simp only [motive, equivSnd_comp_left ie aC σ]
+  exact equivSnd_comp_left ie aC σ
 
 abbrev reflCase : y(Γ) ⟶ N.Tm := UvPoly.Equiv.snd' _ _ ar (Id.reflCase_aux _)
 
