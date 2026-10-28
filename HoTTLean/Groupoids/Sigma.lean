@@ -376,6 +376,8 @@ lemma assocFibObj_assocFib_obj (c : Γ) (x : sigmaObj B c) :
   · rw! (castMode := .all) [pre_obj_base]
     simp
 
+-- Expose bundled groupoid projections for the dependent map equations.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFibMap_assocFib_map (c : Γ) {x y : sigmaObj B c} (f : x ⟶ y) :
     assocFibMap ((assocFib B c).map f) ≍ f := by
   dsimp [assocFib, assocFibMap]
