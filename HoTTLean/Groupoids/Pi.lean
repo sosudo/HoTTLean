@@ -819,6 +819,8 @@ lemma strongTrans.naturality_inv_app {x y} (f : x ⟶ y) (a) :
     Functor.whiskerLeft_app]
   rfl
 
+-- Bundled groupoid coercions must be unfolded when elaborating the base equation.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.naturality_inv_app_base {x y} (f : x ⟶ y) (a) :
     Hom.base ((strongTrans.naturality B s hs f).inv.app a) = eqToHom (by simp) := by
