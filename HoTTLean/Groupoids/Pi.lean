@@ -452,9 +452,11 @@ lemma functor_comp {Δ : Type u₃} [Groupoid.{v₃} Δ] (σ : Δ ⥤ Γ) :
     set_option backward.isDefEq.respectTransparency false in
       simp [functor, functorMap]
 
+-- Unfold bundled groupoid projections while elaborating this dependent equation.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
-lemma functor_map_map {s t} (α : s ⟶ t) : (((functor φ).map f).map α).1 =
-    Functor.whiskerRight (Functor.whiskerLeft (A.map (inv f)) α.1) (B.map f) := by
+lemma functor_map_map {s t} (α : s ⟶ t) : (((functor φ).map f).map α).1.hom =
+    Functor.whiskerRight (Functor.whiskerLeft (A.map (inv f)) α.1.hom) (B.map f) := by
   simp [functor, functorMap, conjugating, MorphismProperty.lift]
 
 end
