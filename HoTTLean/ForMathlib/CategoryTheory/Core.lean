@@ -63,17 +63,6 @@ variable {C' : Type u₃} [Category.{v₃} C']
 theorem functorToCore_comp_inclusion (H : G ⥤ C) :
   functorToCore H ⋙ inclusion _ = H := rfl
 
-theorem functorToCore_comp_left (H : G ⥤ C) (F : G' ⥤ G) :
-    functorToCore (F ⋙ H) = F ⋙ functorToCore H := by
-  apply Functor.ext
-  · simp [functorToCore]
-  · intro
-    rfl
-
-theorem functorToCore_comp_right (H : G ⥤ C) (F : C ⥤ C') :
-    functorToCore (H ⋙ F) = functorToCore H ⋙ F.core := by
-  rfl
-
 theorem functorToCoreEquiv_symm_apply_comp_left (H : G ⥤ Core C) (F : G' ⥤ G) :
     functorToCoreEquiv.symm (F ⋙ H) = F ⋙ functorToCoreEquiv.symm H :=
   rfl
@@ -99,17 +88,6 @@ def adjunction : Grpd.forgetToCat ⊣ Core.map where
         ← functorToCore_comp_right,
         Functor.id_comp, Functor.comp_id, Grpd.forgetToCat]}
   counit := {app C := Cat.homOf (Core.inclusion C)}
-
-/-- Mildly evil. -/
-theorem inclusion_comp_functorToCore : inclusion G ⋙ functorToCore (𝟭 G) = Functor.id (Core G) := by
-    apply Functor.ext
-    · intro x y f
-      simp only [Core.inclusion, Core.functorToCore, Functor.id_map,
-        Functor.comp_map, Groupoid.inv_eq_inv, IsIso.Iso.inv_hom,
-        eqToHom_refl, Category.comp_id, Category.id_comp]
-      rfl
-    · intro
-      rfl
 
 theorem functorToCore_inclusion_apply {C : Type u} [Category.{v} C] :
     Core.functorToCore (Core.inclusion C) = Functor.id (Core C) :=
