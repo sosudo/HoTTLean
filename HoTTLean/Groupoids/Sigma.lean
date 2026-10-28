@@ -78,8 +78,10 @@ variable {B}
 
 @[simp] theorem sigmaMap_id_obj {p} : (sigmaMap B (𝟙 x)).obj p = p := by
   apply hext
-  · simp [sigmaMap]
-  · simp [sigmaMap, Grpd.eqToHom_obj]
+  · simp only [sigmaMap_obj_base, Grpd.map_id_obj]
+  · simp only [sigmaMap_obj_fiber, ιNatTrans_id_app, eqToHom_map,
+      Grpd.eqToHom_obj]
+    exact cast_heq _ _
 
 @[simp] theorem sigmaMap_id_map {p1 p2} {hp2 : p2 = (sigmaMap B (𝟙 x)).obj p2}
     (f : p1 ⟶ p2) :
