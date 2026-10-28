@@ -66,8 +66,11 @@ end
 
 lemma _root_.CategoryTheory.Functor.toPseudofunctor'_map₂ {C : Type u₁} [Category.{v₁} C] (F : C ⥤ Cat)
     {a b : LocallyDiscrete C} {f g : a ⟶ b} (η : f ⟶ g) :
-    F.toPseudofunctor'.map₂ η = eqToHom (by simp [eq_of_hom η]) := by
-  simp [Functor.toPseudofunctor', pseudofunctorOfIsLocallyDiscrete]
+    F.toPseudofunctor'.map₂ η = eqToHom (by
+      obtain ⟨f⟩ := f
+      obtain ⟨g⟩ := g
+      exact congrArg F.map (eq_of_hom η)) := by
+  rfl
 
 @[simps]
 def _root_.CategoryTheory.NatTrans.toStrongTrans' {C : Type u₁} [Category.{v₁} C] (F G : C ⥤ Cat) (α : F ⟶ G) :
@@ -80,7 +83,7 @@ def _root_.CategoryTheory.NatTrans.toStrongTrans' {C : Type u₁} [Category.{v�
 
 /-- An `eqToHom` in the category `Cat` is a functor that acts on maps by casts. -/
 theorem _root_.CategoryTheory.Cat.map_eqToHom {C1 C2 : Cat} {x y : C1} (f : x ⟶ y) (eq : C1 = C2) :
-    (eqToHom eq).map f = (cast (by subst eq; rfl) f) := by
+    (eqToHom eq).toFunctor.map f = (cast (by subst eq; rfl) f) := by
   cases eq
   simp [CategoryStruct.id]
 
@@ -107,18 +110,18 @@ structure Hom (X Y : ∫ F) where
   /-- The morphism between base objects. -/
   base : X.base ⟶ Y.base
   /-- The morphism in the fiber over the domain. -/
-  fiber : (F.map base.toLoc).obj X.fiber ⟶ Y.fiber
+  fiber : (F.map base.toLoc).toFunctor.obj X.fiber ⟶ Y.fiber
 
 @[simps! id_base id_fiber comp_base comp_fiber]
 instance categoryStruct : CategoryStruct (∫ F) where
   Hom X Y := Hom X Y
   id X := {
     base := 𝟙 X.base
-    fiber := (F.mapId ⟨X.base⟩).hom.app X.fiber }
+    fiber := (F.mapId ⟨X.base⟩).hom.toNatTrans.app X.fiber }
   comp {X _ _} f g := {
     base := f.base ≫ g.base
-    fiber := (F.mapComp f.base.toLoc g.base.toLoc).hom.app X.fiber ≫
-      (F.map g.base.toLoc).map f.fiber ≫ g.fiber }
+    fiber := (F.mapComp f.base.toLoc g.base.toLoc).hom.toNatTrans.app X.fiber ≫
+      (F.map g.base.toLoc).toFunctor.map f.fiber ≫ g.fiber }
 
 instance (X : ∫ F) : Inhabited (Hom X X) :=
   ⟨𝟙 X⟩
