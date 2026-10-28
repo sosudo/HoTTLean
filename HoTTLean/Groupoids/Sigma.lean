@@ -255,8 +255,9 @@ lemma assocIso_hom_app_fiber {x y} (f : x ⟶ y) (p) :
   rfl
 
 @[simp] theorem assocIso_id {x} :
-    assocIso B (𝟙 x) = eqToIso (by simp [sigmaMap_id, Functor.id_comp]) := by
+    assocIso B (𝟙 x) = eqToIso (by simp [sigmaMap_id]; rfl) := by
   simp [assocIso, preNatIso_congr B (ιNatIso_id A x), preNatIso_eqToIso]
+  apply eqToIso_trans
 
 theorem assocIso_comp {x y z : Γ} (f : x ⟶ y) (g : y ⟶ z) : assocIso B (f ≫ g) =
     assocIso B f ≪≫ Functor.isoWhiskerLeft (sigmaMap B f) (assocIso B g)
