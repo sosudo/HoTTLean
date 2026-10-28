@@ -797,6 +797,8 @@ theorem mkSnd_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].
   generalize_proofs h
   simp [mkSnd, compDomEquiv.snd_tp (eq := h), s.dependent_eq]; rfl
 
+-- The pullback projections require reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 theorem comp_mkSnd {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (p : y(Γ) ⟶ s[max i j].Tm) (p_tp : p ≫ s[max i j].tp = s.mkSig ilen jlen A B) :
