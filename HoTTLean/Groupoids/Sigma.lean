@@ -113,6 +113,8 @@ set_option backward.isDefEq.respectTransparency false in
 
 variable {z : Γ} {f} {g : y ⟶ z}
 
+-- Unfold the bundled groupoid for the projection and transport lemmas.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem sigmaMap_comp_obj {p} : (sigmaMap B (f ≫ g)).obj p =
     (sigmaMap B g).obj ((sigmaMap B f).obj p) := by
   dsimp only [sigmaMap]
