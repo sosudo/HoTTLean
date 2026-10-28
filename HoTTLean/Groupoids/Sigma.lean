@@ -58,11 +58,13 @@ theorem ιNatTrans_app_base (a : sigmaObj B x) : ((ιNatTrans f).app a.base) = h
 theorem sigmaMap_map_fiber_aux {a b : sigmaObj B x} {p : a ⟶ b} :
     (((ι A y ⋙ B)).map ((sigmaMap B f).map p).base).obj ((sigmaMap B f).obj a).fiber =
     (B.map ((ιNatTrans f).app (base b))).obj (((ι A x ⋙ B).map p.base).obj a.fiber) := by
-  simp only [sigmaObj, sigmaMap, Functor.comp_obj, Functor.comp_map, pre_map_base, map_map_base,
-    pre_obj_fiber, map_obj_fiber, Functor.whiskerRight_app]
+  change (B.map ((ι A y).map ((A.map f).map p.base))).obj
+    ((B.map ((ιNatTrans f).app a.base)).obj a.fiber) =
+    (B.map ((ιNatTrans f).app b.base)).obj
+      ((B.map ((ι A x).map p.base)).obj a.fiber)
   simp only [← Functor.comp_obj, ← Grpd.comp_eq_comp, ← Functor.map_comp]
-  congr 2
-  exact ((ιNatTrans f).naturality p.base).symm
+  exact congrArg (fun k => (B.map k).obj a.fiber)
+    ((ιNatTrans f).naturality p.base).symm
 
 @[simp] theorem sigmaMap_map_fiber {a b : sigmaObj B x} {p : a ⟶ b} :
     ((sigmaMap B f).map p).fiber =
