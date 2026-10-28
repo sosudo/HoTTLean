@@ -1112,6 +1112,7 @@ lemma lamObjFiberObjCompSigMap.naturality {x y : Γ} (f : x ⟶ y) {a1 a2 : A.ob
       congr 3
       aesop_cat
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] lemma lamObjFiberObjCompSigMap.app_id (a) : lamObjFiberObjCompSigMap.app A β (𝟙 x) a
     = eqToHom (by simp) := by
   apply Hom.hext
@@ -1123,6 +1124,7 @@ lemma lamObjFiberObjCompSigMap.naturality {x y : Γ} (f : x ⟶ y) {a1 a2 : A.ob
       eqToHom_trans]
     apply (eqToHom_heq_id_cod _ _ _).trans (eqToHom_heq_id_cod _ _ _).symm
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap.app_comp {x y z : Γ} (f : x ⟶ y) (g : y ⟶ z) (a) :
     app A β (f ≫ g) a
     = eqToHom (by simp)
