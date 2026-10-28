@@ -909,12 +909,12 @@ lemma mapStrongTrans_obj_fiber (x) : ((mapStrongTrans B s hs).obj x).fiber =
 @[simp]
 lemma mapStrongTrans_obj_fiber_base (x) : ((mapStrongTrans B s hs).obj x).fiber.base =
     x.fiber := by
-  simp [mapStrongTrans]
+  exact strongTrans.app_obj_base B s hs x.base x.fiber
 
 @[simp]
 lemma mapStrongTrans_obj_fiber_fiber (x) : ((mapStrongTrans B s hs).obj x).fiber.fiber =
     ((strongTrans.app B s hs x.base).obj x.fiber).fiber := by
-  simp [mapStrongTrans]
+  rfl
 
 @[simp]
 lemma mapStrongTrans_map_base {x y} (f : x ⟶ y) : ((mapStrongTrans B s hs).map f).base =
