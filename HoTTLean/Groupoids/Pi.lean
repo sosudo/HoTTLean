@@ -999,6 +999,8 @@ lemma mapStrongTrans_map_ι_map_fiber_fiber_heq {x : Γ} {a b : A.obj x} (h : a 
     apply HEq.trans (eqToHom_comp_heq ..)
     rfl
 
+-- The dependent fiber comparisons require backward unfolding of groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma ι_comp_inversion {x} : ι A x ⋙ inversion B s hs =
     strongTrans.app B s hs x ⋙ toPGrpd (ι A x ⋙ B) := by
   apply PGrpd.Functor.hext
@@ -1042,6 +1044,7 @@ def lamObjFiberObj : A.obj x ⥤ sigmaObj (β ⋙ PGrpd.forgetToGrpd) x :=
 @[simp] lemma lamObjFiberObj_map_fiber {a a'} (h: a ⟶ a'):
     ((lamObjFiberObj A β x).map h).fiber = PGrpd.mapFiber (ι A x ⋙ β) h := by
   simp [lamObjFiberObj]
+  rfl
 
 def lamObjFiber : Grpd.of ((pi _ (β ⋙ PGrpd.forgetToGrpd)).obj x) :=
   ⟨lamObjFiberObj A β x, rfl⟩
