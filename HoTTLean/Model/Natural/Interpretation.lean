@@ -184,15 +184,19 @@ theorem var_substWk_of_lt_length {l i} {Δ Γ Γ' : 𝒞} (σ : Δ ⟶ Γ) (d : 
     intro h
     cases i
     · clear ih
-      dsimp [ExtSeq.var] at st_mem ⊢
+      dsimp [ExtSeq.var] at st_mem
+      dsimp [substWk, ExtSeq.var]
       simp_part at st_mem ⊢
       obtain ⟨rfl, rfl⟩ := st_mem
-      simp
+      simp only [NaturalModel.Universe.substWk_var]
+      exact Part.mem_assert_iff.mpr ⟨rfl, Part.mem_some_iff.mpr rfl⟩
     · simp only [length, Nat.add_lt_add_iff_right] at h
-      dsimp [ExtSeq.var] at st_mem ⊢
+      dsimp [ExtSeq.var] at st_mem
+      dsimp [substWk, ExtSeq.var]
       simp_part at st_mem ⊢
       obtain ⟨a, amem, rfl⟩ := st_mem
-      refine ⟨_, ih amem h, ?_⟩
+      apply Part.mem_bind_iff.mpr
+      refine ⟨_, ih amem h, Part.mem_some_iff.mpr ?_⟩
       simp only [← Functor.map_comp_assoc]
       simp [NaturalModel.Universe.substWk_disp]
 
