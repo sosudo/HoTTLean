@@ -837,6 +837,8 @@ lemma strongTrans.naturality_inv_app_fiber {x y} (f : x ⟶ y) (a) :
   rw! [strongTrans.naturality_inv_app, comp_fiber, fiber_eqToHom, eqToHom_map]
   simp
 
+-- Bundled groupoid coercions need the legacy transparency for transport simplification.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma strongTrans.naturality_id_hom (x : Γ) :
     (strongTrans.naturality B s hs (𝟙 x)).hom = eqToHom (by simp) := by
@@ -870,7 +872,7 @@ lemma strongTrans.naturality_comp_hom {x y z : Γ} (g1 : x ⟶ y) (g2 : y ⟶ z)
 
 lemma strongTrans.app_comp_fstNatTrans_app (x : Γ) :
     strongTrans.app B s hs x ⋙ (sigma.fstNatTrans A B).app x = 𝟭 ↑(A.obj x) := by
-  simpa [strongTrans.app] using (PGrpd.objFiber' hs x).obj.property
+  simpa [strongTrans.app, IsSection] using (PGrpd.objFiber' hs x).obj.property
 
 lemma strongTrans.app_map_naturality_hom_app {x y : Γ} (f : x ⟶ y) (a : (A.obj x)) :
     ((sigma.fstNatTrans A B).app y).map (((strongTrans.naturality B s hs) f).hom.app a) =
