@@ -35,6 +35,8 @@ def IsSection : ObjectProperty (A ⥤ B) := fun s => s ⋙ F = Functor.id A
 def IsOverId : MorphismProperty ((IsSection F).FullSubcategory) :=
   fun s t α => Functor.whiskerRight α.hom F = eqToHom s.property ≫ 𝟙 (𝟭 A) ≫ eqToHom t.property.symm
 
+-- Let transport simplification unfold the section predicate in proof types.
+set_option backward.isDefEq.respectTransparency false in
 instance : (IsOverId F).IsMultiplicative where
   id_mem := by
     intro s
