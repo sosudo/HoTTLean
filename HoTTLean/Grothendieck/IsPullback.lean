@@ -112,7 +112,7 @@ def lift : C ⥤ Grothendieck A := functorTo snd
 
 @[simp] theorem lift_map_base {x y} (f : x ⟶ y) :
     ((lift fst snd w).map f).base = snd.map f := by
-  simp [lift]
+  rfl
 
 @[simp] theorem lift_map_fiber {x y} (f : x ⟶ y) :
     ((lift fst snd w).map f).fiber = liftMapFiber w f := by
