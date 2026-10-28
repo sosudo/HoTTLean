@@ -112,7 +112,7 @@ theorem eqToHom_hom_aux {C1 C2 : Cat.{v,u}} (x y: C1) (eq : C1 = C2) :
 
 /-- This is the turns the hom part of eqToHom functors into a cast-/
 theorem eqToHom_hom {C1 C2 : Cat.{v,u}} {x y: C1} (f : x ⟶ y) (eq : C1 = C2) :
-    (eqToHom eq).map f = (cast (Cat.eqToHom_hom_aux x y eq) f) := by
+    (eqToHom eq).toFunctor.map f = (cast (Cat.eqToHom_hom_aux x y eq) f) := by
   cases eq
   simp[CategoryStruct.id]
 
