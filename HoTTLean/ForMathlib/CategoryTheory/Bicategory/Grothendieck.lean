@@ -227,7 +227,12 @@ def map (α : F ⟶ G) : ∫ F ⥤ ∫ G where
 
 @[simp]
 lemma map_id_map {x y : ∫ F} (f : x ⟶ y) : (map (𝟙 F)).map f = f := by
-  ext <;> simp
+  -- Unfold the bundled Cat identity when checking the dependent fiber equation.
+  set_option backward.isDefEq.respectTransparency false in
+    apply Hom.ext ((map (𝟙 F)).map f) f (by rfl)
+    simp [map]
+    change 𝟙 _ ≫ f.fiber = f.fiber
+    simp
 
 @[simp]
 theorem map_comp_forget (α : F ⟶ G) : map α ⋙ forget G = forget F := rfl
@@ -238,7 +243,11 @@ variable (F)
 
 /-- The natural isomorphism witnessing the pseudo-unity constraint of `Grothendieck.map`. -/
 def mapIdIso : map (𝟙 F) ≅ 𝟭 (∫ F) :=
-  NatIso.ofComponents (fun _ ↦ eqToIso (by aesop_cat))
+  NatIso.ofComponents (fun _ ↦ eqToIso (by aesop_cat)) (by
+    intro X Y f
+    -- The components are equality isomorphisms between bundled Cat identities.
+    set_option backward.isDefEq.respectTransparency false in
+      simp)
 
 lemma map_id_eq : map (𝟙 F) = 𝟭 (∫ F) :=
   Functor.ext_of_iso (mapIdIso F) (fun x ↦ by simp [map]) (fun x ↦ by simp [mapIdIso])
