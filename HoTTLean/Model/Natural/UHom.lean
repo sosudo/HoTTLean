@@ -779,6 +779,8 @@ theorem mkSnd_mkPair {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s
   convert compDomEquiv.snd_mk t t_tp B u u_tp using 2
   apply (s.Sig_pb ilen jlen).hom_ext <;> [simp; simp [compDomEquiv.mk, UvPoly.compP]]
 
+-- The pullback projection requires reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 protected theorem dependent_eq {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (p : y(Γ) ⟶ s[max i j].Tm) (p_tp : p ≫ s[max i j].tp = s.mkSig ilen jlen A B) :
     compDomEquiv.dependent ((s.Sig_pb ilen jlen).lift p (PtpEquiv.mk s[i] A B) p_tp) A
