@@ -233,10 +233,8 @@ theorem comp_down_inj {C : Type u} [Category.{v} C]
     {F G : C ⥤ AsSmall.{w} D}
     (h : F ⋙ AsSmall.down = G ⋙ AsSmall.down)
     : F = G := by
-  convert_to F ⋙ AsSmall.down
-    ⋙ AsSmall.up
-    = G ⋙ AsSmall.down ⋙ AsSmall.up
-  simp only [← Functor.assoc, h]
+  have h' := congrArg (fun K : C ⥤ D => K ⋙ AsSmall.up) h
+  convert h' using 1 <;> rfl
 
 @[simp] theorem up_comp_down
     {C : Type u₁} [Category.{v₁, u₁} C] :
