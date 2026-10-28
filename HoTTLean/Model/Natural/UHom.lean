@@ -750,6 +750,8 @@ theorem mkFst_mkPair {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s
   convert compDomEquiv.fst_mk t t_tp B u u_tp using 2
   apply (s.Sig_pb ilen jlen).hom_ext <;> [simp; simp [compDomEquiv.mk, UvPoly.compP]]
 
+-- The pullback projections require reducible instance matching.
+set_option backward.isDefEq.respectTransparency false in
 theorem comp_mkFst {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].Ty)
     (p : y(Γ) ⟶ s[max i j].Tm) (p_tp : p ≫ s[max i j].tp = s.mkSig ilen jlen A B) :
