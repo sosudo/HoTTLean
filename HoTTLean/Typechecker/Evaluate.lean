@@ -176,7 +176,7 @@ partial def evalTm (env : Q(List (Val $χ))) (t' : Q(Expr $χ)) :
       obtain ⟨rfl, p, eq⟩ := t.inv_snd
       apply ValEqTm.conv_tp _ (eq.subst env.wf_sb).symm_tp
       convert ($vpost) ($vppost env p) using 1
-      all_goals autosubst
+      all_goals first | rfl | autosubst
     )⟩
   | ~q(.refl $l $u) => do
     let ⟨vu, vupost⟩ ← evalTm q($env) q($u)
