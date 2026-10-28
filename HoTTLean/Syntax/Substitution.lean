@@ -1,3 +1,4 @@
+import Mathlib.Tactic.Basic
 import Mathlib.Tactic.Convert
 import Mathlib.Tactic.SimpRw
 import HoTTLean.Syntax.Typing
@@ -373,7 +374,8 @@ theorem subst_all :
     (∀ {Γ l A t u}, E ∣ Γ ⊢[l] t ≡ u : A →
       ∀ {Δ σ σ'}, EqSb E Δ σ σ' Γ → E ∣ Δ ⊢[l] t.subst σ ≡ u.subst σ' : A.subst σ) := by
   mutual_induction WfCtx
-  all_goals dsimp; try intros
+  all_goals try dsimp
+  all_goals try intros
   all_goals try simp only [Expr.subst_toSb_subst, Expr.subst_snoc_toSb_subst, Expr.subst] at *
   case ax p _ Ec _ _ ihA =>
     constructor
