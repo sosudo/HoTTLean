@@ -457,10 +457,19 @@ def mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty
     simp only [← Category.assoc]; congr! 1
     apply pullback.hom_ext <;> simp
 
+-- The pullback presentation of compDom needs reducible instance compatibility.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem fst_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
     (h : β ≫ N.tp = ym(M.sec _ α eq) ≫ B) : fst (mk α eq B β h) = α := by
-  simp [mk, fst]
+  simp only [mk, fst, ← Category.assoc]
+  change (pullback.lift β (pullback.lift (PtpEquiv.mk M A B) α _) _ ≫
+    pullback.snd N.uvPolyTp.p (PartialProduct.fan M.uvPolyTp N.Ty).snd) ≫
+    pullback.snd (M.uvPolyTp.fstProj N.Ty) M.uvPolyTp.p = α
+  rw [pullback.lift_snd]
+  change pullback.lift (PtpEquiv.mk M A B) α _ ≫
+    pullback.snd (PartialProduct.fan M.uvPolyTp N.Ty).fst M.uvPolyTp.p = α
+  exact pullback.lift_snd _ _ _
 
 @[simp]
 theorem dependent_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A)
