@@ -259,6 +259,8 @@ theorem whiskerLeft_twice' {A B C D : Type*} [Category A] [Category B] [Category
     whiskerLeft (F ⋙ G) α :=
   rfl
 
+-- The proof unfolds bundled groupoid coercions during dependent rewriting.
+set_option backward.isDefEq.respectTransparency false in
 lemma conjugatingObjNatTransEquiv'_comp' {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶ z)
     (S0 : (A.obj x) ⥤ (B.obj x))
     (S1 : (A.obj y) ⥤ (B.obj y))
@@ -280,6 +282,7 @@ lemma conjugatingObjNatTransEquiv'_comp' {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶
     Category.id_comp, Equiv.coe_fn_mk, whiskerLeft_comp, whiskerLeft_eqToHom, eqToHom_trans_assoc,
     whiskerRight_comp, eqToHom_whiskerRight, whiskerLeft_twice, associator_eq,
     CategoryTheory.Iso.refl_inv, CategoryTheory.Iso.refl_hom, Category.comp_id, Category.assoc] at *
+  dsimp only [Grpd.functorIsoOfIso, Functor.mapIso, asIso] at *
   erw [Category.id_comp]
   rw [whiskerLeft_map_comp, whiskerLeft_map_comp]
   simp only [← Category.assoc, eqToHom_trans]
