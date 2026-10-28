@@ -427,6 +427,8 @@ theorem comp_snd (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp) (σ : y(Δ) ⟶ 
     σ ≫ snd ab = snd (σ ≫ ab) := by
   exact (Category.assoc σ ab _).symm
 
+-- The pullback presentation of compDom needs reducible instance compatibility.
+set_option backward.isDefEq.respectTransparency false in
 /-- Universal property of `compDom`, decomposition (part 4).
 
 A map `ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp` is equivalently three maps
@@ -439,7 +441,7 @@ theorem snd_tp (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp)
     snd ab ≫ N.tp = ym(M.sec _ (fst ab) eq) ≫ dependent ab A eq := by
   simp [snd, pullback.condition, dependent, PtpEquiv.snd, Equiv.snd'_eq]
   simp only [← Category.assoc]; congr! 1
-  apply pullback.hom_ext <;> simp [fst, UvPoly.compP]
+  apply pullback.hom_ext <;> simp [fst, UvPoly.compP] <;> rfl
 
 /-- Universal property of `compDom`, constructing a map into `compDom`. -/
 def mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
