@@ -316,6 +316,8 @@ lemma conjugatingObjNatTransEquiv₁_id_inv {x : Γ} (S) (T)
   erw [conjugatingObjNatTransEquiv'_id]
   simp [Groupoid.isoEquivHom]
 
+-- Dependent rewriting unfolds bundled groupoid coercions.
+set_option backward.isDefEq.respectTransparency false in
 lemma conjugatingObjNatTransEquiv₁_comp_inv {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶ z)
       (S0 : (A.obj x) ⥤ (B.obj x))
       (S1 : (A.obj y) ⥤ (B.obj y))
@@ -331,7 +333,7 @@ lemma conjugatingObjNatTransEquiv₁_comp_inv {x y z : Γ} (f1 : x ⟶ y) (f2 : 
       whiskerLeft (A.map f1) (conjugatingObjNatTransEquiv₁ A B f2 S1 S2 g12).inv ≫
       whiskerRight ((conjugatingObjNatTransEquiv₁ A B f1 S0 S1 g01).inv) (B.map f2) ≫
       eqToHom (by simp [← Grpd.comp_eq_comp]) := by
-  dsimp [conjugatingObjNatTransEquiv₁]
+  simp only [conjugatingObjNatTransEquiv₁, Equiv.trans_apply]
   erw [conjugatingObjNatTransEquiv'_comp' A B f1 f2 S0 S1 S2 g01 g12 g02 h]
   simp [Groupoid.isoEquivHom]
   rfl
