@@ -81,15 +81,17 @@ theorem liftMapFiber_id (x : C) : liftMapFiber w (𝟙 x) = eqToHom (by simp) :=
   rw [eqToHom_map]
   simp
 
+-- As for the identity law, the fiber transport crosses bundled Cat morphisms.
+set_option backward.isDefEq.respectTransparency false in
 theorem liftMapFiber_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     liftMapFiber w (f ≫ g) =
     eqToHom (by simp)
-    ≫ (A.map (snd.map g)).map (liftMapFiber w f)
+    ≫ (A.map (snd.map g)).toFunctor.map (liftMapFiber w f)
     ≫ liftMapFiber w g := by
-  have hgNatNatF := (eqToHom ((eqToHom w).naturality g).symm).naturality (fst.map f).fiber
-  have h := congr_arg (λ x ↦ x ≫ ((eqToHom w).app z).map (fst.map g).fiber) hgNatNatF
+  have hgNatNatF := (eqToHom ((eqToHom w).naturality g).symm).toNatTrans.naturality (fst.map f).fiber
+  have h := congr_arg (λ x ↦ x ≫ ((eqToHom w).app z).toFunctor.map (fst.map g).fiber) hgNatNatF
   dsimp at h
-  simp only [Category.assoc, eqToHom_app ((eqToHom w).naturality g).symm] at h
+  simp only [Category.assoc, Cat.Hom₂.eqToHom_toNatTrans, eqToHom_app] at h
   simp [eqToHom_map, h]
 
 variable (fst) (snd)
