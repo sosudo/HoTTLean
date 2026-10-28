@@ -1172,6 +1172,8 @@ def lift : y(Γ) ⟶ ie.iFunctor.obj N.Tm :=
         simp
       · simp)
 
+-- Allow the polynomial application and its functor object to unfold together.
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_comp_left {Δ} (σ : Δ ⟶ Γ) : i.lift (ym(σ) ≫ a) (ym(ii.motiveSubst σ a) ≫ C)
     (ym(σ) ≫ r) (by simp [r_tp, comp_reflSubst'_assoc]) =
     ym(σ) ≫ i.lift a C r r_tp := by
