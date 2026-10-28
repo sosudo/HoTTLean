@@ -664,7 +664,8 @@ def up {Δ Γ σ full} (sσ : I.CSb Δ Γ σ full)
     (A' := ym(σ) ≫ A) (eq : ym(σ) ≫ A = A' := by rfl) :
     I.CSb (Δ.snoc llen A') (Γ.snoc llen A) (s[l].substWk σ A _ eq) full := by
   refine ((CSb.wk _ _ false).comp sσ).snoc' _ _ (.bvar 0) (by simp) _ ?_
-  simp [UHomSeq.CObj.var, UHomSeq.ExtSeq.var]
+  rw [ofTerm_bvar]
+  exact UHomSeq.CObj.mem_var_zero.mpr ⟨rfl, rfl⟩
 
 @[simp] theorem up_toSb {Δ Γ σ full} (sσ : I.CSb Δ Γ σ full)
      {l} {llen : l < s.length + 1} {A A'} {eq : ym(σ) ≫ A = A'} :
