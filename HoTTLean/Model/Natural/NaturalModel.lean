@@ -278,8 +278,8 @@ theorem fst_comp_right {Y} (σ : X ⟶ Y) : fst M (AB ≫ M.Ptp.map σ) = fst M 
 
 theorem snd_comp_right {Y} (σ : X ⟶ Y) {A} (eq : fst M AB = A) :
     snd M (AB ≫ M.Ptp.map σ) _ (fst_comp_right M σ ▸ eq) = snd M AB _ eq ≫ σ := by
-  simp only [snd, Ptp]
-  rw [UvPoly.Equiv.snd'_comp_right M.uvPolyTp X Y σ AB]
+  exact UvPoly.Equiv.snd'_comp_right M.uvPolyTp X Y σ AB
+    (by rw [← fst, eq]; exact (M.disp_pullback A).flip)
 
 theorem snd_comp_left {A} (eqA : fst M AB = A) {σA} (eqσ : ym(σ) ≫ A = σA) :
     snd M (ym(σ) ≫ AB) σA (by simp [fst_comp_left, eqA, eqσ]) =
