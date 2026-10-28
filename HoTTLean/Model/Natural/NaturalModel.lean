@@ -495,10 +495,14 @@ theorem dependent_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A)
   exact hp _ _
   all_goals apply proof_irrel_heq
 
+-- The pullback presentation of compDom needs reducible instance compatibility.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 theorem snd_mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
     (h : β ≫ N.tp = ym(M.sec _ α eq) ≫ B) : snd (mk α eq B β h) = β := by
-  simp [mk, snd]
+  change pullback.lift β (pullback.lift (PtpEquiv.mk M A B) α _) _ ≫
+    pullback.fst N.uvPolyTp.p (PartialProduct.fan M.uvPolyTp N.Ty).snd = β
+  exact pullback.lift_fst _ _ _
 
 theorem ext {ab₁ ab₂ : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp}
     {A} (eq : fst ab₁ ≫ M.tp = A)
