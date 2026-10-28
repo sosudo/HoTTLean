@@ -536,7 +536,8 @@ lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = �
   · intro x
     simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, strongTrans,
       comp_app, NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, id_eq, categoryStruct_id_app]
-    apply happ
+    apply Cat.ext
+    exact happ x.as
   · intro x y f
     ext a
     simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, Cat.of_α,
