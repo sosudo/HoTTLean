@@ -1380,10 +1380,12 @@ lemma lift_snd : lift i ar aC hrC ≫ ie.iFunctor.map N.tp = aC := by
     exact (ie.motiveCtx_isPullback' _).flip
   · simp [equivFst]
 
+-- Dependent pullback projections require semireducible unfolding.
+set_option backward.isDefEq.respectTransparency false in
 lemma comp_lift {Δ} (σ : Δ ⟶ Γ) : ym(σ) ≫ lift i ar aC hrC =
     lift i (ym(σ) ≫ ar) (ym(σ) ≫ aC) (by simp [hrC]) := by
   dsimp [lift, equivMk]
-  rw [UvPoly.Equiv.mk'_comp_left ie.iUvPoly N.Tm (ie.equivFst aC) _
+  rw! (transparency := .default) [UvPoly.Equiv.mk'_comp_left ie.iUvPoly N.Tm (ie.equivFst aC) _
     (i.j (ie.equivFst aC) (motive aC) (reflCase ar) _) ym(σ) _ rfl
     (by simp only [iUvPoly_p]; exact (ie.motiveCtx_isPullback' _).flip)]
   congr 1
@@ -1392,7 +1394,7 @@ lemma comp_lift {Δ} (σ : Δ ⟶ Γ) : ym(σ) ≫ lift i ar aC hrC =
   rw [← h]
   congr 1
   simp only [iUvPoly_p, Category.assoc]
-  apply (M.disp_pullback _).hom_ext
+  apply (M.disp_pullback _).hom_ext <;> try simp only [IsPullback.lift_fst, IsPullback.lift_snd]
   · simp [toI_comp_left, ← toI_comp_i1 ie]
   · apply (M.disp_pullback _).hom_ext
     · slice_rhs 3 4 => rw [← toK_comp_k1 ii]
