@@ -516,8 +516,20 @@ theorem mk_comp_left {Δ} (b : Γ ⟶ B) (x : pullback b P.p ⟶ X) (σ: Δ ⟶ 
       (pullback.map _ _ _ _ σ (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ x) := by
   simp only [mk_eq_mk']
   rw [mk'_comp_left (H := .of_hasPullback _ _) (H' := .of_hasPullback _ _) (eq := rfl)]
-  congr 2; ext <;> simp
+  congr 2
+  apply pullback.hom_ext
+  · simp only [IsPullback.lift_fst]
+    exact (pullback.lift_fst (f := b) (g := P.p)
+      (pullback.fst (σ ≫ b) P.p ≫ σ)
+      (pullback.snd (σ ≫ b) P.p ≫ 𝟙 E) _).symm
+  · simp only [IsPullback.lift_snd]
+    exact (Category.comp_id _).symm.trans
+      (pullback.lift_snd (f := b) (g := P.p)
+        (pullback.fst (σ ≫ b) P.p ≫ σ)
+        (pullback.snd (σ ≫ b) P.p ≫ 𝟙 E) _).symm
 
+-- Expose the polynomial objects in the natural transformation components.
+set_option backward.isDefEq.respectTransparency false in
 lemma mk'_comp_cartesianNatTrans_app {E' B' Γ X : C} {P' : UvPoly E' B'}
     (y : Γ ⟶ B) (R f g) (H : IsPullback (P := R) f g y P.p)
     (x : R ⟶ X) (e : E ⟶ E') (b : B ⟶ B')
@@ -531,7 +543,17 @@ lemma mk'_comp_cartesianNatTrans_app {E' B' Γ X : C} {P' : UvPoly E' B'}
   have := snd'_mk' P X y H x
   rw [snd'_eq, ← fan_snd_map' _ _ X hp] at this
   refine .trans ?_ this
-  simp only [← Category.assoc]; congr 1; ext <;> simp
+  simp only [← Category.assoc]; congr 1; ext
+  · change _ = _ ≫ pullback.fst (P'.fstProj X) P'.p
+    simp only [pullback.map, pullback.lift_fst, Category.assoc, pullback.lift_fst_assoc]
+    symm
+    slice_lhs 1 2 => apply pullback.lift_fst
+    exact Category.assoc _ _ _
+  · change _ = _ ≫ pullback.snd (P'.fstProj X) P'.p
+    simp only [pullback.map, pullback.lift_snd, Category.assoc, pullback.lift_snd_assoc]
+    rw [← Category.assoc]
+    exact congrArg (fun k => k ≫ e)
+      (pullback.lift_snd (f := P.fstProj X) (g := P.p) (f ≫ mk' P X y H x) g _).symm
 
 end Equiv
 
