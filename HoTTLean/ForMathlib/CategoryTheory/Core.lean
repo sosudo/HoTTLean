@@ -28,9 +28,8 @@ def comp_inclusion_injective {l0 l1 : D ⥤ Core C} (hl : l0 ⋙ inclusion C = l
     ext
     exact Functor.congr_obj hl x
   · intro x y f
-    ext
-    convert Functor.congr_hom hl f
-    simp
+    apply (inclusion C).map_injective
+    simpa [Functor.comp_map, inclusion, eqToHom_iso] using Functor.congr_hom hl f
 
 lemma core_comp_inclusion (F : C ⥤ D) :
     F.core ⋙ inclusion D = inclusion C ⋙ F :=
@@ -50,9 +49,8 @@ def functorToCoreEquiv : Γ ⥤ D ≃ Γ ⥤ Core D where
   invFun := forgetFunctorToCore.obj
   left_inv _ := rfl
   right_inv _ := by
-    fapply Functor.ext
-    · aesop_cat
-    · aesop_cat
+    apply comp_inclusion_injective
+    rfl
 
 variable {C : Type u₁} [Category.{v₁} C]
 variable {G : Type u₂} [Groupoid.{v₂} G]
@@ -83,10 +81,10 @@ def adjunction : Grpd.forgetToCat ⊣ Core.map where
   unit := {
     app G := Grpd.homOf (Core.functorToCore (Functor.id _))
     naturality _ _ F := by
-      simp [Core.map, Grpd.comp_eq_comp,
-        ← functorToCore_comp_left,
+      change F ⋙ functorToCore (𝟭 _) = functorToCore (𝟭 _) ⋙ F.core
+      simp [← functorToCore_comp_left,
         ← functorToCore_comp_right,
-        Functor.id_comp, Functor.comp_id, Grpd.forgetToCat]}
+        Functor.id_comp, Functor.comp_id]}
   counit := {app C := Cat.homOf (Core.inclusion C)}
 
 theorem functorToCore_inclusion_apply {C : Type u} [Category.{v} C] :
@@ -143,14 +141,8 @@ def lift : E ⥤ Core C where
 def fac_left : lift F En Ew hE ⋙ inclusion C = En := rfl
 
 def fac_right : lift F En Ew hE ⋙ F.core = Ew := by
-  fapply Functor.ext
-  · intro x
-    ext
-    exact Functor.congr_obj hE x
-  · intro x y f
-    ext
-    convert Functor.congr_hom hE f
-    simp
+  apply comp_inclusion_injective
+  exact hE
 
 def universal : (lift : E ⥤ Core C) ×' lift ⋙ inclusion C = En ∧ lift ⋙ F.core = Ew ∧
     ∀ {l0 l1 : E ⥤ Core C}, l0 ⋙ inclusion C = l1 ⋙ inclusion C → l0 ⋙ F.core = l1 ⋙ F.core → l0 = l1 :=
