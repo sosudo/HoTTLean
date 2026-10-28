@@ -435,6 +435,8 @@ end Hom
 
 attribute [local simp] eqToHom_map
 
+-- Cat functor projections in these dependent transport laws require the legacy elaborator transparency.
+set_option backward.isDefEq.respectTransparency false in
 instance : Category (∫ F) where
   Hom X Y := Hom X Y
   id X := Hom.id X
