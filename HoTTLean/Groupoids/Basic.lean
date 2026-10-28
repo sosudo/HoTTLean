@@ -100,6 +100,8 @@ theorem toCoreAsSmallEquiv_apply_comp_right (A : Γ ⥤ coreAsSmall C) (F : C �
     toCoreAsSmallEquiv (A ⋙ coreAsSmallFunctor F) = toCoreAsSmallEquiv A ⋙ F := by
   rfl
 
+-- Restore transparency for the bundled groupoid coercion in this rewrite.
+set_option backward.isDefEq.respectTransparency false in
 theorem toCoreAsSmallEquiv_symm_apply_comp_left (A : Γ ⥤ C) :
     toCoreAsSmallEquiv.symm (σ ⋙ A) = σ ⋙ toCoreAsSmallEquiv.symm A := by
   dsimp only [toCoreAsSmallEquiv, Equiv.symm_trans_apply, Equiv.symm_symm, Grpd.comp_eq_comp]
