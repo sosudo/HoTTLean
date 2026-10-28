@@ -879,6 +879,8 @@ theorem mkRefl_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty)
     s.mkRefl ilen t ≫ s[i].tp = s.mkId ilen A t t t_tp t_tp :=
   (nmII i).mkRefl_tp t
 
+-- Let elaboration unfold substWk in the dependent equality proofs.
+set_option backward.isDefEq.respectTransparency false in
 /--
 ```
 Γ ⊢ᵢ t : A
@@ -901,7 +903,7 @@ def mkIdRec {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty)
     (ym(substWk _ (substWk _ (𝟙 _) _ _ (by simp [t_tp])) _ _ ?_) ≫ M)
     r ?_ u (t_tp ▸ u_tp) h ?_
   · simp [← B_eq, comp_mkId, ← mkId.eq_def]; congr 1 <;> simp [t_tp, substWk]
-  · simp [r_tp]; rw [← Functor.map_comp_assoc]; congr 1
+  · rw [r_tp, ← Functor.map_comp_assoc]; congr 1
     apply (s[i].disp_pullback _).hom_ext <;> simp [IdIntro.reflSubst, mkRefl, substWk, sec]
   · simp [h_tp, mkId, IdIntro.mkId]
 
