@@ -365,11 +365,12 @@ def hom_hext {A A' : Grpd.{u₁,u₁}} (hA : A ≍ A') {B B' : Grpd.{u₁,u₁}}
 def hom_hext' {A A' : Grpd.{u₁,u₁}} (hA : A ≍ A') {B B' : Grpd.{u₁,u₁}} (hB : B ≍ B')
     {F : A ⟶ B} {F' : A' ⟶ B'} (hF : F ≍ F') {x y : Section F} {x' y' : Section F'}
     {f : x ⟶ y} {f' : x' ⟶ y'} (hx : x ≍ x')
-    (hy : y ≍ y') (hf : ∀ k k', k ≍ k' → f.1.app k ≍ f'.1.app k') :
+    (hy : y ≍ y') (hf : ∀ k k', k ≍ k' → f.1.hom.app k ≍ f'.1.hom.app k') :
     f ≍ f' := by
   subst hA hB hF hx hy
   simp at *
   apply MorphismProperty.WideSubcategory.hom_ext
+  apply InducedCategory.hom_ext
   apply NatTrans.ext
   ext
   apply hf
