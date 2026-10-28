@@ -1210,6 +1210,7 @@ lemma equivFst_lift_eq : ie.equivFst (i.lift a C r r_tp) = a :=
 def j : y(ii.motiveCtx a) ⟶ N.Tm :=
   eqToHom (by rw [equivFst_lift_eq]) ≫ ie.equivSnd (i.lift a C r r_tp)
 
+set_option backward.isDefEq.respectTransparency false in
 /-- Typing for elimination rule `J` -/
 lemma j_tp : j i a C r r_tp ≫ N.tp = C := by
   simp only [j, Category.assoc, IdElimBase.equivSnd, ← UvPoly.Equiv.snd'_comp_right]
