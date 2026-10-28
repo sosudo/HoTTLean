@@ -161,6 +161,9 @@ lemma cartesianNatTrans_fstProj {E B E' B' : C} (P : UvPoly E B) (P' : UvPoly E'
   simpa [fstProj, UvPoly.apply, functor] using Over.w (m.app X)
 
 open ExponentiableMorphism Functor in
+-- Let tactics reduce the slice functor objects in this mate calculation.
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
 set_option maxHeartbeats 300000 in
 theorem fan_snd_map' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     (e : E ⟶ E') (b : B ⟶ B') (A : C) (hp : IsPullback P.p e b P'.p) :
@@ -206,15 +209,15 @@ theorem fan_snd_map' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
       TwoSquare.natTrans]
     slice_lhs 5 5 => exact (pullback_map_eq_eqToHom rfl hp.w).symm
     slice_lhs 10 10 => enter [2,2,2,2]; apply Category.comp_id
-    ext <;> simp
-    · conv_rhs => apply pullback.lift_fst
-      slice_lhs 1 2 => apply pullback.lift_fst
-      simp [← p_eq, UB, bγ, p'fwd, pfwd, Over.pullbackForgetTriangle,
-        Over.pullbackForgetTwoSquare, Adjunction.id, TwoSquare.natTrans, Over.mapForget]
+    ext <;> simp [pullback.map, Category.assoc, ← p_eq, UB, bγ,
+      Over.pullbackForgetTriangle, Over.pullbackForgetTwoSquare, Adjunction.id,
+      TwoSquare.natTrans, Over.mapForget]
+    all_goals simp [fstProj, UvPoly.apply, functor, pfwd, p'fwd, sE, sE']
+    · erw [pullback.lift_fst_assoc]
+      simp only [Category.assoc]
       congr 2
-      symm; apply Category.id_comp
-    · slice_lhs 1 2 => apply pullback.lift_snd
-      symm; apply pullback.lift_snd
+      exact (Category.id_comp _).symm
+    · erw [pullback.lift_snd_assoc]
   let Z : sE ⋙ pfwd ⋙ pbk ⋙ UE ⟶ sE ⋙ UE :=
     whiskerRight (sE.whiskerLeft (ev P.p)) UE
   let Z' : sE' ⋙ p'fwd ⋙ p'bk ⋙ UE' ⟶ sE' ⋙ UE' :=
@@ -251,8 +254,7 @@ theorem fan_snd_map' {E B E' B' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
   slice_lhs 1 2 => rw [← this]
   slice_lhs 2 3 => apply Category.comp_id
   simp [α, Over.starPullbackIsoStar]
-  slice_lhs 5 6 => apply pullback.lift_fst
-  simp [Over.mapForget]
+  simp [pullback.map, sE', Over.star]
 
 open ExponentiableMorphism in
 theorem fan_snd_map {E B A E' B' A' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
