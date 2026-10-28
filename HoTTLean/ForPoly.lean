@@ -337,7 +337,7 @@ theorem mk_eq_mk' (b : Γ ⟶ B) (x : pullback b P.p ⟶ X) :
 @[simp]
 lemma fst_mk (b : Γ ⟶ B) (x : pullback b P.p ⟶ X) :
     fst P X (mk P X b x) = b := by
-  simp [fst, mk]
+  exact UvPoly.lift_fst (P := P) (b := b) (e := x)
 
 @[simp]
 lemma fst_mk' (b : Γ ⟶ B) {R f g} (H : IsPullback (P := R) f g b P.p) (x : R ⟶ X) :
