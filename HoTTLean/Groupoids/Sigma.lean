@@ -83,6 +83,8 @@ variable {B}
       Grpd.eqToHom_obj]
     exact cast_heq _ _
 
+-- The projection and transport simp lemmas need to unfold the bundled groupoid.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem sigmaMap_id_map {p1 p2} {hp2 : p2 = (sigmaMap B (𝟙 x)).obj p2}
     (f : p1 ⟶ p2) :
     (sigmaMap B (𝟙 x)).map f =
