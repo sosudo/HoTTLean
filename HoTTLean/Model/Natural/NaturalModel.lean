@@ -1153,6 +1153,9 @@ lemma motive_comp_left : ym(σ) ≫ motive ie a C =
       slice_rhs 1 2 => rw [← ie.toI_comp_i2]
       simp
 
+-- Keep the polynomial functor applications at semireducible transparency while
+-- rewriting the coherent lift's naturality square.
+set_option backward.isDefEq.respectTransparency false in
 def lift : y(Γ) ⟶ ie.iFunctor.obj N.Tm :=
   i.weakPullback.coherentLift (reflCase a r) (motive ie a C) (by
     dsimp only [motive, equivMk, verticalNatTrans, reflCase]
