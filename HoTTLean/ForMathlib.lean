@@ -345,7 +345,7 @@ def isLimitProdCone (X Y : D) : IsLimit (e.prodCone X Y) :=
   BinaryFan.isLimitCompLeftIso _ (e.counit.app _) (
   isLimitCartesianMonoidalCategoryOfPreservesLimits e.functor
     (e.inverse.obj X) (e.inverse.obj Y))))
-  (BinaryFan.ext (eqToIso rfl) (by aesop_cat) (by aesop_cat))
+  (BinaryFan.ext (eqToIso rfl) (by simp [prodCone]) (by simp [prodCone]))
 
 def chosenFiniteProducts [CartesianMonoidalCategory C] : CartesianMonoidalCategory D :=
   .ofChosenFiniteProducts
