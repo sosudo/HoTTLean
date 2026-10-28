@@ -521,7 +521,8 @@ theorem unLam_tp {Γ : Ctx} (A : y(Γ) ⟶ s[i].Ty) (B : y(s[i].ext A) ⟶ s[j].
     (f : y(Γ) ⟶ s[max i j].Tm) (f_tp : f ≫ s[max i j].tp = s.mkPi ilen jlen A B) :
     s.unLam ilen jlen A B f f_tp ≫ s[j].tp = B := by
   rw [unLam, ← PtpEquiv.snd_comp_right]
-  convert PtpEquiv.snd_mk s[i] A B using 2; simp
+  convert PtpEquiv.snd_mk s[i] A B using 2
+  exact (s.Pi_pb ilen jlen).lift_snd ..
 
 theorem comp_unLam {Δ Γ : Ctx} (σ : Δ ⟶ Γ)
     (A : y(Γ) ⟶ s[i].Ty) (σA) (eq : ym(σ) ≫ A = σA) (B : y(s[i].ext A) ⟶ s[j].Ty)
