@@ -1130,7 +1130,8 @@ theorem EqTmIH.app_lam {Γ A B t u l l'} :
         I.mem_ofTerm_lam.2 ⟨rfl, _, hA, _, ht, by simp⟩, _, hu, _, utp, _, hB,
         s.mkLam_tp (t_tp := ttp) ..,
         (s.mkApp_mkLam (t_tp := ttp) ..).symm⟩,
-      I.mem_ofTerm_toSb _ hu _ ht, by simp [ttp]⟩
+      I.mem_ofTerm_toSb _ hu _ ht, by
+        exact (Category.assoc _ _ _).trans (congrArg _ ttp)⟩
 
 theorem EqTmIH.fst_snd_pair {Γ A B t u l l'} :
     I.WfTpIH ((A, l) :: Γ) l' B → I.WfTmIH Γ l A t → I.WfTmIH Γ l' (Expr.subst t.toSb B) u →
