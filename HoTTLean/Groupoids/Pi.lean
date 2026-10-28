@@ -1084,6 +1084,7 @@ lemma lamObjFiberObjCompSigMap.app_fiber_heq (a : A.obj x) : (app A β f a).fibe
     (β.map ((ιNatTrans f).app a)).fiber := by
   simp [app]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiberObjCompSigMap.naturality {x y : Γ} (f : x ⟶ y) {a1 a2 : A.obj x} (h : a1 ⟶ a2) :
     (lamObjFiberObj A β x ⋙ sigmaMap (β ⋙ PGrpd.forgetToGrpd) f).map h
     ≫ lamObjFiberObjCompSigMap.app A β f a2 =
@@ -1098,7 +1099,7 @@ lemma lamObjFiberObjCompSigMap.naturality {x y : Γ} (f : x ⟶ y) {a1 a2 : A.ob
         ≫ (β.map ((ιNatTrans f).app a2)).fiber ≍
         (β.map ((ι A y).map ((A.map f).map h))).base.map (β.map ((ιNatTrans f).app a1)).fiber
         ≫ (β.map ((ι A y).map ((A.map f).map h))).fiber := by
-      simpa [← heq_eq_eq] using Grothendieck.Hom.congr β_ιNatTrans_naturality
+      simpa [← heq_eq_eq, Grpd.forgetToCat, Functor.comp_obj] using Grothendieck.Hom.congr β_ιNatTrans_naturality
     simp only [Grpd.forgetToCat.eq_1, sigmaObj, Grpd.coe_of, comp_obj, sigmaMap_obj_base,
       Functor.comp_map, comp_base, sigmaMap_map_base, sigmaMap_obj_fiber, comp_fiber,
       sigmaMap_map_fiber, lamObjFiberObj_map_fiber, map_comp, eqToHom_map, app_fiber_eq, Cat.of_α,
