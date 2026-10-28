@@ -921,17 +921,21 @@ lemma mapStrongTrans_map_base {x y} (f : x ⟶ y) : ((mapStrongTrans B s hs).map
     f.base :=
   rfl
 
+-- Unfold bundled groupoid coercions in the naturality projection.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapStrongTrans_map_fiber {x y} (f : x ⟶ y) : ((mapStrongTrans B s hs).map f).fiber =
     eqToHom (by simp [← Functor.comp_obj]; simp [← Grpd.comp_eq_comp, mapStrongTrans_obj_fiber]) ≫
     (strongTrans.twoCell B s hs f.base).app ((A.map f.base).obj x.fiber) ≫
     (strongTrans.app B s hs y.base).map f.fiber := by
   simp [mapStrongTrans, strongTrans.naturality_inv_app]
 
+-- Unfold bundled groupoid coercions in the fiber base projection.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma mapStrongTrans_map_fiber_base {x y} (f : x ⟶ y) :
     ((mapStrongTrans B s hs).map f).fiber.base =
-    eqToHom (by simp [mapStrongTrans_obj_fiber]) ≫
-    f.fiber ≫ eqToHom (by simp [mapStrongTrans_obj_fiber]) := by
+    eqToHom (by simp only [mapStrongTrans_map_base, mapStrongTrans_obj_fiber, sigma_map, sigmaMap_obj_base, strongTrans.app_obj_base]) ≫
+    f.fiber ≫ eqToHom (by simp only [mapStrongTrans_obj_fiber, strongTrans.app_obj_base]) := by
   rw [mapStrongTrans_map_fiber, comp_base, comp_base, base_eqToHom, strongTrans.twoCell_app_base]
   simp
 
