@@ -282,6 +282,9 @@ theorem fan_snd_map {E B A E' B' A' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
   · slice_rhs 2 3 => apply pullback.lift_snd
     slice_rhs 1 2 => apply pullback.lift_snd
 
+-- Reduce polynomial application to the slice functor object for this proof.
+set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
 open ExponentiableMorphism in
 theorem ε_map {E B A E' B' A' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     (e : E ⟶ E') (b : B ⟶ B') (a : A ⟶ A')
@@ -289,11 +292,16 @@ theorem ε_map {E B A E' B' A' : C} {P : UvPoly E B} {P' : UvPoly E' B'}
     pullback.map (P.fstProj A) P.p (P'.fstProj A') P'.p
       ((P.cartesianNatTrans P' b e hp).app A ≫ P'.functor.map a) e b (by simp) hp.w ≫ ε P' A' =
     ε P A ≫ prod.map e a := by
-  ext
-  · simp
-    slice_rhs 1 2 => apply by simpa using ((ev P.p).app ((Over.star E).obj A)).w
-    slice_lhs 2 3 => apply by simpa using ((ev P'.p).app ((Over.star E').obj A')).w
-    apply pullback.lift_snd
+  have h (E B X : C) (Q : UvPoly E B) :
+      ε Q X ≫ prod.fst = pullback.snd (Q.fstProj X) Q.p := by
+    simpa [ε, fstProj, Over.star_obj_hom] using ((ev Q.p).app ((Over.star E).obj X)).w
+  apply prod.hom_ext
+  · simp only [Category.assoc, prod.map_fst]
+    rw [h]
+    calc
+      _ = pullback.snd (P.fstProj A) P.p ≫ e := pullback.lift_snd _ _ _
+      _ = (ε P A ≫ prod.fst) ≫ e := congrArg (fun f => f ≫ e) (h E B A P).symm
+      _ = _ := Category.assoc _ _ _
   · simpa [fan_snd] using fan_snd_map e b a hp
 
 namespace Equiv
