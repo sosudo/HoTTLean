@@ -61,15 +61,19 @@ end ChosenObjects
   whose two components are sent to equal maps in the base category `Sudan`.
 -/
 def morphismProperty : MorphismProperty (ChosenObjects east south) :=
-  fun {x y} f => east.map f.1
-    = eqToHom x.property ≫ south.map f.2 ≫ eqToHom y.property.symm
+  fun {x y} f => east.map f.hom.1
+    = eqToHom x.property ≫ south.map f.hom.2 ≫ eqToHom y.property.symm
 
 instance : MorphismProperty.IsMultiplicative (morphismProperty east south) where
   id_mem x := by
-    simp [morphismProperty, ChosenObjects, ObjectProperty.FullSubcategory.id_def]
+    change east.map (𝟙 x.obj.1) = eqToHom x.property ≫ south.map (𝟙 x.obj.2) ≫ eqToHom x.property.symm
+    simp
   comp_mem f g hf hg := by
-    simp only [morphismProperty, ChosenObjects,
-      ObjectProperty.FullSubcategory.comp_def] at *
+    change east.map (f.hom.1 ≫ g.hom.1) =
+      eqToHom _ ≫ south.map (f.hom.2 ≫ g.hom.2) ≫ eqToHom _
+    change east.map f.hom.1 = _ at hf
+    change east.map g.hom.1 = _ at hg
+    simp only [Functor.map_comp]
     simp [hg, hf]
 
 /--
