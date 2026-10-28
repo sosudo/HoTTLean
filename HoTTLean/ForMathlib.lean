@@ -127,8 +127,8 @@ abbrev homOf {C D : Type u} [Category.{v} C] [Category.{v} D] (F : C ⥤ D) :
 
 @[simps] def ULift_lte_iso_self {C : Type (max u u₁)} [Category.{v} C] :
     Cat.of (ULift.{u} C) ≅ Cat.of C where
-  hom := ULift.downFunctor
-  inv := ULift.upFunctor
+  hom := ULift.downFunctor.toCatHom
+  inv := ULift.upFunctor.toCatHom
 
 @[simp] def ULift_succ_iso_self {C : Type (u + 1)} [Category.{v} C] :
     of (ULift.{u, u + 1} C) ≅ of C := ULift_lte_iso_self.{v,u,u+1}
