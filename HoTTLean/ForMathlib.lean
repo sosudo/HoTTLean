@@ -459,7 +459,7 @@ def psigmaCongrProp {α₁ α₂} {β₁ : α₁ → Prop} {β₂ : α₂ → Pr
 
 @[simp] def sigmaCongr_apply_snd {α₁ α₂} {β₁ : α₁ → Sort _} {β₂ : α₂ → Sort _} (f : α₁ ≃ α₂)
     (F : ∀ a, β₁ a ≃ β₂ (f a)) (x : Sigma β₁) : (sigmaCongr f F x).snd = F x.fst x.snd := by
-  simp [sigmaCongr]
+  rfl
 
 end Equiv
 
