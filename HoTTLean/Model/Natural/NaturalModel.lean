@@ -443,6 +443,8 @@ theorem snd_tp (ab : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp)
   simp only [← Category.assoc]; congr! 1
   apply pullback.hom_ext <;> simp [fst, UvPoly.compP] <;> rfl
 
+-- The pullback presentation of compDom needs reducible instance compatibility.
+set_option backward.isDefEq.respectTransparency false in
 /-- Universal property of `compDom`, constructing a map into `compDom`. -/
 def mk (α : y(Γ) ⟶ M.Tm) {A} (eq : α ≫ M.tp = A) (B : y(M.ext A) ⟶ N.Ty) (β : y(Γ) ⟶ N.Tm)
     (h : β ≫ N.tp = ym(M.sec _ α eq) ≫ B) : y(Γ) ⟶ M.uvPolyTp.compDom N.uvPolyTp := by
