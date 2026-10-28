@@ -21,9 +21,11 @@ variable {Γ : Type u} [Category.{v} Γ] {A : Γ ⥤ Cat.{v₁,u₁}}
 
 variable (A)
 
+-- The Grothendieck fiber equations reduce through bundled category morphisms.
+set_option backward.isDefEq.respectTransparency false in
 def toPCat : ∫ A ⥤ PCat.{v₁,u₁} :=
   functorTo (forget _ ⋙ A) (fun x => x.fiber) (fun f => f.fiber)
-    (by simp) (by intros; simp)
+    (by simp) (by intros; simp [forget])
 
 @[simp] theorem toPCat_obj_base (x) :
     ((toPCat A).obj x).base = A.obj x.base := by
