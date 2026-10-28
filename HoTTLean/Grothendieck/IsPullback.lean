@@ -119,16 +119,16 @@ def lift : C ⥤ Grothendieck A := functorTo snd
   rfl
 
 @[simp] theorem fac_right : lift fst snd w ⋙ Grothendieck.forget A = snd := by
-  apply CategoryTheory.Functor.ext
-  · simp
-  · simp
+  exact CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)
 
+-- Match the bundled Cat projections in the fiber transport equations.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem fac_left : lift fst snd w ⋙ Grothendieck.toPCat A = fst := by
   apply CategoryTheory.Functor.ext
   · intro x y f
     apply Grothendieck.Hom.ext
     · simp [eqToHom_map, PCat.eqToHom_base_map,
-        Functor.congr_hom (eqToHom_app w y) (point fst f)]
+        Functor.congr_hom (congrArg Cat.Hom.toFunctor (eqToHom_app w y)) (point fst f)]
     · have h := Functor.congr_hom w f
       simp only [PCat.forgetToCat_map, Functor.comp_map] at h
       simp [h]
@@ -139,6 +139,8 @@ def lift : C ⥤ Grothendieck A := functorTo snd
     · simp [h]
     · simp [Cat.eqToHom_obj]
 
+-- Reduce the bundled fiber maps of identity transports.
+set_option backward.isDefEq.respectTransparency false in
 theorem lift_uniq (m : C ⥤ Grothendieck A)
     (hl : m ⋙ Grothendieck.toPCat A = fst)
     (hr : m ⋙ Grothendieck.forget A = snd) :
@@ -152,13 +154,12 @@ theorem hom_ext {m n : C ⥤ Grothendieck A}
     (hl : m ⋙ Grothendieck.toPCat A = n ⋙ Grothendieck.toPCat A)
     (hr : m ⋙ Grothendieck.forget A = n ⋙ Grothendieck.forget A) :
     m = n := by
-  rw [lift_uniq (m ⋙ toPCat A) (m ⋙ forget A) ?_ m rfl rfl,
-    lift_uniq (n ⋙ toPCat A) (n ⋙ forget A) ?_ n rfl rfl]
-  rw! [hl, hr]
-  . show n ⋙ (toPCat A ⋙ PCat.forgetToCat) = _
-    rw [toPCat_forgetToCat, Functor.assoc]
-  . show m ⋙ (toPCat A ⋙ PCat.forgetToCat) = _
-    rw [toPCat_forgetToCat, Functor.assoc]
+  have wm : (m ⋙ toPCat A) ⋙ PCat.forgetToCat = (m ⋙ forget A) ⋙ A := by
+    rw [Functor.assoc, toPCat_forgetToCat, Functor.assoc]
+  have wn : (n ⋙ toPCat A) ⋙ PCat.forgetToCat = (n ⋙ forget A) ⋙ A := by
+    rw [Functor.assoc, toPCat_forgetToCat, Functor.assoc]
+  rw [lift_uniq _ _ wm m rfl rfl, lift_uniq _ _ wn n rfl rfl]
+  congr 1
 
 def aux {C : Type*} [inst : Category C] (Cn : C ⥤ PCat) (Cw : C ⥤ Γ)
     (hC : Cn ⋙ forget (𝟭 Cat) = Cw ⋙ A) :
