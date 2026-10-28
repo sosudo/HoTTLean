@@ -804,6 +804,8 @@ def strongTrans.naturality {x y : Γ} (g : x ⟶ y) :
     A.map g ⋙ strongTrans.app B s hs y ≅ strongTrans.app B s hs x ⋙ sigmaMap B g :=
   ((conjugatingObjNatTransEquiv₁ _ _ _ _ _).toFun (twoCell B s hs g)).symm
 
+-- Unfold the bundled groupoid functor coercions while elaborating this projection.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.naturality_inv_app {x y} (f : x ⟶ y) (a) :
     (strongTrans.naturality B s hs f).inv.app a =
     eqToHom (by simp [← Functor.comp_obj]; simp [← Grpd.comp_eq_comp]) ≫
@@ -815,6 +817,7 @@ lemma strongTrans.naturality_inv_app {x y} (f : x ⟶ y) (a) :
     Equiv.trans_apply, Equiv.coe_fn_mk, Equiv.coe_fn_symm_mk, IsIso.inv_comp,
     Functor.inv_whiskerLeft, inv_eqToHom, Iso.symm_mk, NatTrans.comp_app, eqToHom_app,
     Functor.whiskerLeft_app]
+  rfl
 
 @[simp]
 lemma strongTrans.naturality_inv_app_base {x y} (f : x ⟶ y) (a) :
