@@ -1386,6 +1386,8 @@ variable (A : E ⥤ C) (fibObj : (x : E) → (A ⋙ F).obj x)
       = eqToHom (functorTo_map_comp_aux A fibObj f g)
       ≫ (F.map (A.map g)).toFunctor.map (fibMap f) ≫ fibMap g)
 
+-- Allow reduction of the dependent Cat projections in this equivalence proof.
+set_option backward.isDefEq.respectTransparency false in
 @[simps!]
 def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
     (fibObj_fib_obj : ∀ c x, fibObj ((fib c).obj x) ≍ x)
@@ -1406,9 +1408,9 @@ def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
       apply FunctorTo.hext
       · simp only [Functor.assoc, functorTo_forget, Functor.id_comp, fib_comp]
       · apply fibObj_fib_obj
-      · intro x y f
-         simp only [comp_obj, functorTo_obj_base, comp_map, functorTo_map_base, functorTo_obj_fiber,
+      · simp only [comp_obj, functorTo_obj_base, comp_map, functorTo_map_base, functorTo_obj_fiber,
           functorTo_map_fiber, id_obj, ι_obj_base, id_map, ι_map_base, ι_obj_fiber, ι_map_fiber]
+        intro x y f
         rw! [eqToHom_comp_heq, heq_cast_iff_heq]
         apply fibMap_fib_map
     · intro c c' f
@@ -1420,13 +1422,13 @@ def functorIsoFrom (fib_comp : ∀ c, fib c ⋙ A = ι F c ⋙ forget F)
         Category.id_comp, id_whiskerRight, ← heq_eq_eq, heq_eqToHom_comp_iff, comp_eqToHom_heq_iff]
       apply Grothendieck.Hom.hext' rfl
       any_goals apply Grothendieck.hext' rfl
-      all_goals simp [obj_fib_obj, fibObj_fib_obj, fibMap_hom_app, map_hom_app]
+      all_goals simp [functorFrom, functorTo, ι, obj_fib_obj, fibObj_fib_obj, fibMap_hom_app, map_hom_app]
   inv_hom_id := by
     fapply Functor.ext
     · intro x
-      simp [fib_obj_fibObj]
+      simp [functorTo, fib_obj_fibObj]
     · intro x y f
-      simp [← heq_eq_eq, hom_map_app_fibObj]
+      simp [functorTo, ← heq_eq_eq, hom_map_app_fibObj]
 
 end
 end
