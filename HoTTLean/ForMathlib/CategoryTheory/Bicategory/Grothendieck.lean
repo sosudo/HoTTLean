@@ -115,7 +115,7 @@ scoped prefix:75 "∫ " => Grothendieck
 
 /-- A morphism in the Grothendieck construction `∫ F` between two points `X Y : ∫ F` consists of
 a morphism in the base category `base : X.base ⟶ Y.base` and
-a morphism in a fiber `f.fiber : (F.map base).obj X.fiber ⟶ Y.fiber`.
+a morphism in a fiber `f.fiber : (F.map base).toFunctor.obj X.fiber ⟶ Y.fiber`.
 -/
 structure Hom (X Y : ∫ F) where
   /-- The morphism between base objects. -/
@@ -257,9 +257,11 @@ end
 /-- The natural isomorphism witnessing the pseudo-functoriality of `Grothendieck.map`. -/
 def mapCompIso (α : F ⟶ G) (β : G ⟶ H) : map (α ≫ β) ≅ map α ⋙ map β :=
   NatIso.ofComponents (fun _ ↦ eqToIso (by aesop_cat)) (fun f ↦ by
-    dsimp
-    simp only [comp_id, id_comp]
-    ext <;> simp)
+    -- Expose bundled Cat composition when normalizing equality transports.
+    set_option backward.isDefEq.respectTransparency false in
+      dsimp
+      simp only [comp_id, id_comp]
+      ext <;> simp [map])
 
 lemma map_comp_eq (α : F ⟶ G) (β : G ⟶ H) : map (α ≫ β) = map α ⋙ map β :=
   Functor.ext_of_iso (mapCompIso α β) (fun _ ↦ by simp [map]) (fun _ ↦ by simp [mapCompIso])
@@ -275,7 +277,7 @@ If `F : Pseudofunctor (LocallyDiscrete 𝒮) Cat` is a pseudofunctor and `t : c 
 -/
 @[simps]
 def transport (t : x.base ⟶ c) : ∫ F :=
-  ⟨c, (F.map t.toLoc).obj x.fiber⟩
+  ⟨c, (F.map t.toLoc).toFunctor.obj x.fiber⟩
 
 /--
 If `F : Pseudofunctor (LocallyDiscrete 𝒮) Cat` is a pseudofunctor and `t : c ⟶ d` is a morphism in
@@ -351,7 +353,7 @@ gives a category whose
 * objects `X` consist of `X.base : C` and `X.fiber : F.obj base`
 * morphisms `f : X ⟶ Y` consist of
   `base : X.base ⟶ Y.base` and
-  `f.fiber : (F.map base).obj X.fiber ⟶ Y.fiber`
+  `f.fiber : (F.map base).toFunctor.obj X.fiber ⟶ Y.fiber`
 -/
 structure Grothendieck where
   /-- The underlying object in `C` -/
@@ -369,7 +371,7 @@ attribute [local simp] eqToHom_map
 variable {F}
 
 lemma ext {x y : ∫ F} (hbase : x.base = y.base)
-    (hfiber : (F.map (eqToHom hbase)).obj x.fiber = y.fiber) : x = y := by
+    (hfiber : (F.map (eqToHom hbase)).toFunctor.obj x.fiber = y.fiber) : x = y := by
   cases x; cases y
   congr
   · simp only [eqToHom_map] at hbase hfiber
@@ -377,24 +379,24 @@ lemma ext {x y : ∫ F} (hbase : x.base = y.base)
     simp [← hfiber]
 
 /-- A morphism in the Grothendieck category `F : C ⥤ Cat` consists of
-`base : X.base ⟶ Y.base` and `f.fiber : (F.map base).obj X.fiber ⟶ Y.fiber`.
+`base : X.base ⟶ Y.base` and `f.fiber : (F.map base).toFunctor.obj X.fiber ⟶ Y.fiber`.
 -/
 structure Hom (X Y : ∫ F) where
   /-- The morphism between base objects. -/
   base : X.base ⟶ Y.base
   /-- The morphism from the pushforward to the source fiber object to the target fiber object. -/
-  fiber : (F.map base).obj X.fiber ⟶ Y.fiber
+  fiber : (F.map base).toFunctor.obj X.fiber ⟶ Y.fiber
 
 namespace Hom
 
 variable {X Y : ∫ F} (f g : Hom X Y)
 
 @[simp]
-lemma mk_base (b : X.base ⟶ Y.base) (f : (F.map b).obj X.fiber ⟶ Y.fiber) : (mk b f).base = b :=
+lemma mk_base (b : X.base ⟶ Y.base) (f : (F.map b).toFunctor.obj X.fiber ⟶ Y.fiber) : (mk b f).base = b :=
   rfl
 
 @[simp]
-lemma mk_fiber (b : X.base ⟶ Y.base) (f : (F.map b).obj X.fiber ⟶ Y.fiber) : (mk b f).fiber = f :=
+lemma mk_fiber (b : X.base ⟶ Y.base) (f : (F.map b).toFunctor.obj X.fiber ⟶ Y.fiber) : (mk b f).fiber = f :=
   rfl
 
 @[ext (iff := false)]
@@ -427,7 +429,7 @@ instance (X : ∫ F) : Inhabited (Hom X X) :=
 def comp {X Y Z : ∫ F} (f : Hom X Y) (g : Hom Y Z) : Hom X Z where
   base := f.base ≫ g.base
   fiber :=
-    eqToHom (by simp) ≫ (F.map g.base).map f.fiber ≫ g.fiber
+    eqToHom (by simp) ≫ (F.map g.base).toFunctor.map f.fiber ≫ g.fiber
 
 end Hom
 
@@ -470,7 +472,7 @@ lemma comp_base {X Y Z : ∫ F} (f : X ⟶ Y) (g : Y ⟶ Z) :
 
 @[simp]
 lemma comp_fiber {X Y Z : ∫ F} (f : X ⟶ Y) (g : Y ⟶ Z) :
-    Hom.fiber (f ≫ g) = eqToHom (by simp) ≫ (F.map g.base).map f.fiber ≫ g.fiber :=
+    Hom.fiber (f ≫ g) = eqToHom (by simp) ≫ (F.map g.base).toFunctor.map f.fiber ≫ g.fiber :=
   rfl
 
 end Hom
