@@ -605,7 +605,7 @@ section
 
 def sigma.fstNatTrans : sigma A B ⟶ A where
   app x := forget
-  naturality x y f:= by simp [sigmaMap_forget]
+  naturality x y f := by rfl
 
 @[simp]
 lemma sigma.fstNatTrans_app (x) : (fstNatTrans A B).app x = Functor.Groupoidal.forget :=
