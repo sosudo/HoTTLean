@@ -485,12 +485,19 @@ lemma eta (pair : Γ ⟶ P @ X) :
 
 lemma mk'_comp_right (b : Γ ⟶ B) {R f1 f2} (H : IsPullback (P := R) f1 f2 b P.p) (x : R ⟶ X) :
     mk' P X b H x ≫ P.functor.map f = mk' P Y b H (x ≫ f) := by
-  refine .symm <| ext' _ _ (by rwa [fst_mk']) (by simp [fst_comp_right]) ?_
-  rw [snd'_comp_right (H := by rwa [fst_mk'])]; simp
+  have hfst : fst P Y (mk' P Y b H (x ≫ f)) =
+      fst P Y (mk' P X b H x ≫ P.functor.map f) :=
+    (fst_mk' P Y b H (x ≫ f)).trans
+      ((fst_comp_right P X Y f (mk' P X b H x)).trans (fst_mk' P X b H x)).symm
+  refine .symm <| ext' _ _ (by rwa [fst_mk']) hfst ?_
+  exact (snd'_mk' P Y b H (x ≫ f)).trans
+    ((snd'_comp_right P X Y f (mk' P X b H x) (by rwa [fst_mk'])).trans
+      (congrArg (fun k => k ≫ f) (snd'_mk' P X b H x))).symm
 
 lemma mk_comp_right (b : Γ ⟶ B) (x : pullback b P.p ⟶ X) :
     mk P X b x ≫ P.functor.map f = mk P Y b (x ≫ f) := by
-  simp [mk_eq_mk', mk'_comp_right]
+  simpa only [mk_eq_mk'] using
+    (mk'_comp_right P X Y f b (.of_hasPullback b P.p) x)
 
 theorem mk'_comp_left {Δ}
     (b : Γ ⟶ B) {R f g} (H : IsPullback (P := R) f g b P.p) (x : R ⟶ X) (σ : Δ ⟶ Γ)
