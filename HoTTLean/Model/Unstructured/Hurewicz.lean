@@ -325,6 +325,7 @@ lemma unpath_ext {Γ} (A : Γ ⟶ U0.Ty) (a0 a1 : Γ ⟶ U0.Tm) (p1 p2 : cyl.I.o
   rw [← P0.unpath_path (A := A) a0 a1 p1 p1_tp δ0_p1 δ1_p1]
   rw [← P0.unpath_path a0 a1 p2 p2_tp δ0_p2 δ1_p2]
   rw! [h]
+  rfl
 
 lemma unpath_comp {Γ Δ} (σ : Δ ⟶ Γ) {A : Γ ⟶ U0.Ty} (a0 a1 : Γ ⟶ U0.Tm) (a0_tp : a0 ≫ U0.tp = A)
     (a1_tp : a1 ≫ U0.tp = A) (p : Γ ⟶ U0.Tm) (p_tp : p ≫ U0.tp = P0.Path a0 a1 a0_tp a1_tp) :
@@ -530,7 +531,6 @@ lemma I_δ0_connection : cyl.I.map (cyl.δ0.app _) ≫ P0.connection hrwcz0 a a_
     cyl.π.app _ ≫ disp .. ≫ U0.disp A ≫ a := by
   fapply P0.unpath_ext (disp .. ≫ U0.disp A ≫ A) (disp .. ≫ U0.disp A ≫ a) (disp .. ≫ U0.disp A ≫ a)
     <;> simp [a_tp, connection, ← unpath_comp]
-  erw [δ0_connectionLift] -- FIXME
   simp [← path_comp]
 
 lemma connection_comp [hrwcz0.IsUniform] :
@@ -585,7 +585,6 @@ lemma δ0_symmConnection : cyl.δ0.app _ ≫ P0.symmConnection hrwcz0 a a_tp =
   simp only [motiveCtx, polymorphicIdIntro_Id, Functor.id_obj, symmConnection, Functor.comp_obj,
     δ0_app_I_obj_comp_symm_app_assoc]
   erw [I_δ0_connection] -- FIXME
-  simp
 
 @[simp]
 lemma I_δ0_symmConnection : cyl.I.map (cyl.δ0.app _) ≫ P0.symmConnection hrwcz0 a a_tp =
@@ -628,8 +627,6 @@ lemma pathSymmConnection_tp : P0.pathSymmConnection hrwcz0 a a_tp ≫ U0.tp =
     (cyl.π.app _ ≫ disp .. ≫ disp .. ≫ a) (cyl.δ1.app _ ≫ P0.symmConnection hrwcz0 a a_tp)
     (by simp [a_tp]) (by simp) := by
   simp [pathSymmConnection]
-  rw! (transparency := .default) [δ0_symmConnection]
-  congr 1
 
 @[simp]
 lemma δ0_pathSymmConnection : cyl.δ0.app _ ≫ P0.pathSymmConnection hrwcz0 a a_tp =
@@ -704,8 +701,6 @@ lemma δ1_substConnection : cyl.δ1.app _ ≫ P0.substConnection hrwcz0 a a_tp =
   simp [substConnection]
   apply (disp_pullback ..).hom_ext
   · simp only [substCons_var, Category.id_comp]
-    rw! (transparency := .default) [δ1_pathSymmConnection]
-    simp
   · apply (disp_pullback ..).hom_ext
     · simp only [symmConnection, motiveCtx, polymorphicIdIntro_Id, Functor.comp_obj,
         δ1_app_I_obj_comp_symm_app_assoc, cyl.δ1_naturality_assoc]
