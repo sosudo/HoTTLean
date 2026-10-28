@@ -501,11 +501,7 @@ lemma assoc_hom_map_fiber_base {x y} (f : x ⟶ y) : ((assoc B).hom.map f).fiber
 
 @[simp]
 lemma assoc_hom_map_fiber_fiber {x y} (f : x ⟶ y) : ((assoc B).hom.map f).fiber.fiber =
-    eqToHom (by
-      simp [assoc_hom]
-      rw [← Functor.comp_obj, ← Grpd.comp_eq_comp, ← Functor.map_comp]
-      congr 2
-      fapply Hom.ext <;> simp) ≫ f.fiber :=
+    eqToHom (assocFibMap_aux f) ≫ f.fiber :=
   rfl
 
 @[simp]
