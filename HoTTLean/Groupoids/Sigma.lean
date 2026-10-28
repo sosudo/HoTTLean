@@ -366,6 +366,8 @@ lemma assocFib_comp_forget (c : Γ) : assocFib B c ⋙ forget ⋙
   rw [ι_comp_forget, ← Functor.assoc, pre_comp_forget, Functor.assoc, ι_comp_forget]
   aesop_cat
 
+-- Extensionality crosses the bundled Grpd coercion.
+set_option backward.isDefEq.respectTransparency false in
 lemma assocFibObj_assocFib_obj (c : Γ) (x : sigmaObj B c) :
     assocFibObj ((assocFib B c).obj x) ≍ x := by
   simp only [assocFib, assocFibObj, pre_obj_fiber, heq_eq_eq]
