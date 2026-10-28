@@ -378,6 +378,7 @@ lemma snd'_eq_snd' (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (f
   apply congrArg (fun k => k ≫ (fan P X).snd)
   apply pullback.hom_ext <;> simp
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma snd'_mk' (b : Γ ⟶ B) {R f g} (H : IsPullback (P := R) f g b P.p) (x : R ⟶ X) :
     snd' P X (mk' P X b H x) (by rwa [fst_mk']) = x := by
