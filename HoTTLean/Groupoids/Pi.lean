@@ -1229,9 +1229,11 @@ lemma whiskerLeftInvLamObjObjSigMap_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     _ _ _ (sigmaMap (β ⋙ PGrpd.forgetToGrpd) f) (sigmaMap (β ⋙ PGrpd.forgetToGrpd) g)]
   simp only [Category.assoc, eqToHom_trans, Grpd.Functor.iso_hom, Grpd.Functor.iso_inv]
 
+-- Unfold bundled groupoid coercions in the section transport proofs.
+set_option backward.isDefEq.respectTransparency false in
 def lamMapFiber :
     ((pi A (β ⋙ PGrpd.forgetToGrpd)).map f).obj (lamObjFiber A β x) ⟶ lamObjFiber A β y :=
-  ⟨whiskerLeftInvLamObjObjSigMap A β f, by
+  ⟨⟨whiskerLeftInvLamObjObjSigMap A β f⟩, by
     ext
     simp only [sigma_obj, sigma.fstNatTrans_app, pi_obj_α, comp_obj, Groupoidal.forget_obj,
       lamObjFiber_obj_obj, whiskerLeftInvLamObjObjSigMap, lamObjFiberObjCompSigMap,
@@ -1240,12 +1242,14 @@ def lamMapFiber :
       Category.comp_id]
     erw [Category.id_comp]⟩
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp] lemma lamMapFiber_id (x : Γ) : lamMapFiber A β (𝟙 x) = eqToHom (by simp) := by
-  apply MorphismProperty.WideSubcategory.hom_ext
-  simp only [sigma_obj, sigma.fstNatTrans_app, pi_obj_α, Set.mem_setOf_eq, lamMapFiber,
-    whiskerLeftInvLamObjObjSigMap_id, MorphismProperty.WideSubcategory.coe_eqToHom]
-  rfl
+  apply (Section.ι ((sigma.fstNatTrans A (β ⋙ PGrpd.forgetToGrpd)).app x)).map_injective
+  rw [eqToHom_map]
+  change whiskerLeftInvLamObjObjSigMap A β (𝟙 x) = eqToHom _
+  exact whiskerLeftInvLamObjObjSigMap_id A β x
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lamMapFiber_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     (lamMapFiber A β (f ≫ g))
     = eqToHom (by
@@ -1254,13 +1258,15 @@ lemma lamMapFiber_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
         rw [← Grpd.comp_eq_comp, Functor.map_comp])
     ≫ (((pi A (β ⋙ PGrpd.forgetToGrpd)).map g).map ((lamMapFiber A β) f))
     ≫ (lamMapFiber A β g) := by
-  apply MorphismProperty.WideSubcategory.hom_ext
-  simp only [sigma_obj, pi, Set.mem_setOf_eq, lamMapFiber, whiskerLeftInvLamObjObjSigMap_comp]
-  rw [MorphismProperty.WideSubcategory.comp_def,
-    MorphismProperty.WideSubcategory.comp_def,
-    MorphismProperty.WideSubcategory.coe_eqToHom]
-  simp
-  rfl
+  apply (Section.ι ((sigma.fstNatTrans A (β ⋙ PGrpd.forgetToGrpd)).app z)).map_injective
+  simp only [Functor.map_comp, eqToHom_map]
+  change whiskerLeftInvLamObjObjSigMap A β (f ≫ g) = eqToHom _ ≫
+    (((pi A (β ⋙ PGrpd.forgetToGrpd)).map g).map (lamMapFiber A β f)).1.hom ≫
+    whiskerLeftInvLamObjObjSigMap A β g
+  simp only [pi]
+  rw [Section.functor_map_map (A := A) (B := sigma A (β ⋙ PGrpd.forgetToGrpd))
+    (sigma.fstNatTrans A (β ⋙ PGrpd.forgetToGrpd)) g (lamMapFiber A β f)]
+  exact whiskerLeftInvLamObjObjSigMap_comp A β f g
 
 def lam : Γ ⥤ PGrpd.{u₁,u₁} :=
   PGrpd.functorTo
