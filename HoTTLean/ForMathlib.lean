@@ -141,7 +141,7 @@ def ofULift (C : Type u) [Category.{v} C] : Cat.{v, max u w} :=
 
 def uLiftFunctor : Cat.{v,u} ⥤ Cat.{v, max u w} where
   obj X := Cat.ofULift.{w} X
-  map F := Cat.homOf $ ULift.downFunctor ⋙ F ⋙ ULift.upFunctor
+  map F := Cat.homOf $ ULift.downFunctor ⋙ F.toFunctor ⋙ ULift.upFunctor
 
 end CategoryTheory.Cat
 
