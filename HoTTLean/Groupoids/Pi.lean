@@ -473,21 +473,21 @@ variable (app : (x : Γ) → A.obj x ⥤ B.obj x)
     Functor.whiskerRight (naturality f).hom (B.map g)
     ≫ eqToHom (by simp [Functor.assoc]))
 
-def strongTrans : (A ⋙ Grpd.forgetToCat).toPseudoFunctor'.StrongTrans
-    (B ⋙ Grpd.forgetToCat).toPseudoFunctor' where
-  app x := app x.as
-  naturality f := naturality f.as
+def strongTrans : (A ⋙ Grpd.forgetToCat).toPseudofunctor'.StrongTrans
+    (B ⋙ Grpd.forgetToCat).toPseudofunctor' where
+  app x := (app x.as).toCatHom
+  naturality f := Cat.Hom.isoMk (naturality f.as)
   naturality_naturality := by
     intro x y f g η
     have := LocallyDiscrete.eq_of_hom η
     subst this
-    simp only [Functor.toPseudoFunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
+    simp only [Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
       LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete, Bicategory.whiskerRight,
       eqToHom_refl, Bicategory.whiskerLeft]
     aesop
   naturality_id := by
     intro x
-    simp only [Functor.toPseudoFunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
+    simp only [Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map, LocallyDiscrete.id_as,
       LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete, Bicategory.whiskerLeft,
       eqToIso.hom, Bicategory.whiskerRight, Bicategory.leftUnitor, Bicategory.rightUnitor]
     rw [Functor.eqToHom_whiskerRight, Functor.leftUnitor_hom_comp_rightUnitor_inv,
@@ -496,7 +496,7 @@ def strongTrans : (A ⋙ Grpd.forgetToCat).toPseudoFunctor'.StrongTrans
     conv => right; apply Category.comp_id
   naturality_comp := by
     intro x y z f g
-    simp only [Grpd.forgetToCat, Functor.toPseudoFunctor', Functor.comp_obj, Functor.comp_map,
+    simp only [Grpd.forgetToCat, Functor.toPseudofunctor', Functor.comp_obj, Functor.comp_map,
       id_eq, LocallyDiscrete.id_as, LocallyDiscrete.comp_as, pseudofunctorOfIsLocallyDiscrete,
       naturality_comp, eqToHom_refl, Category.id_comp, Bicategory.whiskerLeft, Cat.of_α,
       eqToIso.hom, Category.assoc, Bicategory.whiskerRight, Bicategory.associator,
@@ -523,13 +523,13 @@ lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = �
     (Functor.whiskerRight φ Grpd.forgetToCat).toStrongTrans' = 𝟙 _ := by
   fapply Pseudofunctor.StrongTrans.ext
   · intro x
-    simp only [Grpd.forgetToCat, Functor.toPseudoFunctor'_obj, Functor.comp_obj, strongTrans,
+    simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, strongTrans,
       comp_app, NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, id_eq, categoryStruct_id_app]
     apply happ
   · intro x y f
     ext a
-    simp only [Grpd.forgetToCat, Functor.toPseudoFunctor'_obj, Functor.comp_obj, Cat.of_α,
-      Functor.toPseudoFunctor'_map, Functor.comp_map, id_eq, strongTrans, comp_app,
+    simp only [Grpd.forgetToCat, Functor.toPseudofunctor'_obj, Functor.comp_obj, Cat.of_α,
+      Functor.toPseudofunctor'_map, Functor.comp_map, id_eq, strongTrans, comp_app,
       NatTrans.toStrongTrans'_app, Functor.whiskerRight_app, Cat.comp_obj, categoryStruct_id_app,
       Cat.id_obj, categoryStruct_comp_naturality_hom, Bicategory.associator,
       NatTrans.toStrongTrans'_naturality, eqToIso.hom, Bicategory.whiskerLeft_eqToHom,
@@ -543,9 +543,9 @@ lemma strongTrans_comp_toStrongTrans'_self (happ : ∀ x, app x ⋙ φ.app x = �
     rfl
 
 def mapStrongTrans : ∫ A ⥤ ∫ B :=
-  (Functor.Grothendieck.toPseudoFunctor'Iso _).hom ⋙
+  (Functor.Grothendieck.toPseudofunctor'Iso _).hom ⋙
   Pseudofunctor.Grothendieck.map (strongTrans app naturality naturality_id naturality_comp) ⋙
-  (Functor.Grothendieck.toPseudoFunctor'Iso _).inv
+  (Functor.Grothendieck.toPseudofunctor'Iso _).inv
 
 @[simp]
 lemma mapStrongTrans_obj_base (x) :
