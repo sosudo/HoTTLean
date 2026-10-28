@@ -1509,6 +1509,8 @@ section
 
 variable (B : ∫ A ⥤ Grpd) (s : Γ ⥤ PGrpd) (hs : s ⋙ PGrpd.forgetToGrpd = pi A B)
 
+-- Match bundled groupoid coercions in the dependent functor projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma lamObjFiber_obj_obj_inversion_heq (x) :
     (lamObjFiber A (inversion B s hs) x).obj.obj ≍ strongTrans.app B s hs x := by
   dsimp only [lamObjFiber, lamObjFiberObj]
@@ -1532,6 +1534,8 @@ lemma lamObjFiber_inversion_heq (x) :
   refine HEq.trans ?_ (PGrpd.objFiber'_heq hs)
   apply lamObjFiber_inversion_heq'
 
+-- Match bundled groupoid coercions in the dependent functor projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma strongTrans.twoCell_app_inversion {x y} (f : x ⟶ y) (a) :
     (strongTrans.twoCell B s hs f).app ((A.map f).obj ((A.map (CategoryTheory.inv f)).obj a)) =
     eqToHom (by simp only [← Functor.comp_obj]; simp [← Grpd.comp_eq_comp]) ≫
@@ -1550,6 +1554,8 @@ lemma mapStrongTrans_obj_inversion_fiber {x y} (f : x ⟶ y) (a) :
     mapStrongTrans_obj_fiber, ι_obj_fiber, Functor.map_inv]
   simp [← Functor.comp_obj, ← Grpd.comp_eq_comp]
 
+-- Match bundled groupoid coercions in the dependent functor projections.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapStrongTrans_map_inversion_fiber {x y} (f : x ⟶ y) (a) :
     ((mapStrongTrans B s hs).map ((ιNatTrans f).app ((A.map (CategoryTheory.inv f)).obj a))).fiber =
     (strongTrans.twoCell B s hs f).app a ≫
