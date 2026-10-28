@@ -453,8 +453,10 @@ lemma assocFibMap_assocHom_app {c c' : Γ} (f : c ⟶ c') (x : sigmaObj B c) :
 
 end
 
+-- The coherence equations unfold bundled groupoid projections.
+set_option backward.isDefEq.respectTransparency false in
 def assoc : ∫ B ≅≅ ∫ sigma A B := .symm <| functorIsoFrom
-  (assocFib B) (assocHom B) (by simp) (by simp [assocHom_comp])
+  (assocFib B) (assocHom B) (by simp) (by intro c₁ c₂ c₃ f g; exact assocHom_comp B f g)
   (forget ⋙ forget) assocFibObj assocFibMap assocFibMap_id assocFibMap_comp
   assocFib_comp_forget assocFibObj_assocFib_obj assocFibMap_assocFib_map
   assocFib_forget_comp_forget_obj assocHom_app_comp_pre_map_assocFibMap
