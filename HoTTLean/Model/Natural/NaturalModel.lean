@@ -900,12 +900,17 @@ lemma toK_comp_left {Δ} (σ : Δ ⟶ Γ) : ii.toK (ym(σ) ≫ a) =
 
 def toI : y(ii.motiveCtx a) ⟶ ie.i :=
   ie.i_isPullback.lift (M.var _) (ym(M.disp _) ≫ toK ii a)
-  (by rw [(M.disp_pullback _).w]; simp [IdIntro.mkId, toK])
+  (by
+    dsimp only [IdIntro.motiveCtx]
+    rw [(M.disp_pullback _).w]
+    simp [IdIntro.mkId, toK])
 
-lemma toI_comp_i1 : ie.toI a ≫ ie.i1 = M.var _ := by simp [toI]
+lemma toI_comp_i1 : ie.toI a ≫ ie.i1 = M.var _ := by
+  exact ie.i_isPullback.lift_fst _ _ _
 
 lemma toI_comp_i2 : ie.toI a ≫ ie.i2 = ym(M.disp _) ≫ ii.toK a :=
-  by simp [toI]
+  by
+    exact ie.i_isPullback.lift_snd _ _ _
 
 lemma toI_comp_left {Δ} (σ : Δ ⟶ Γ) : toI ie (ym(σ) ≫ a) =
     ym(ii.motiveSubst σ a) ≫ toI ie a := by
