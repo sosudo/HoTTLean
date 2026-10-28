@@ -255,6 +255,16 @@ namespace Groupoid
 instance asSmallGroupoid (Γ : Type u) [Groupoid.{v} Γ] :
     Groupoid (AsSmall.{w} Γ) where
   inv f := AsSmall.up.map (inv (AsSmall.down.map f))
+  inv_comp f := by
+    cases f with
+    | up f =>
+      change ULift.up (inv f ≫ f) = ULift.up (𝟙 _)
+      simp
+  comp_inv f := by
+    cases f with
+    | up f =>
+      change ULift.up (f ≫ inv f) = ULift.up (𝟙 _)
+      simp
 
 end Groupoid
 
