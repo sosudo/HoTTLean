@@ -124,6 +124,8 @@ set_option backward.isDefEq.respectTransparency false in
       ιNatTrans_comp_app, Functor.map_comp, eqToHom_map, Grpd.comp_eq_comp, Grpd.eqToHom_obj, cast_heq_iff_heq, heq_eq_eq]
     aesop_cat
 
+-- Unfold bundled groupoids when elaborating dependent transport projections.
+set_option backward.isDefEq.respectTransparency false in
 @[simp] theorem sigmaMap_comp_map {B : ∫(A) ⥤ Grpd.{v₃,u₃}} {x y z : Γ} {f : x ⟶ y} {g : y ⟶ z}
     {p q : sigmaObj B x} (hpq : p ⟶ q)
     {h1 : (sigmaMap B (f ≫ g)).obj p = (sigmaMap B g).obj ((sigmaMap B f).obj p)}
