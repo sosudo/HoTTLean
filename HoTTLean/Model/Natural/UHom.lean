@@ -84,7 +84,7 @@ theorem Hom.mk_comp_cartesianNatTrans {M N : Universe Ctx} (h : Hom M N)
   refine this.trans ?_
   simp [UvPoly.Equiv.mk']; congr 1
   rw [← Category.assoc]; congr 1
-  generalize_proofs _ h1
+  generalize_proofs _ _ _ _ _ _ h1
   apply h1.hom_ext <;> simp
 
 /- We have a 'nice', specific terminal object in `Ctx`,
