@@ -295,14 +295,17 @@ def assocFibObj (x : ∫ B) : sigmaObj B x.base.base :=
 @[simp] theorem assocFibObj_base (x : ∫ B) : (assocFibObj x).base = x.base.fiber :=
   rfl
 
+-- Unfold bundled groupoid morphisms to combine the functor maps.
+set_option backward.isDefEq.respectTransparency false in
 theorem assocFibMap_aux {x y : ∫ B} (f : x ⟶ y) :
     ((ι A y.base.base ⋙ B).map (Hom.fiber (Hom.base f))).obj
     (fiber ((sigmaMap B (Hom.base (Hom.base f))).obj (assocFibObj x))) =
     (B.map (Hom.base f)).obj x.fiber := by
-  simp only [assocFibObj, objMk_base, ← Functor.comp_obj, Functor.comp_map,
-    sigmaMap_obj_fiber, objMk_fiber]
-  simp only [Functor.comp_obj, ← Grpd.comp_eq_comp, ← Functor.map_comp]
-  congr 2
+  change (B.map ((ι A y.base.base).map (Hom.fiber (Hom.base f)))).obj
+    ((B.map ((ιNatTrans (Hom.base (Hom.base f))).app x.base.fiber)).obj x.fiber) =
+    (B.map (Hom.base f)).obj x.fiber
+  simp only [← Functor.comp_obj, ← Grpd.comp_eq_comp, ← Functor.map_comp]
+  apply congrArg (fun k => (B.map k).obj x.fiber)
   apply Hom.ext <;> simp
 
 def assocFibMap {x y : ∫ B} (f : x ⟶ y) :
