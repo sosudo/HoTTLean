@@ -193,6 +193,8 @@ lemma sigmaObj_naturality (x) :
     sigmaObj B (σ.obj x) = sigmaObj (pre A σ ⋙ B) x :=
   sigma_naturality_obj _ _ _
 
+-- The rewrite crosses the bundled Grpd hom and its underlying functor.
+set_option backward.isDefEq.respectTransparency false in
 lemma sigmaMap_naturality {x y : Δ} (f : x ⟶ y) : sigmaMap B (σ.map f)
     = Grpd.homOf (map (eqToHom (sigma_naturality_aux B σ x).symm)) ≫
     sigmaMap (pre A σ ⋙ B) f ≫
