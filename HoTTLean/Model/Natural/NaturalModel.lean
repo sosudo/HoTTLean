@@ -1311,7 +1311,8 @@ abbrev reflCase : y(Γ) ⟶ N.Tm := UvPoly.Equiv.snd' _ _ ar (Id.reflCase_aux _)
 
 lemma comp_reflCase {Δ} (σ : Δ ⟶ Γ) : reflCase (ym(σ) ≫ ar) = ym(σ) ≫ reflCase ar := by
   simp only [reflCase]
-  rw [UvPoly.Equiv.snd'_comp_left (UvPoly.id M.Tm) N.Tm ar
+  -- The polynomial functor notation requires default transparency for this rewrite.
+  rw! (transparency := .default) [UvPoly.Equiv.snd'_comp_left (UvPoly.id M.Tm) N.Tm ar
     (Id.reflCase_aux (UvPoly.Equiv.fst (UvPoly.id M.Tm) N.Tm ar)) ym(σ)
     (Id.reflCase_aux _)]
   congr 1
