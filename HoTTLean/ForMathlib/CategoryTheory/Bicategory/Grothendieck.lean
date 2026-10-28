@@ -775,14 +775,18 @@ a functor `Grothendieck.map : Grothendieck F ⥤ Grothendieck G`.
 @[simps!]
 def map (α : F ⟶ G) : Grothendieck F ⥤ Grothendieck G :=
   functorTo (forget F)
-  (fun X => (α.app X.base).obj X.fiber)
-  (fun {X Y} f => (eqToHom (α.naturality f.base).symm).app X.fiber ≫ (α.app Y.base).map f.fiber)
-  (by intro x; simp)
+  (fun X => (α.app X.base).toFunctor.obj X.fiber)
+  (fun {X Y} f => (eqToHom (congrArg Cat.Hom.toFunctor (α.naturality f.base).symm)).app X.fiber ≫ (α.app Y.base).toFunctor.map f.fiber)
   (by
+    -- Normalize the wrapped Cat functor transports during elaboration.
+    set_option backward.isDefEq.respectTransparency false in
+      intro x; simp)
+  (by
+    set_option backward.isDefEq.respectTransparency false in
     intro x y z f g
-    have := Functor.congr_hom (α.naturality g.base).symm f.fiber
+    have := Functor.congr_hom (congrArg Cat.Hom.toFunctor (α.naturality g.base).symm) f.fiber
     simp at this
-    simp [this])
+    simp [forget, this, Category.assoc])
 
 /-- The functor `Grothendieck.map α : ∫ F ⥤ ∫ G` lies over `C`. -/
 @[simp]
