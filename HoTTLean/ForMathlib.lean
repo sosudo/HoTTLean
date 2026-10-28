@@ -551,12 +551,19 @@ lemma ofYoneda_isPullback {C : Type u} [Category.{v} C] {TL TR BL BR : C}
   apply IsPullback.of_isLimit (c := c)
   apply c.isLimitAux (fun s => lift (PullbackCone.fst s) (PullbackCone.snd s) (by
       simp [PullbackCone.condition s]))
-  · simp [c, top_lift]
-  · simp [c, lift_comp_left]
+  · intro s
+    change _ ≫ ofYoneda top top_comp = _
+    rw [ofYoneda_comp_left]
+    exact top_lift _ _ _
+  · intro s
+    exact lift_comp_left _ _ _
   · intro s m h
+    change s.pt ⟶ TL at m
     apply lift_uniq
     · specialize h (some .left)
-      simpa [c] using h
+      change m ≫ ofYoneda top top_comp = s.fst at h
+      rw [ofYoneda_comp_left top top_comp] at h
+      exact h
     · specialize h (some .right)
       exact h
 
