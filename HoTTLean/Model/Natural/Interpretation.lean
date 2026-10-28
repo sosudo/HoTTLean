@@ -679,6 +679,8 @@ end CSb
 open UHomSeq
 variable (slen : univMax ≤ s.length)
 
+-- The dependent substitution proof relies on the earlier elaborator transparency behavior.
+set_option backward.isDefEq.respectTransparency false in
 theorem mem_ofType_ofTerm_subst' {full}
     (IH : full = true → ∀ {Δ Γ l} (llen : l < s.length + 1) {sσ} (σ : I.CSb Δ Γ sσ false) {se e},
       se ∈ I.ofTerm Γ l e llen → ym(sσ) ≫ se ∈ I.ofTerm Δ l (Expr.subst σ.toSb e) llen)
@@ -725,7 +727,7 @@ theorem mem_ofType_ofTerm_subst' {full}
     simp [ofTerm_bvar] at H
     simp [Expr.subst]
     induction σ generalizing i with simp [CSb.toSb, *]
-    | wk => exact CObj.mem_var_succ.2 ⟨_, ‹_›, rfl⟩
+    | wk => exact ⟨_, ‹_›, rfl⟩
     | @comp _ _ _ _ _ full σ τ ih1 ih2 =>
       simp [Expr.comp]
       cases full with
