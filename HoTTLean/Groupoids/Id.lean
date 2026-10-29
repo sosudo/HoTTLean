@@ -116,6 +116,8 @@ lemma pathFibObj_comp (x : Δ) : pathFibObj (A := σ ⋙ A) (p := Functor.prod (
   rw! [CategoryTheory.Functor.map_id]
   rfl
 
+-- The path proof unfolds bundled groupoid coercions during dependent simplification.
+set_option backward.isDefEq.respectTransparency false in
 lemma IdMap_path {x y} (f : x ⟶ y) :
     ((IdMap (path0_comp_forgetToGrpd p_tp) (path1_comp_forgetToGrpd p_tp) f).obj
       (pathFibObj p_tp x)).as = (pathFibObj p_tp y).as := by
@@ -129,6 +131,10 @@ lemma IdMap_path {x y} (f : x ⟶ y) :
   simp only [PGrpd.mapFiber'_naturality p_tp (sectR ⟨⟨.false⟩⟩ _), sectR_obj, sectR_map,
     Functor.map_comp, eqToHom_map, PGrpd.mapFiber'_naturality p_tp (sectR ⟨⟨.true⟩⟩ _),
     Category.assoc, IsIso.inv_comp_eq]
+  simp only [pathFibObj_as, sectR_map, Functor.map_comp, eqToHom_map, Category.assoc]
+  change eqToHom _ ≫ ((A.map f).map (PGrpd.mapFiber' p_tp (ft x)) ≫
+    PGrpd.mapFiber' p_tp (ttm f)) =
+    PGrpd.mapFiber' p_tp (ffm f) ≫ eqToHom _ ≫ PGrpd.mapFiber' p_tp (ft y)
   rw! [h1]
   simp
 
