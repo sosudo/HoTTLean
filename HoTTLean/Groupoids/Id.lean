@@ -141,7 +141,7 @@ lemma IdMap_path {x y} (f : x ⟶ y) :
 def pathFibMap {x y : Γ} (f : x ⟶ y) :
     (IdMap (path0_comp_forgetToGrpd p_tp) (path1_comp_forgetToGrpd p_tp) f).obj
     (pathFibObj p_tp x) ⟶ pathFibObj p_tp y :=
-  ⟨⟨IdMap_path ..⟩⟩
+  ⟨IdMap_path ..⟩
 
 lemma pathFibMap_id (x : Γ) : pathFibMap p_tp (𝟙 x) = eqToHom (by simp [IdMap_id]) := by
   aesop_cat
