@@ -271,6 +271,8 @@ lemma grothendieckClassifierIso.hom.map_comp {X Y Z: ∫ I.classifier} (f : X �
     hom.map' I (f ≫ g) = hom.map' I f ≫ hom.map' I g := by
   simp [map', liftIso_comp, eqToHom_map, classifier, classifier.map.map]
 
+-- Reduce fiber projections in the naturality equation.
+set_option backward.isDefEq.respectTransparency false in
 @[simps!]
 def grothendieckClassifierIso.hom.hom {X Y} (f : X ⟶ Y) :
     Fiber.fiberInclusion ⟶ I.classifier.map f ⋙ Fiber.fiberInclusion where
