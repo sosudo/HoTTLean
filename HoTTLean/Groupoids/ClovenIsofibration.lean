@@ -46,7 +46,13 @@ instance {X : Γ} : IsGroupoid (F.Fiber X) where
   all_isIso f := {
     out :=
     have := f.2
-    ⟨Fiber.homMk F _ (CategoryTheory.inv f.1), by cat_disch, by cat_disch⟩ }
+    ⟨Fiber.homMk F _ (CategoryTheory.inv f.1), by
+      apply Subtype.ext
+      change f.1 ≫ CategoryTheory.inv f.1 = 𝟙 _
+      simp, by
+      apply Subtype.ext
+      change CategoryTheory.inv f.1 ≫ f.1 = 𝟙 _
+      simp⟩ }
 
 instance {X : Γ} : Groupoid (F.Fiber X) := Groupoid.ofIsGroupoid
 
