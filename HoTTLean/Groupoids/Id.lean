@@ -606,7 +606,10 @@ variable {Γ Δ : Grpd} (σ : Δ ⟶ Γ) {A : Γ ⟶ U.{v}.Ty} (a0 a1 : Γ ⟶ U
 
 include a0_tp in
 lemma pt_tp : toCoreAsSmallEquiv a0 ⋙ PGrpd.forgetToGrpd = toCoreAsSmallEquiv A := by
-  rw [← a0_tp, Grpd.comp_eq_comp, U.tp, toCoreAsSmallEquiv_apply_comp_right]
+  have h := congrArg toCoreAsSmallEquiv a0_tp
+  change toCoreAsSmallEquiv (a0 ⋙ Ctx.coreAsSmallFunctor PGrpd.forgetToGrpd) =
+    toCoreAsSmallEquiv A at h
+  exact (toCoreAsSmallEquiv_apply_comp_right a0 PGrpd.forgetToGrpd).symm.trans h
 
 def Id : Γ ⟶ U.{v}.Ty :=
   toCoreAsSmallEquiv.symm (FunctorOperation.Id (A := toCoreAsSmallEquiv A)
