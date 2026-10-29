@@ -568,6 +568,8 @@ lemma unpath_map_tf_fiber {x y} (f : tt x ⟶ ff y) :
         rw! [inv_mapFiber_tf_heq p_tp, mapFiber'_heq]
         simp [mapFiber]
 
+-- Dependent fiber projections must unfold when comparing the two functors.
+set_option backward.isDefEq.respectTransparency false in
 lemma unpath_path : unpath (a0_comp_forgetToGrpd p_tp δ0_p) (a1_comp_forgetToGrpd p_tp δ1_p)
     (p := FunctorOperation.Path.path p_tp) (by rw [path_comp_forgetToGrpd]; congr) = p := by
   apply Functor.Grothendieck.FunctorTo.hext
