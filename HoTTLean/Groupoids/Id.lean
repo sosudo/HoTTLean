@@ -260,45 +260,39 @@ def unpath : Grpd.Interval × Γ ⥤ PGrpd :=
 lemma unpath_comp_forgetToGrpd : unpath a0_tp a1_tp p_tp ⋙ PGrpd.forgetToGrpd = snd _ _ ⋙ A := by
   rfl
 
+-- Unfold bundled functor projections when comparing dependent fibers.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma sectR_false_comp_unpath : sectR ⟨⟨.false⟩⟩ _ ⋙ unpath a0_tp a1_tp p_tp = a0 := by
   apply Functor.Grothendieck.FunctorTo.hext
-  · rw [Functor.assoc, unpath, Functor.Grothendieck.functorTo_forget, ← Functor.assoc,
-      sectR_comp_snd, a0_tp, Functor.id_comp]
+  · change (sectR ⟨⟨.false⟩⟩ _ ⋙ unpath a0_tp a1_tp p_tp) ⋙ PGrpd.forgetToGrpd = _
+    rw [Functor.assoc, unpath_comp_forgetToGrpd, ← Functor.assoc, sectR_comp_snd, Functor.id_comp, a0_tp]
   · intro x
-    simp [unpath, PGrpd.objFiber', PGrpd.objFiber, Grpd.eqToHom_obj]
+    change HEq (PGrpd.objFiber' a0_tp x) (a0.obj x).fiber
+    exact PGrpd.objFiber'_heq a0_tp
   · intro x y f
-    simp [unpath, PGrpd.mapFiber', PGrpd.mapFiber'EqToHom, Grpd.eqToHom_hom]
-    apply HEq.trans (eqToHom_comp_heq _ _)
-    simp
+    change HEq (PGrpd.mapFiber' a0_tp f) (a0.map f).fiber
+    exact PGrpd.mapFiber'_heq a0_tp f
 
+-- Unfold bundled functor projections when comparing dependent fibers.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma sectR_true_comp_unpath : sectR ⟨⟨.true⟩⟩ _ ⋙ unpath a0_tp a1_tp p_tp = a1 := by
   apply Functor.Grothendieck.FunctorTo.hext
-  · rw [Functor.assoc, unpath, Functor.Grothendieck.functorTo_forget, ← Functor.assoc,
-      sectR_comp_snd, a1_tp, Functor.id_comp]
+  · change (sectR ⟨⟨.true⟩⟩ _ ⋙ unpath a0_tp a1_tp p_tp) ⋙ PGrpd.forgetToGrpd = _
+    rw [Functor.assoc, unpath_comp_forgetToGrpd, ← Functor.assoc, sectR_comp_snd, Functor.id_comp, a1_tp]
   · intro x
-    simp [unpath, PGrpd.objFiber', PGrpd.objFiber, Grpd.eqToHom_obj]
+    change HEq (PGrpd.objFiber' a1_tp x) (a1.obj x).fiber
+    exact PGrpd.objFiber'_heq a1_tp
   · intro x y f
-    simp [unpath, PGrpd.mapFiber', PGrpd.mapFiber'EqToHom, Grpd.eqToHom_hom]
-    apply HEq.trans (eqToHom_comp_heq _ _)
-    simp
+    change HEq (PGrpd.mapFiber' a1_tp f) (a1.map f).fiber
+    exact PGrpd.mapFiber'_heq a1_tp f
 
 lemma path0_unpath : path0 (unpath a0_tp a1_tp p_tp) = a0 := by
-  apply Functor.Grothendieck.FunctorTo.hext
-  · simp
-  · intro x
-    simpa [unpath] using PGrpd.objFiber'_heq a0_tp
-  · intro x y f
-    simpa [unpath] using PGrpd.mapFiber'_heq a0_tp f
+  exact sectR_false_comp_unpath a0_tp a1_tp p_tp
 
 lemma path1_unpath : path1 (unpath a0_tp a1_tp p_tp) = a1 := by
-  apply Functor.Grothendieck.FunctorTo.hext
-  · simp
-  · intro x
-    simpa [unpath] using PGrpd.objFiber'_heq a1_tp
-  · intro x y f
-    simpa [unpath] using PGrpd.mapFiber'_heq a1_tp f
+  exact sectR_true_comp_unpath a0_tp a1_tp p_tp
 
 lemma pathFibObj_unpath (x) : pathFibObj (unpath_comp_forgetToGrpd a0_tp a1_tp p_tp) x =
     PGrpd.objFiber' p_tp x := by
