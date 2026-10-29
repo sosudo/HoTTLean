@@ -151,6 +151,8 @@ variable {Γ : Type u} {E : Type u} [Groupoid.{v} Γ] [Groupoid.{v} E] {F : E �
 def classifier.map.obj {X Y : Γ} (f : X ⟶ Y) (a : F.Fiber X) : F.Fiber Y :=
   ⟨I.liftObj f a.2, ClovenIsofibration.obj_liftObj ..⟩
 
+-- Fiber is a semireducible subtype; allow its projections to elaborate in this proof.
+set_option backward.isDefEq.respectTransparency false in
 def classifier.map.map  {X Y} (f: X ⟶ Y) {a b : F.Fiber X} (m : a ⟶ b) :
     map.obj I f a ⟶ map.obj I f b :=
   let i1 : a.1 ⟶ I.liftObj f a.2 := I.liftIso f a.2
@@ -158,7 +160,8 @@ def classifier.map.map  {X Y} (f: X ⟶ Y) {a b : F.Fiber X} (m : a ⟶ b) :
   let i := Groupoid.inv i1 ≫ Fiber.fiberInclusion.map m ≫ i2
   have e :𝟙 Y = eqToHom (by simp[obj_liftObj]) ≫
      F.map (CategoryTheory.inv i1 ≫ Fiber.fiberInclusion.map m ≫ i2) ≫ eqToHom (by simp[obj_liftObj])
-     := by simp[i1, i2, Fiber.functor_map_fiberInclusion_map, Functor.map_inv,map_liftIso']
+     := by
+       simp [i1, i2, Fiber.functor_map_fiberInclusion_map, Functor.map_inv, map_liftIso']
   have : F.IsHomLift (𝟙 Y) i := by
     simp only[i, e]
     apply IsHomLift.of_fac _ _ _ (ClovenIsofibration.obj_liftObj ..)
