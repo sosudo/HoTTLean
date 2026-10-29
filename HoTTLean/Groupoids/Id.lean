@@ -617,9 +617,11 @@ def Id : Γ ⟶ U.{v}.Ty :=
     (pt_tp a0 a0_tp)
     (pt_tp a1 a1_tp))
 
+-- Restore transparency for the bundled groupoid coercion in the composition rewrites.
+set_option backward.isDefEq.respectTransparency false in
 lemma Id_comp :
-    UId.Id (A := σ ≫ A) (σ ≫ a0) (σ ≫ a1) (by simp only [Category.assoc, a0_tp, U_Ty])
-      (by simp only [Category.assoc, a1_tp, U_Ty]) = σ ≫ UId.Id a0 a1 a0_tp a1_tp := by
+    UId.Id (A := σ ≫ A) (σ ≫ a0) (σ ≫ a1) (by simp only [Category.assoc, a0_tp])
+      (by simp only [Category.assoc, a1_tp]) = σ ≫ UId.Id a0 a1 a0_tp a1_tp := by
   dsimp only [U_Ty, comp_eq_comp, Id]
   rw [← toCoreAsSmallEquiv_symm_apply_comp_left, ← FunctorOperation.Id_comp]
 
