@@ -451,6 +451,8 @@ lemma inv_mapFiber_tf_heq (y : Γ) :
   rw! (castMode := .all) [Functor.map_inv]
   simp
 
+-- Dependent fiber rewrites need the bundled functor projections to reduce.
+set_option backward.isDefEq.respectTransparency false in
 open PGrpd in
 lemma unpath_map_ft_fiber {x y} (f : ff x ⟶ tt y) :
     ((unpath (a0_comp_forgetToGrpd p_tp δ0_p) (a1_comp_forgetToGrpd p_tp δ1_p)
@@ -463,9 +465,11 @@ lemma unpath_map_ft_fiber {x y} (f : ff x ⟶ tt y) :
   -- have hf : f = ttm f.2 ≫ ft y := by aesop_cat
   -- TODO: mwe and report: this should not type check
   have hf : f = ffm f.2 ≫ ft y := by aesop_cat
-  conv => rhs; rw! (castMode := .all) [hf]
-  simp only [heq_eqRec_iff_heq]
-  convert_to _ ≍ mapFiber _ _
+  have hmap (g h : ff x ⟶ tt y) (e : g = h) :
+      mapFiber p h ≍ (p.map g).fiber := by
+    cases e
+    rfl
+  apply HEq.trans _ (hmap f _ hf)
   erw [mapFiber_comp]
   rw! [← mapFiber'_ffm p_tp δ0_p]
   apply HEq.trans _ (eqToHom_comp_heq ..).symm
@@ -479,15 +483,16 @@ lemma unpath_map_ft_fiber {x y} (f : ff x ⟶ tt y) :
     erw [Functor.congr_hom p_tp (ft y)]
     rw! [← δ0_p, path0, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq]
     simp [mapObjFiber, Grpd.eqToHom_obj, objFiber, Functor.congr_obj H,
-      Grpd.eqToHom_obj]
+      Grpd.eqToHom_obj] <;> rfl
   · simp only [Functor.Grothendieck.forget_map]
     rw! [← δ0_p, path0, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq,
       map_ft_base p_tp, Grpd.eqToHom_obj]
-    simp [objFiber]
+    simp [objFiber] <;> rfl
   · rw! [← δ1_p, path1, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq]
-    simp [objFiber]
+    simp [objFiber] <;> rfl
   · simp only [Functor.comp_obj, snd_obj, Functor.comp_map, snd_map, Grpd.forgetToCat,
       Functor.Grothendieck.forget_obj, Functor.Grothendieck.forget_map, cast_heq_iff_heq]
+    change _ ≍ (p.map (ft y)).base.map _
     rw! [map_ft_base p_tp, mapFiber'_heq]
     simp [Grpd.eqToHom_hom, mapFiber]
   · rw! [mapFiber_ft p_tp y]
@@ -500,6 +505,8 @@ lemma unpath_map_ft_fiber {x y} (f : ff x ⟶ tt y) :
     · apply (objFiber'_heq ..).trans
       simp [objFiber]
 
+-- Dependent fiber rewrites need the bundled functor projections to reduce.
+set_option backward.isDefEq.respectTransparency false in
 open PGrpd in
 lemma unpath_map_tf_fiber {x y} (f : tt x ⟶ ff y) :
     ((unpath (a0_comp_forgetToGrpd p_tp δ0_p) (a1_comp_forgetToGrpd p_tp δ1_p)
@@ -510,16 +517,18 @@ lemma unpath_map_tf_fiber {x y} (f : tt x ⟶ ff y) :
     Functor.Grothendieck.functorTo_obj_fiber, unpathFibObj, Functor.Grothendieck.functorTo_map_fiber,
     unpathFibMap]
   have hf : f = ttm f.2 ≫ tf y := by aesop_cat
-  conv => rhs; rw! (castMode := .all) [hf]
-  simp only [heq_eqRec_iff_heq]
-  convert_to _ ≍ mapFiber _ _
+  have hmap (g h : tt x ⟶ ff y) (e : g = h) :
+      mapFiber p h ≍ (p.map g).fiber := by
+    cases e
+    rfl
+  apply HEq.trans _ (hmap f _ hf)
   erw [mapFiber_comp]
   rw! [← mapFiber'_ttm p_tp δ1_p f.2]
   apply HEq.trans _ (eqToHom_comp_heq ..).symm
   have : A.obj y ≍ forgetToGrpd.obj (p.obj (ff y)) := by erw [Functor.congr_obj p_tp (ff y)]; simp
   have : objFiber' (a0_comp_forgetToGrpd p_tp δ0_p) y ≍ objFiber p (ff y) := by
     rw! [← δ0_p, path0, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq]
-    simp [objFiber]
+    simp [objFiber] <;> rfl
   apply Grpd.comp_heq_comp
   · assumption
   · have H := Functor.congr_hom p_tp (ttm f.2)
@@ -529,14 +538,15 @@ lemma unpath_map_tf_fiber {x y} (f : tt x ⟶ ff y) :
     erw [Functor.congr_hom p_tp (tf y)]
     rw! [← δ1_p, path1, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq]
     simp [mapObjFiber, Grpd.eqToHom_obj, objFiber, Functor.congr_obj H,
-      Grpd.eqToHom_obj]
+      Grpd.eqToHom_obj] <;> rfl
   · simp only [Functor.Grothendieck.forget_map]
     rw! [← δ1_p, path1, objFiber'_naturality (sectR ..) p_tp, objFiber'_heq,
       map_tf_base p_tp, Grpd.eqToHom_obj]
-    simp [objFiber]
+    simp [objFiber] <;> rfl
   · assumption
   · simp only [Functor.comp_obj, snd_obj, Functor.comp_map, snd_map, Grpd.forgetToCat,
       Functor.Grothendieck.forget_obj, Functor.Grothendieck.forget_map, cast_heq_iff_heq]
+    change _ ≍ (p.map (tf y)).base.map _
     rw! [map_tf_base p_tp, mapFiber'_heq]
     simp [Grpd.eqToHom_hom, mapFiber]
   · apply Grpd.inv_heq_of_heq_inv
