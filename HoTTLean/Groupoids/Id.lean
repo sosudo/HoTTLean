@@ -365,29 +365,23 @@ lemma obj_tt_fiber (x) : (p.obj (tt x)).fiber ≍
 
 lemma map_ff_fiber {x y : Γ} (f : ff x ⟶ ff y) : (p.map f).fiber ≍
     PGrpd.mapFiber' (a0_comp_forgetToGrpd p_tp δ0_p) f.2 := by
-  symm
-  convert PGrpd.mapFiber'_heq p_tp f
-  · rw! [← obj_ff_fiber p_tp δ0_p x]
-    rw! [PGrpd.objFiber'_heq p_tp]
-  · rw! [← obj_ff_fiber p_tp δ0_p y]
-    rw! [PGrpd.objFiber'_heq p_tp]
-  · rw! [← δ0_p, path0, PGrpd.mapFiber'_naturality p_tp (sectR { down := { as := false } } Γ)]
-    rw! [PGrpd.mapFiber'_heq p_tp]
-    rw! [PGrpd.mapFiber'_heq p_tp f]
-    rfl
+  subst a0
+  have hf : f = ffm f.2 := by
+    ext
+    · rfl
+    · rfl
+  rw! [hf]
+  exact (PGrpd.mapFiber'_heq (path0_comp_forgetToGrpd p_tp) _).symm
 
 lemma map_tt_fiber {x y : Γ} (f : tt x ⟶ tt y) : (p.map f).fiber ≍
     PGrpd.mapFiber' (a1_comp_forgetToGrpd p_tp δ1_p) f.2 := by
-  symm
-  convert PGrpd.mapFiber'_heq p_tp f
-  · rw! [← obj_tt_fiber p_tp δ1_p x]
-    rw! [PGrpd.objFiber'_heq p_tp]
-  · rw! [← obj_tt_fiber p_tp δ1_p y]
-    rw! [PGrpd.objFiber'_heq p_tp]
-  · rw! [← δ1_p, path1, PGrpd.mapFiber'_naturality p_tp (sectR { down := { as := true } } Γ)]
-    rw! [PGrpd.mapFiber'_heq p_tp]
-    rw! [PGrpd.mapFiber'_heq p_tp f]
-    rfl
+  subst a1
+  have hf : f = ttm f.2 := by
+    ext
+    · rfl
+    · rfl
+  rw! [hf]
+  exact (PGrpd.mapFiber'_heq (path1_comp_forgetToGrpd p_tp) _).symm
 
 lemma mapFiber'_ffm {x y : Γ} (f : x ⟶ y) : PGrpd.mapFiber' p_tp (ffm f) ≍
     PGrpd.mapFiber' (a0_comp_forgetToGrpd p_tp δ0_p) f := by
