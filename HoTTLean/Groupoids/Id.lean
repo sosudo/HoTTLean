@@ -230,6 +230,8 @@ lemma mapFiber'_inv_objFiber' {x y} (f : x ⟶ y) : mapFiber' a1_tp f ≫ inv (o
   slice_lhs 1 2 => rw [map_objFiber'_mapFiber']
   simp
 
+-- The bundled groupoid coercion requires unfolding while rewriting inverses.
+set_option backward.isDefEq.respectTransparency false in
 attribute [simp] unpathFibMap unpathFibObj PGrpd.mapFiber'_comp' Grpd.forgetToCat in
 lemma unpathFibMap_comp {x y z : Grpd.Interval × Γ} (f : x ⟶ y) (g : y ⟶ z) :
     unpathFibMap a0_tp a1_tp p_tp (f ≫ g) =
