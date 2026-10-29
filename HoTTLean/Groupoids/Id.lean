@@ -94,7 +94,8 @@ lemma path1_comp_forgetToGrpd : path1 p ⋙ PGrpd.forgetToGrpd = A := by
 
 lemma objFiber'_path0 (x) : PGrpd.objFiber' (path0_comp_forgetToGrpd p_tp) x =
     PGrpd.objFiber' p_tp (ff x) := by
-  dsimp [PGrpd.objFiber', PGrpd.objFiber]
+  apply heq_iff_eq.mp
+  exact HEq.trans (PGrpd.objFiber'_heq (path0_comp_forgetToGrpd p_tp)) (HEq.symm (PGrpd.objFiber'_heq p_tp))
 
 @[simp]
 abbrev pathId : Γ ⥤ Grpd :=
