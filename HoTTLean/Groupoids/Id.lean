@@ -341,11 +341,13 @@ variable {p : Grpd.Interval × Γ ⥤ PGrpd} (p_tp : p ⋙ PGrpd.forgetToGrpd = 
 
 include δ0_p p_tp in
 lemma a0_comp_forgetToGrpd : a0 ⋙ PGrpd.forgetToGrpd = A := by
-  rw [← δ0_p, path0, Functor.assoc, p_tp, ← Functor.assoc, sectR_comp_snd, Functor.id_comp]
+  rw [← δ0_p]
+  exact path0_comp_forgetToGrpd p_tp
 
 include δ1_p p_tp in
 lemma a1_comp_forgetToGrpd : a1 ⋙ PGrpd.forgetToGrpd = A := by
-  rw [← δ1_p, path1, Functor.assoc, p_tp, ← Functor.assoc, sectR_comp_snd, Functor.id_comp]
+  rw [← δ1_p]
+  exact path1_comp_forgetToGrpd p_tp
 
 lemma obj_ff_fiber (x) : (p.obj (ff x)).fiber ≍
     PGrpd.objFiber' (a0_comp_forgetToGrpd p_tp δ0_p) x := by
