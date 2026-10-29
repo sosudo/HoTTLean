@@ -193,6 +193,8 @@ def unpathFibObj : (x : Grpd.Interval × Γ) → A.obj x.2
 | ⟨⟨⟨.false⟩⟩, x2⟩ => PGrpd.objFiber' a0_tp x2
 | ⟨⟨⟨.true⟩⟩, x2⟩ => PGrpd.objFiber' a1_tp x2
 
+-- The inverse uses the groupoid structure through the bundled fiber coercion.
+set_option backward.isDefEq.respectTransparency false in
 def unpathFibMap : {x y : Grpd.Interval × Γ} → (f : x ⟶ y) →
     ((A.map f.2).obj (unpathFibObj a0_tp a1_tp x) ⟶ unpathFibObj a0_tp a1_tp y)
 | ⟨⟨⟨.false⟩⟩, _⟩, ⟨⟨⟨.false⟩⟩, _⟩, f => PGrpd.mapFiber' a0_tp f.2
