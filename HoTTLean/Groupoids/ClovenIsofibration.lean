@@ -439,10 +439,13 @@ def forget.liftIso {X Y: C} (f : X ⟶ Y) {X' : F.Groupoidal} (hX': Groupoidal.f
     X' ⟶ forget.liftObj f hX' :=
   Groupoidal.toTransport X' (eqToHom (by subst hX'; simp) ≫ f)
 
+-- Unfold the semireducible transport and forgetful functor in the lift equation.
+set_option backward.isDefEq.respectTransparency false in
 lemma forget.isHomLift {X Y: C} (f : X ⟶ Y) {X' : F.Groupoidal}
     (hX': Groupoidal.forget.obj X' = X) : Groupoidal.forget.IsHomLift f (forget.liftIso f hX') := by
-  apply IsHomLift.of_fac' (ha := hX') (hb := by simp[liftObj])
-  simp[liftIso]
+  subst X
+  apply IsHomLift.of_fac' (ha := rfl) (hb := by simp [liftObj])
+  simp [liftIso, Groupoidal.forget_map, Groupoidal.toTransport_base]
 
 def toTransport_IsIso (x : F.Groupoidal) {c : C} (t : x.base ⟶ c) :
     IsIso (Groupoidal.toTransport x t) :=
