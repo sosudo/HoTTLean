@@ -431,6 +431,8 @@ lemma map_tf_base (x) : (p.map (tf x)).base = eqToHom (by
     rw [h0, h1]) := by
   simpa using Functor.congr_hom p_tp (tf x)
 
+-- Matching `eqToHom` through the bundled groupoid functor requires reducible projections.
+set_option backward.isDefEq.respectTransparency false in
 include p_tp in
 lemma inv_mapFiber_tf_heq (y : Γ) :
     inv (PGrpd.mapFiber p (tf y)) ≍ PGrpd.mapFiber p (ft y) := by
@@ -443,6 +445,7 @@ lemma inv_mapFiber_tf_heq (y : Γ) :
   rw! [PGrpd.inv_mapFiber_heq]
   simp only [Grpd.forgetToCat, Functor.Grothendieck.forget_obj, Functor.comp_obj, Functor.comp_map,
     Functor.Grothendieck.forget_map, Cat.of_α, id_eq, cast_heq_iff_heq]
+  dsimp only [PGrpd.forgetToGrpd, Functor.Grothendieck.forget]
   rw! [map_tf_base p_tp, Grpd.eqToHom_hom]
   simp only [Grpd.forgetToCat, PGrpd.mapFiber, cast_heq_iff_heq]
   rw! (castMode := .all) [Functor.map_inv]
