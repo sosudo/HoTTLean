@@ -694,8 +694,10 @@ def tpClovenIsofibration : (GroupoidModel.U.{u}.tp).ClovenIsofibration :=
   isoComp (Functor.ClovenIsofibration.forget _) i
   _ (Functor.IsPullback.isoIsPullback.hom_comp_right ..).symm
 
+-- Instance search must unfold the functor data to match the split iso-composite.
+set_option backward.isDefEq.respectTransparency false in
 instance : IsSplit tpClovenIsofibration := by
-  dsimp [tpClovenIsofibration]
+  dsimp only [tpClovenIsofibration]
   infer_instance
 
 end GroupoidModel
