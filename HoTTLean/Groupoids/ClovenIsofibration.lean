@@ -281,6 +281,8 @@ def grothendieckClassifierIso.hom.hom {X Y} (f : X ⟶ Y) :
    intro a b g
    simp[Fiber.fiberInclusion,classifier,classifier.map.map,Fiber.homMk]
 
+-- Reduce dependent classifier and fiber projections in the functor laws.
+set_option backward.isDefEq.respectTransparency false in
 def grothendieckClassifierIso.hom : ∫ I.classifier ⥤ E :=
   Groupoidal.functorFrom (fun x => Fiber.fiberInclusion)
   (grothendieckClassifierIso.hom.hom I)
