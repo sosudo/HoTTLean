@@ -172,9 +172,8 @@ def classifier.map.map  {X Y} (f: X ⟶ Y) {a b : F.Fiber X} (m : a ⟶ b) :
 lemma classifier.map.map_id {X Y} (f : X ⟶ Y) (a: F.Fiber X):
   map.map I f (𝟙 a) = 𝟙 (map.obj I f a) := by
    ext
-   simp only [map, Fiber.fiberInclusion_homMk, Groupoid.inv_eq_inv, Functor.map_id,
-     IsIso.inv_comp_eq]
-   simp [Fiber.fiberInclusion, classifier.map.obj]
+   simp [map, Fiber.homMk, Fiber.fiberInclusion, classifier.map.obj]
+   rfl
 
 lemma classifier.map.map_comp {X Y} (f: X ⟶ Y) {a b c: F.Fiber X} (m1 : a ⟶ b) (m2: b ⟶ c):
   map.map I f (m1 ≫ m2) = map.map I f m1 ≫ map.map I f m2 := by
