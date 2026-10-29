@@ -83,12 +83,14 @@ variable {p} (p_tp : p ⋙ PGrpd.forgetToGrpd = snd _ _ ⋙ A)
 include p_tp in
 @[simp]
 lemma path0_comp_forgetToGrpd : path0 p ⋙ PGrpd.forgetToGrpd = A := by
-  rw [Functor.assoc, p_tp, ← Functor.assoc, sectR_comp_snd, Functor.id_comp]
+  rw [Functor.assoc, p_tp]
+  rfl
 
 include p_tp in
 @[simp]
 lemma path1_comp_forgetToGrpd : path1 p ⋙ PGrpd.forgetToGrpd = A := by
-  rw [Functor.assoc, p_tp, ← Functor.assoc, sectR_comp_snd, Functor.id_comp]
+  rw [Functor.assoc, p_tp]
+  rfl
 
 lemma objFiber'_path0 (x) : PGrpd.objFiber' (path0_comp_forgetToGrpd p_tp) x =
     PGrpd.objFiber' p_tp (ff x) := by
