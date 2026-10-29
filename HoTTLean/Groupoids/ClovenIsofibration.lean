@@ -536,16 +536,13 @@ def comp.liftIso {X Y: C} (f: X ⟶ Y) [IsIso f] {X': A} (hX': (F ⋙ G).obj X' 
   let f1 := IG.liftIso (X' := F.obj X') f (by simp at hX'; assumption)
   IF.liftIso (X' := X') f1 rfl
 
+-- The composite lift contains dependent projections that must unfold during unification.
+set_option backward.isDefEq.respectTransparency false in
 lemma comp.isHomLift {X Y: C} (f: X ⟶ Y) [IsIso f] {X': A} (hX': (F ⋙ G).obj X' = X) :
     (F ⋙ G).IsHomLift f (comp.liftIso IF IG f hX') := by
-  apply IsHomLift.of_fac
-  · let e := ClovenIsofibration.map_liftIso' (F := F)
-    simp only [comp_obj, liftIso, comp_map, e, eqToHom_refl, Category.id_comp, map_comp,
-      map_liftIso', eqToHom_map, Category.assoc, eqToHom_trans, eqToHom_trans_assoc]
-    rw![liftObj]
-    simp
-  · assumption
-  · simp [liftObj,ClovenIsofibration.obj_liftObj]
+  refine IsHomLift.of_fac (F ⋙ G) f (comp.liftIso IF IG f hX') hX'
+    (comp.obj_liftObj IF IG f hX') ?_
+  simp [comp.liftIso, comp.liftObj, map_liftIso', eqToHom_map, Category.assoc]
 
 /-- `IsMultiplicative` 1/2 -/
 @[simps!]
