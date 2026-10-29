@@ -637,6 +637,8 @@ def path : Γ ⟶ U.{v}.Tm := toCoreAsSmallEquiv.symm <|
     exact (toCoreAsSmallEquiv_apply_comp_right p PGrpd.forgetToGrpd).symm.trans
       (h.trans (toCoreAsSmallEquiv_apply_comp_left _ _)))
 
+-- The composition rewrite needs the same bundled groupoid transparency as Id_comp.
+set_option backward.isDefEq.respectTransparency false in
 lemma path_comp : path (A := σ ≫ A) (cylinder.I.map σ ≫ p) (by rw [Category.assoc, p_tp,
     ← Category.assoc, cylinder.π.naturality, Category.assoc, Functor.id_map]) =
     σ ≫ path p p_tp := by
