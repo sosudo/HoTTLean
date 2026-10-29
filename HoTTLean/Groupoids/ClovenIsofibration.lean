@@ -419,6 +419,8 @@ def iso {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B] (F : A
    intro X Y f i X' hX'
    apply IsIso.comp_isIso
 
+-- The split laws simplify dependent transports through the semireducible `iso` definition.
+set_option backward.isDefEq.respectTransparency false in
 instance {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B] (F : A ≅≅ B) : IsSplit (iso F) where
   liftObj_id h := by simp [← h, ← Functor.comp_obj]
   liftIso_id := by simp
