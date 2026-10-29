@@ -391,13 +391,13 @@ lemma map_tt_fiber {x y : Γ} (f : tt x ⟶ tt y) : (p.map f).fiber ≍
 
 lemma mapFiber'_ffm {x y : Γ} (f : x ⟶ y) : PGrpd.mapFiber' p_tp (ffm f) ≍
     PGrpd.mapFiber' (a0_comp_forgetToGrpd p_tp δ0_p) f := by
-  rw! [← δ0_p, PGrpd.mapFiber'_naturality p_tp (sectR ..)]
-  simp
+  subst a0
+  exact (PGrpd.mapFiber'_heq p_tp _).trans (PGrpd.mapFiber'_heq (path0_comp_forgetToGrpd p_tp) f).symm
 
 lemma mapFiber'_ttm {x y : Γ} (f : x ⟶ y) : PGrpd.mapFiber' p_tp (ttm f) ≍
     PGrpd.mapFiber' (a1_comp_forgetToGrpd p_tp δ1_p) f := by
-  rw! [← δ1_p, PGrpd.mapFiber'_naturality p_tp (sectR ..)]
-  simp
+  subst a1
+  exact (PGrpd.mapFiber'_heq p_tp _).trans (PGrpd.mapFiber'_heq (path1_comp_forgetToGrpd p_tp) f).symm
 
 @[simp]
 lemma objFiber_path (x) : PGrpd.objFiber (path p_tp) x = pathFibObj p_tp x :=
