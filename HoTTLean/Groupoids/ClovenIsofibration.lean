@@ -192,6 +192,8 @@ def classifier.map {X Y} (f : X ⟶ Y) : F.Fiber X ⥤ F.Fiber Y where
 
 variable [IsSplit I]
 
+-- Fiber projections must unfold for the dependent functor extensionality proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma classifier.map_id (X : Γ) : classifier.map I (𝟙 X) = 𝟙 (Grpd.of (F.Fiber X)) := by
   fapply Functor.ext
   · intro a
