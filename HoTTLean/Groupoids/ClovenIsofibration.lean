@@ -346,6 +346,8 @@ lemma liftIso_map_fiberInclusion_map {S} {X Y : Fiber F S} {X' : E} (f : X ⟶ Y
   rw! [Fiber.functor_map_fiberInclusion_map, liftIso_eqToHom]
   rfl
 
+-- Reduce bundled fiber projections in the classifier isomorphism laws.
+set_option backward.isDefEq.respectTransparency false in
 open grothendieckClassifierIso in
 /-- A split isofibration `F : E ⥤ Γ` is classified by the functor `I.classifier : Γ ⥤ Grpd`.
 This means that the (groupoidal) Grothendieck construction on `I.classifier` is isomorphic to
@@ -382,7 +384,8 @@ def grothendieckClassifierIso : ∫ I.classifier ≅≅ E :=
     any_goals simp
     · rw! [map_liftIso', liftObj_comp _ _ _ rfl, liftObj_comp _ _ _ rfl]
       simp [liftObj_eqToHom]
-    · rw! [map_liftIso', liftIso_comp _ _ _ rfl, liftIso_comp _ _ _ rfl]
+    · simp only [hom.hom]
+      rw! (castMode := .all) [map_liftIso', liftIso_comp _ _ _ rfl, liftIso_comp _ _ _ rfl]
       simp only [liftIso_eqToHom, eqToHom_refl, eqToHom_trans, Category.id_comp, Category.assoc,
         IsIso.inv_comp, inv_eqToHom, eqToHom_comp_liftIso, IsIso.inv_hom_id_assoc]
       rw! [eqToHom_heq_id_cod]
