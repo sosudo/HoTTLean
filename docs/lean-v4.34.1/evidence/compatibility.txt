@@ -1,0 +1,4 @@
+$ lake build +HoTTLean.ForMathlib.CategoryTheory.Groupoid +HoTTLean.ForMathlib.CategoryTheory.Localization.Predicate +HoTTLean.ForMathlib.CategoryTheory.MorphismProperty.Basic
+Build completed successfully (650 jobs).
+
+Exit status: 0

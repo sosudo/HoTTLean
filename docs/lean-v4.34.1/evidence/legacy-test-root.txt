@@ -1,0 +1,3 @@
+$ lake env lean test.lean
+
+Exit status: 0
