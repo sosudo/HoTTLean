@@ -114,6 +114,7 @@ lemma pathFibObj_comp (x : Δ) : pathFibObj (A := σ ⋙ A) (p := Functor.prod (
     Functor.prod_obj, Functor.id_obj, Functor.Grothendieck.forget_obj, PGrpd.objFiber'EqToHom,
     Functor.prod_map, Functor.id_map, PGrpd.mapFiber'EqToHom, Grpd.eqToHom_hom, eqToHom_trans_assoc]
   rw! [CategoryTheory.Functor.map_id]
+  rfl
 
 lemma IdMap_path {x y} (f : x ⟶ y) :
     ((IdMap (path0_comp_forgetToGrpd p_tp) (path1_comp_forgetToGrpd p_tp) f).obj
