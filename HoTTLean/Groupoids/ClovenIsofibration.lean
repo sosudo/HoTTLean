@@ -319,13 +319,16 @@ lemma grothendieckClassifierIso.inv.fibMap_comp {x y z : E} (f : x ⟶ y) (g : y
   rw! [Functor.map_comp]
   simp [liftIso_comp, eqToHom_map,classifier,classifier.map.map]
 
+-- Reduce classifier and fiber projections while comparing functor maps.
+set_option backward.isDefEq.respectTransparency false in
 lemma ι_classifier_comp_forget {x} : ι I.classifier x ⋙ Groupoidal.forget =
     Fiber.fiberInclusion ⋙ F := by
   fapply Functor.ext
   · intro p
     exact p.2.symm
   · intro p q f
-    simpa using IsHomLift.fac ..
+    let : F.IsHomLift (𝟙 x) (Fiber.fiberInclusion.map f) := f.2
+    simpa using IsHomLift.fac F (𝟙 x) (Fiber.fiberInclusion.map f)
 
 @[simp]
 lemma liftObj_map_fiberInclusion_map {S} {X Y : Fiber F S} {X' : E} (f : X ⟶ Y)
