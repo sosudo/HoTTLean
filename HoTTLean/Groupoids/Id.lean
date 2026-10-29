@@ -154,7 +154,7 @@ lemma pathFibMap_comp {x y z : Γ} (f1 : x ⟶ y) (f2 : y ⟶ z) :
 
 def path : Γ ⥤ PGrpd :=
   PGrpd.functorTo (pathId p_tp) (pathFibObj p_tp) (pathFibMap p_tp)
-    (pathFibMap_id p_tp) (fun f1 f2 => by dsimp only; aesop_cat)
+    (pathFibMap_id p_tp) (fun f1 f2 => by aesop_cat)
 
 lemma path_comp : path (A := σ ⋙ A) (p := Functor.prod (𝟭 _) σ ⋙ p)
     (by simp [Functor.assoc, p_tp]; rfl) = σ ⋙ path p_tp := by
