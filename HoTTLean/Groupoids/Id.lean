@@ -310,10 +310,14 @@ lemma mapFiber_unpath_ft (x) : PGrpd.mapFiber (unpath a0_tp a1_tp p_tp) (ft x) =
   dsimp [unpath, PGrpd.mapFiber]
   simp
 
+-- Unfold bundled functor projections in the dependent fiber comparison.
+set_option backward.isDefEq.respectTransparency false in
 lemma path_unpath : path (A := A) (unpath_comp_forgetToGrpd a0_tp a1_tp p_tp) = p := by
   apply Functor.Grothendieck.FunctorTo.hext
   · rw [path_comp_forgetToGrpd, p_tp]
-    rw! [path0_unpath, path1_unpath]
+    congr 1
+    · exact path0_unpath ..
+    · exact path1_unpath ..
   · intro x
     exact heq_of_eq_of_heq (pathFibObj_unpath ..) (PGrpd.objFiber'_heq p_tp)
   · intro x y f
