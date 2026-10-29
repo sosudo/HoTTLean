@@ -570,7 +570,9 @@ lemma comp.liftIso_id {X : C} {X' : A} (hX' : (F ⋙ G).obj X' = X) :
     comp.liftIso IF IG (𝟙 X) hX' = eqToHom (by simp[comp.liftObj_id]) := by
   dsimp [comp.liftIso]
   rw! (castMode := .all) [IsSplit.liftIso_id]
-  simp only [liftIso_eqToHom, ← heq_eq_eq, eqRec_heq_iff_heq]
+  simp only [liftIso_eqToHom]
+  apply eq_of_heq
+  apply (eqRec_heq_iff).2
   apply HEq.trans (eqToHom_heq_id_dom _ _ _) (eqToHom_heq_id_dom _ _ _).symm
 
 lemma comp.liftObj_comp {X Y Z : C} (f : X ⟶ Y) [IsIso f] (g : Y ⟶ Z) [IsIso g] {X' : A}
