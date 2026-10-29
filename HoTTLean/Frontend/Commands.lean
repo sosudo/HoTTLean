@@ -21,7 +21,8 @@ def envDiff (old new : Environment) : Array ConstantInfo := Id.run do
 and return them as an axiom environment.
 Assumes that all such axioms are present in the ambient environment
 as definitions of type `CheckedAx _` under the same name. -/
-def computeAxioms (thyEnv : Environment) (constNm : Name) : MetaM ((E : Q(Axioms Name)) × Q(($E).Wf)) := do
+def computeAxioms (thyEnv : Environment) (constNm : Name) :
+    MetaM ((E : Q(Axioms Name)) × Q(($E).Wf)) := do
   let axioms ← withEnv thyEnv <| collectAxioms constNm
   -- The output includes `constNm` if it is itself an axiom.
   let axioms := axioms.filter (· != constNm)

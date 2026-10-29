@@ -46,3 +46,7 @@ docs/_includes/sorries.md
 *.pdfsync
 *.json
 *.auctex-auto
+
+## Local repair workspaces
+.unity/
+.worktrees/

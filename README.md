@@ -32,7 +32,7 @@ Mathematics in Lean](https://voidma.in/assets/papers/2026nawrocki_certifying_pro
 ### Dependencies
 
 We rely on [Mathlib](https://github.com/leanprover-community/mathlib4)
-and [Poly](https://github.com/sinhp/Poly/),
+and [Poly](https://github.com/sosudo/Poly/),
 a formalization of polynomial functors.
 
 ### How can I try out HoTTLean?
@@ -46,16 +46,21 @@ then in a terminal execute
 lake exe cache get
 # Build the project
 lake build
+# Build the natural model modules
+lake build NaturalModel
 # Run tests (optional)
 lake test
 ```
 
 Examples demonstrating the usage of SynthLean (for internal reasoning)
 and of our model definitions (for external reasoning)
-can be found under `test/`:
-- `test/unitt` specifies a type theory with a unit type.
-- `test/hott0` defines HoTT0,
+can be found under `HoTTLeanTest/`:
+- `HoTTLeanTest/unitt.lean` specifies a type theory with a unit type.
+- `HoTTLeanTest/hott0.lean` defines HoTT0,
   a version of HoTT where univalence only holds for h-sets.
+
+The [Lean v4.34.1 migration record](docs/lean-v4.34.1/hottlean-changes.md)
+lists the source changes, checks, and remaining limits.
 
 ### Can I contribute to HoTTLean?
 
