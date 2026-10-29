@@ -229,7 +229,7 @@ def classifier : Γ ⥤ Grpd.{v,u} where
 @[simp]
 lemma fiberInclusion_obj_classifier_map_obj {x y} (f : x ⟶ y) (p) :
     Fiber.fiberInclusion.obj ((I.classifier.map f).obj p) = I.liftObj f p.2 := by
-  simp [classifier, classifier.map.obj, Fiber.fiberInclusion]
+  rfl
 
 open CategoryTheory.Functor.Groupoidal
 
@@ -237,7 +237,7 @@ def grothendieckClassifierIso.hom.obj (pair: ∫ I.classifier) : E := pair.fiber
 
 lemma grothendieckClassifierIso.hom.map_aux {X Y: Γ} (f: X ⟶ Y) (a: I.classifier.obj X) :
     (I.classifier.map f).obj a = ⟨I.liftObj (X' := a.1) f a.2, obj_liftObj ..⟩ := by
-  simp[classifier,classifier.map.obj]
+  rfl
 
 lemma grothendieckClassifierIso.hom.map_aux2
  (X: Γ) (a: I.classifier.obj X) : F.obj a.1 = X := by
