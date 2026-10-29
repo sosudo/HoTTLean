@@ -22,7 +22,7 @@ namespace Model.UnstructuredUniverse
 
 open SynthLean
 
-variable {𝒞 : Type u} [Category 𝒞] (M : UnstructuredUniverse 𝒞)
+variable {𝒞 : Type u} [Category.{v} 𝒞] (M : UnstructuredUniverse 𝒞)
 variable [ChosenTerminal 𝒞]
 
 open ChosenTerminal
@@ -58,7 +58,7 @@ where `Γ` is a prefix of `Γ'`.
 It witnesses a sequence of context extension operations in `s`
 that built `Γ'` on top of `Γ`.
 We write `Γ ≤ Γ'`. -/
-inductive ExtSeq (s : UHomSeq 𝒞) (Γ : 𝒞) : 𝒞 → Type u where
+inductive ExtSeq (s : UHomSeq 𝒞) (Γ : 𝒞) : 𝒞 → Type (max u v) where
   | nil : s.ExtSeq Γ Γ
   | snoc {Γ'} {l : Nat} (d : s.ExtSeq Γ Γ') (llen : l < s.length + 1) (A : Γ' ⟶ s[l].Ty) :
     s.ExtSeq Γ (s[l].ext A)
@@ -211,7 +211,7 @@ i.e., one of the form `1.Aₙ₋₁.….A₀`,
 together with the extension sequence `[Aₙ₋₁ :: … :: A₀]`.
 
 This kind of object can be destructured. -/
-def CObj (s : UHomSeq 𝒞) : Type u := Σ Γ : 𝒞, s.ExtSeq (𝟭_ 𝒞) Γ
+def CObj (s : UHomSeq 𝒞) : Type (max u v) := Σ Γ : 𝒞, s.ExtSeq (𝟭_ 𝒞) Γ
 
 def nilCObj (s : UHomSeq 𝒞) : s.CObj :=
   ⟨𝟭_ 𝒞, .nil⟩
@@ -403,8 +403,9 @@ def ofCtx : Ctx χ → Part s.CObj
   | (A,l) :: Γ => do
     Part.assert (l < s.length + 1) fun llen => do
     let sΓ ← ofCtx Γ
-    let sA ← I.ofType sΓ l A
-    return sΓ.snoc llen sA
+    -- Use the universe-polymorphic bind: contexts and homs may live at different levels.
+    (I.ofType sΓ l A).bind fun sA =>
+      return sΓ.snoc llen sA
 
 @[simp]
 theorem mem_ofType_pi {Γ l i j A B} {llen : l < s.length + 1} {x} :
