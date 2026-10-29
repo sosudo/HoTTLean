@@ -162,21 +162,19 @@ lemma path_comp : path (A := σ ⋙ A) (p := Functor.prod (𝟭 _) σ ⋙ p)
   apply PGrpd.Functor.hext
   · rfl
   · intro x
-    simp only [path, Functor.comp_obj, heq_eq_eq]
-    -- rw [PGrpd.functorTo_obj_fiber] --FIXME why timeout?
-    convert_to pathFibObj (A := σ ⋙ A) (p := Functor.prod (𝟭 _) σ ⋙ p)
-      (by simp [Functor.assoc, p_tp]; rfl) x =
-      pathFibObj (A := A) (p := p) p_tp (σ.obj x)
-    rw [pathFibObj_comp]
+    dsimp only [path, Functor.comp_obj]
+    apply HEq.trans (heq_of_eq (PGrpd.functorTo_obj_fiber _ _ _ _ (pathFibMap_comp _) _))
+    apply HEq.trans _ (heq_of_eq (PGrpd.functorTo_obj_fiber _ _ _ _ (pathFibMap_comp _) _).symm)
+    exact heq_of_eq (pathFibObj_comp σ p_tp x)
   · intro x y f
-    simp only [path, Functor.comp_map]
-    -- rw [PGrpd.functorTo_map_fiber]
-    convert_to pathFibMap (A := σ ⋙ A) (p := Functor.prod (𝟭 _) σ ⋙ p)
-      (by simp [Functor.assoc, p_tp]; rfl) f ≍
-      pathFibMap (A := A) (p := p) p_tp (σ.map f)
-    rw! (castMode := .all) [pathFibObj_comp _ p_tp]
-    rw! (castMode := .all) [pathFibObj_comp _ p_tp]
-    rfl
+    dsimp only [path, Functor.comp_map]
+    apply HEq.trans (heq_of_eq (PGrpd.functorTo_map_fiber _ _ _ _ (pathFibMap_comp _) _))
+    apply HEq.trans _ (heq_of_eq (PGrpd.functorTo_map_fiber _ _ _ _ (pathFibMap_comp _) _).symm)
+    apply Discrete.Hom.hext
+    · rfl
+    · rw! [pathFibObj_comp σ p_tp x]
+      rfl
+    · exact heq_of_eq (pathFibObj_comp σ p_tp y)
 
 @[simp]
 lemma path_comp_forgetToGrpd : path p_tp ⋙ PGrpd.forgetToGrpd =
