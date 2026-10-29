@@ -205,7 +205,7 @@ def unpathFibMap : {x y : Grpd.Interval × Γ} → (f : x ⟶ y) →
 
 lemma unpathFibMap_id (x : Grpd.Interval × Γ) : unpathFibMap a0_tp a1_tp p_tp (𝟙 x) =
     eqToHom (by simp) := by
-  rcases x with ⟨⟨⟨_|_⟩⟩ , x⟩ <;> simp [unpathFibMap]
+  rcases x with ⟨⟨⟨_|_⟩⟩ , x⟩ <;> simp [unpathFibMap] <;> rfl
 
 open PGrpd in
 lemma map_objFiber'_mapFiber' {x y} (f : x ⟶ y) :
