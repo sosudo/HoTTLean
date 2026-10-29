@@ -159,7 +159,8 @@ def classifier.map.map  {X Y} (f: X ⟶ Y) {a b : F.Fiber X} (m : a ⟶ b) :
   let i2 := I.liftIso f b.2
   let i := Groupoid.inv i1 ≫ Fiber.fiberInclusion.map m ≫ i2
   have e :𝟙 Y = eqToHom (by simp[obj_liftObj]) ≫
-     F.map (CategoryTheory.inv i1 ≫ Fiber.fiberInclusion.map m ≫ i2) ≫ eqToHom (by simp[obj_liftObj])
+      F.map (CategoryTheory.inv i1 ≫ Fiber.fiberInclusion.map m ≫ i2) ≫
+        eqToHom (by simp[obj_liftObj])
      := by
        simp [i1, i2, Fiber.functor_map_fiberInclusion_map, Functor.map_inv, map_liftIso']
   have : F.IsHomLift (𝟙 Y) i := by
@@ -260,7 +261,8 @@ set_option backward.isDefEq.respectTransparency false in
 lemma grothendieckClassifierIso.hom.map_id (X : ∫ I.classifier) :
     hom.map I (𝟙 X) = 𝟙 _ := by
   change I.liftIso (Hom.base (𝟙 X)) (hom.map_aux2 ..) ≫
-    eqToHom (by simp [liftObj_id, Fiber.fiberInclusion]) ≫ Fiber.fiberInclusion.map (Hom.fiber (𝟙 X)) = 𝟙 _
+     eqToHom (by simp [liftObj_id, Fiber.fiberInclusion]) ≫
+       Fiber.fiberInclusion.map (Hom.fiber (𝟙 X)) = 𝟙 _
   simp only [Groupoidal.id_base, liftIso_id, Groupoidal.id_fiber]
   rw [eqToHom_map]
   simp
@@ -421,7 +423,8 @@ def iso {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B] (F : A
 
 -- The split laws simplify dependent transports through the semireducible `iso` definition.
 set_option backward.isDefEq.respectTransparency false in
-instance {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B] (F : A ≅≅ B) : IsSplit (iso F) where
+ instance {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B]
+     (F : A ≅≅ B) : IsSplit (iso F) where
   liftObj_id h := by simp [← h, ← Functor.comp_obj]
   liftIso_id := by simp
   liftObj_comp := by simp
@@ -473,7 +476,7 @@ def forget.liftIso_id {X: C} {X' : F.Groupoidal} (hX': Groupoidal.forget.obj X' 
     forget.liftIso (𝟙 X) hX' = eqToHom (by simp [forget.liftObj_id]) := by
   dsimp [liftIso]
   rw! (castMode :=.all)[Category.comp_id]
-  simp only [Groupoidal.toTransport_eqToHom, ← heq_eq_eq, eqRec_heq_iff_heq]
+  simp only [Groupoidal.toTransport_eqToHom, ← heq_eq_eq, eqRec_heq_iff]
   congr!
 
 -- Unfold transport projections when simplifying dependent casts.
@@ -483,7 +486,8 @@ lemma forget.liftObj_comp {X Y Z: C} (f : X ⟶ Y) (g : Y ⟶ Z)
     {Y' : F.Groupoidal} (hY' : forget.liftObj f hX' = Y') :
     forget.liftObj (f ≫ g) hX' = forget.liftObj g (liftObj_comp_aux (forget F) f hX' Y' hY') := by
   subst hX' hY'
-  simp [liftObj, Groupoidal.transport, Grothendieck.transport, Functor.map_comp, Grpd.comp_eq_comp, Grpd.forgetToCat]
+  simp [liftObj, Groupoidal.transport, Grothendieck.transport, Functor.map_comp,
+    Grpd.comp_eq_comp, Grpd.forgetToCat]
 
 -- Unfold transport projections when rewriting dependent casts.
 set_option backward.isDefEq.respectTransparency false in

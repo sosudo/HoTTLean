@@ -1084,7 +1084,8 @@ theorem EqTmIH.idRec {Γ A M M' t t' r r' u u' h h' l l'} :
   refine ⟨_, hΓ, _, _,
     (I.mem_ofType_ofTerm_subst _ (.snoc (.sub1 _ _ _ utp hu) _ _ _ ?_ hh) ?_).1 hM, _,
     I.mem_ofTerm_idRec.2 ⟨_, _, ht, _, ttp, B, ?b, _, hM, _, hr, ?a, _, hu, utp, _, hh, htp, rfl⟩,
-    I.mem_ofTerm_idRec.2 ⟨_, _, ht', _, ttp, B, ?b, _, hM', _, hr', ?a, _, hu', utp, _, hh', htp, rfl⟩,
+    I.mem_ofTerm_idRec.2
+      ⟨_, _, ht', _, ttp, B, ?b, _, hM', _, hr', ?a, _, hu', utp, _, hh', htp, rfl⟩,
     idRec_tp (I_eq := _) ..⟩
   · rw [htp, Beq, ← Id_comp]
     congr 1 <;> simp [sAeq]

@@ -76,7 +76,8 @@ lemma δ0_app_I_obj_comp_symm_app (X) : cyl.δ0.app (cyl.I.obj X) ≫ cyl.symm.a
   NatTrans.congr_app (cyl.whiskerLeft_I_δ0_symm) X
 
 @[reassoc (attr := simp)]
-lemma δ1_app_I_obj_comp_symm_app (X) : cyl.δ1.app (cyl.I.obj X) ≫ cyl.symm.app X = cyl.I.map (cyl.δ1.app X) :=
+lemma δ1_app_I_obj_comp_symm_app (X) :
+    cyl.δ1.app (cyl.I.obj X) ≫ cyl.symm.app X = cyl.I.map (cyl.δ1.app X) :=
   NatTrans.congr_app (cyl.whiskerLeft_I_δ1_symm) X
 
 @[reassoc (attr := simp)]
@@ -364,7 +365,8 @@ open PolymorphicIdIntro
 
 section connection
 
-variable (hrwcz0 : Hurewicz cyl U0.tp) {Γ Δ : Ctx} (σ : Δ ⟶ Γ) {A : Γ ⟶ U0.Ty} (a : Γ ⟶ U0.Tm) (a_tp : a ≫ U0.tp = A)
+variable (hrwcz0 : Hurewicz cyl U0.tp) {Γ Δ : Ctx} (σ : Δ ⟶ Γ)
+    {A : Γ ⟶ U0.Ty} (a : Γ ⟶ U0.Tm) (a_tp : a ≫ U0.tp = A)
 
 /-- Fixing `Γ ⊢ a : A`, `ev` / `substConsEv` can be viewed as the cubical substitution
 `(i : I);(x : A).(p : Id(a,x)) ⊢ p' i : A`,
@@ -430,7 +432,8 @@ lemma substConsEv_var : P0.substConsEv a a_tp ≫ var .. = P0.unpath (A := disp 
   simp [substConsEv]
 
 @[reassoc (attr := simp)]
-lemma δ0_substConsEv : cyl.δ0.app _ ≫ P0.substConsEv a a_tp = disp .. ≫ disp .. ≫ U0.sec A a a_tp := by
+lemma δ0_substConsEv : cyl.δ0.app _ ≫ P0.substConsEv a a_tp =
+    disp .. ≫ disp .. ≫ U0.sec A a a_tp := by
   apply (disp_pullback ..).hom_ext
   · simp [substConsEv]
   · simp [substConsEv]
@@ -582,7 +585,7 @@ lemma symmConnection_tp : P0.symmConnection hrwcz0 a a_tp ≫ U0.tp =
 @[simp]
 lemma δ0_symmConnection : cyl.δ0.app _ ≫ P0.symmConnection hrwcz0 a a_tp =
     cyl.π.app _ ≫ disp .. ≫ U0.disp A ≫ a := by
-  simp only [motiveCtx, polymorphicIdIntro_Id, Functor.id_obj, symmConnection, Functor.comp_obj,
+  simp only [motiveCtx, Functor.id_obj, symmConnection, Functor.comp_obj,
     δ0_app_I_obj_comp_symm_app_assoc]
   erw [I_δ0_connection] -- FIXME
 
@@ -596,7 +599,7 @@ lemma I_δ0_symmConnection : cyl.I.map (cyl.δ0.app _) ≫ P0.symmConnection hrw
 @[simp]
 lemma I_δ1_symmConnection : cyl.I.map (cyl.δ1.app _) ≫ P0.symmConnection hrwcz0 a a_tp =
     P0.ev a a_tp := by
-  simp only [motiveCtx, polymorphicIdIntro_Id, Functor.id_obj, symmConnection, Functor.comp_obj,
+  simp only [motiveCtx, Functor.id_obj, symmConnection, Functor.comp_obj,
     I_map_δ1_app_comp_symm_app_assoc]
   erw [δ1_connection] -- FIXME
 
@@ -631,7 +634,7 @@ lemma pathSymmConnection_tp : P0.pathSymmConnection hrwcz0 a a_tp ≫ U0.tp =
 @[simp]
 lemma δ0_pathSymmConnection : cyl.δ0.app _ ≫ P0.pathSymmConnection hrwcz0 a a_tp =
     disp .. ≫ disp .. ≫ P0.polymorphicIdIntro.refl a a_tp := by
-  simp only [polymorphicIdIntro_Id, Functor.id_obj, pathSymmConnection, motiveCtx, ← path_comp,
+  simp only [Functor.id_obj, pathSymmConnection, motiveCtx, ← path_comp,
     δ0_π'_app_assoc, polymorphicIdIntro_refl, NatTrans.naturality_assoc, Functor.id_map]
   rw! (transparency := .default) [I_δ0_symmConnection]
   simp
@@ -639,7 +642,7 @@ lemma δ0_pathSymmConnection : cyl.δ0.app _ ≫ P0.pathSymmConnection hrwcz0 a 
 @[simp]
 lemma δ1_pathSymmConnection : cyl.δ1.app _ ≫ P0.pathSymmConnection hrwcz0 a a_tp =
     U0.var _ := by
-  simp only [polymorphicIdIntro_Id, Functor.id_obj, pathSymmConnection, motiveCtx, ← path_comp,
+  simp only [Functor.id_obj, pathSymmConnection, motiveCtx, ← path_comp,
     δ1_π'_app_assoc]
   rw! (transparency := .default) [I_δ1_symmConnection]
   simp
@@ -685,13 +688,13 @@ lemma substConnection_var : P0.substConnection hrwcz0 a a_tp ≫ var .. =
 @[reassoc (attr := simp)]
 lemma δ0_substConnection : cyl.δ0.app _ ≫ P0.substConnection hrwcz0 a a_tp =
     disp .. ≫ disp .. ≫ reflInst _ a a_tp := by
-  simp only [polymorphicIdIntro_Id, Functor.id_obj, motiveCtx, substConnection, comp_substCons,
+  simp only [Functor.id_obj, motiveCtx, substConnection, comp_substCons,
     δ0_π'_app_assoc, ← cyl.δ1_naturality_assoc, polymorphicIdIntro_refl]
   rw! (transparency := .default) [δ0_pathSymmConnection]
   apply (disp_pullback ..).hom_ext
   · simp
   · apply (disp_pullback ..).hom_ext
-    · simp only [substCons_disp, substCons_var, Category.assoc, sec_var]
+    · simp only [substCons_disp, substCons_var]
       rw! (transparency := .default) [I_δ0_symmConnection]
       simp
     · simp
@@ -702,7 +705,7 @@ lemma δ1_substConnection : cyl.δ1.app _ ≫ P0.substConnection hrwcz0 a a_tp =
   apply (disp_pullback ..).hom_ext
   · simp only [substCons_var, Category.id_comp]
   · apply (disp_pullback ..).hom_ext
-    · simp only [symmConnection, motiveCtx, polymorphicIdIntro_Id, Functor.comp_obj,
+    · simp only [symmConnection, motiveCtx, Functor.comp_obj,
         δ1_app_I_obj_comp_symm_app_assoc, cyl.δ1_naturality_assoc]
       rw! (transparency := .default) [δ1_connection]
       simp
@@ -712,7 +715,7 @@ lemma δ1_substConnection : cyl.δ1.app _ ≫ P0.substConnection hrwcz0 a a_tp =
 lemma substConnection_comp_motiveSubst [hrwcz0.IsUniform] :
     P0.substConnection hrwcz0 (σ ≫ a) (by simp [a_tp]) ≫ motiveSubst _ σ a a_tp rfl =
     cyl.I.map (motiveSubst _ σ a a_tp) ≫ P0.substConnection hrwcz0 a a_tp := by
-  simp only [polymorphicIdIntro_Id, motiveCtx, motiveSubst]
+  simp only [motiveCtx, motiveSubst]
   apply (disp_pullback ..).hom_ext
   · simp only [Category.assoc, substWk_var]
     erw [substConnection_var]
@@ -739,7 +742,8 @@ def polymorphicIdElim (hrwcz0 : Hurewicz cyl U0.tp) [hrwcz0.IsUniform] [hrwcz0.I
     (U1 : UnstructuredUniverse Ctx) (hrwcz1 : Hurewicz cyl U1.tp) [Hurewicz.IsUniform hrwcz1]
     [Hurewicz.IsNormal hrwcz1] : PolymorphicIdElim (polymorphicIdIntro P0) U1 where
   jElim a a_tp C c c_tp := cyl.δ1.app _ ≫ hrwcz1.lift (disp .. ≫ disp .. ≫ c)
-    (substConnection P0 hrwcz0 a a_tp ≫ C) (by rw [δ0_substConnection_assoc]; simp [c_tp]) -- FIXME simp failed
+    (substConnection P0 hrwcz0 a a_tp ≫ C)
+    (by rw [δ0_substConnection_assoc]; simp [c_tp]) -- FIXME simp failed
   jElim_comp σ A a a_tp C c c_tp := by
     slice_rhs 1 2 => rw [← δ1_naturality]
     slice_rhs 2 3 => rw [← hrwcz1.lift_comp]
@@ -747,7 +751,7 @@ def polymorphicIdElim (hrwcz0 : Hurewicz cyl U0.tp) [hrwcz0.IsUniform] [hrwcz0.I
     · simp [motiveSubst, substWk_disp_assoc]
     · rw [substConnection_comp_motiveSubst_assoc]
   jElim_tp a a_tp C c c_tp := by
-    simp only [motiveCtx, polymorphicIdIntro_Id, Category.assoc, Hurewicz.lift_comp_self']
+    simp only [motiveCtx, Category.assoc, Hurewicz.lift_comp_self']
     erw [δ1_substConnection_assoc] -- FIXME simp, rw failed
   reflSubst_jElim {Γ A} a a_tp C c c_tp := calc _
     _ = cyl.δ1.app Γ ≫ cyl.I.map (reflInst _ a a_tp) ≫

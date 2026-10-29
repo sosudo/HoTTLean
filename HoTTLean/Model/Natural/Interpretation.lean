@@ -1094,7 +1094,8 @@ theorem EqTmIH.idRec {Γ A M M' t t' r r' u u' h h' l l'} :
   refine ⟨_, hΓ, _, _,
     (I.mem_ofType_ofTerm_subst _ (.snoc (.sub1 _ _ _ utp hu) _ _ _ ?_ hh) ?_).1 hM, _,
     I.mem_ofTerm_idRec.2 ⟨_, _, ht, _, ttp, B, ?b, _, hM, _, hr, ?a, _, hu, utp, _, hh, htp, rfl⟩,
-    I.mem_ofTerm_idRec.2 ⟨_, _, ht', _, ttp, B, ?b, _, hM', _, hr', ?a, _, hu', utp, _, hh', htp, rfl⟩,
+    I.mem_ofTerm_idRec.2
+      ⟨_, _, ht', _, ttp, B, ?b, _, hM', _, hr', ?a, _, hu', utp, _, hh', htp, rfl⟩,
     mkIdRec_tp ..⟩
   · rw [htp, Beq, comp_mkId]
     · congr 1 <;> simp
@@ -1208,7 +1209,8 @@ theorem EqTmIH.pair_fst_snd {Γ A B p l l'} :
     exact
       have h1 := I.mem_ofTerm_fst.2 ⟨by omega, _, hA, _, hB, _, hp, ptp, rfl⟩
       have h2 := I.mem_ofTerm_snd.2 ⟨by omega, _, hA, _, hB, _, hp, ptp, rfl⟩
-      have pr := I.mem_ofTerm_pair.2 ⟨rfl, _, h1, _, mkFst_tp .., _, hB, _, h2, mkSnd_tp .., by simp⟩
+       have pr := I.mem_ofTerm_pair.2
+         ⟨rfl, _, h1, _, mkFst_tp .., _, hB, _, h2, mkSnd_tp .., by simp⟩
       ⟨_, hΓ, _, _, hP, _, hp, pr, ptp⟩
 
 theorem EqTmIH.code_el {Γ a l} :

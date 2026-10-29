@@ -311,7 +311,8 @@ private theorem wf_expr :
     (∀ {Γ l vt t A}, ValEqTm E Γ l vt t A → E ∣ Γ ⊢[l] t : A) ∧
     (∀ {Γ l vt t A}, NeutEqTm E Γ l vt t A → E ∣ Γ ⊢[l] t : A) ∧
     (∀ {Γ l l' A vB B}, ClosEqTp E Γ l l' A vB B → E ∣ (A, l) :: Γ ⊢[l'] B) ∧
-    (∀ {Γ A l B l' l'' cC C}, Clos₂EqTp E Γ A l B l' l'' cC C → E ∣ (B, l') :: (A, l) :: Γ ⊢[l''] C) ∧
+    (∀ {Γ A l B l' l'' cC C}, Clos₂EqTp E Γ A l B l' l'' cC C →
+      E ∣ (B, l') :: (A, l) :: Γ ⊢[l''] C) ∧
     (∀ {Γ l l' A B vb b}, ClosEqTm E Γ l l' A B vb b → E ∣ (A, l) :: Γ ⊢[l'] b : B) ∧
     (∀ {Γ Eᵥ σ Γ'}, EnvEqSb E Γ Eᵥ σ Γ' → WfSb E Γ σ Γ') := by
   mutual_induction ValEqTp

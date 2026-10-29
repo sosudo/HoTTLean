@@ -133,7 +133,7 @@ theorem WfTm.tp_eq_synthTp : ∀ {Γ l A t}, E ∣ Γ ⊢[l] t : A → E ∣ Γ 
   case snd' => grind [WfTp.subst, WfSb.toSb, WfTm.fst]
   case refl' =>
     simp only [synthTp]
-    gcongr <;> grind
+    gcongr
   case idRec' C _ _ _ _ _ _ _ _ _ =>
     unfold synthTp
     apply EqTp.refl_tp <| C.subst <| WfSb.snoc (WfSb.toSb ..) ..

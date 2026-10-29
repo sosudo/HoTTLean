@@ -150,7 +150,7 @@ def isPullbackClassifierOfAsSmall :
     Functor.Groupoidal.forget (AsSmall.down ⋙ PGrpd.forgetToGrpd ⋙ AsSmall.up)
     (functorToAsSmallEquiv.symm A) :=
   Functor.IsPullback.Paste.ofRight
-    (by simp [functorToAsSmallEquiv, ← Functor.assoc, ← toPGrpd_forgetToGrpd]; rfl)
+    (by simp [functorToAsSmallEquiv, ← Functor.assoc]; rfl)
     (by rfl) isPullbackAsSmall
     (isPullbackClassifier A)
 

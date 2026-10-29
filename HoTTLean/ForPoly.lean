@@ -359,7 +359,8 @@ theorem fst_comp_right (pair : Γ ⟶ P @ X) : fst P Y (pair ≫ P.functor.map f
 -- Simplification must see the apex of the polynomial fan.
 set_option backward.isDefEq.respectTransparency false in
 lemma snd'_eq (pair : Γ ⟶ P @ X) {R f g} (H : IsPullback (P := R) f g (fst P X pair) P.p) :
-    snd' P X pair H = pullback.lift (f ≫ pair) g (by simpa only [fst_eq, fan_fst, Category.assoc] using H.w) ≫ (fan P X).snd := by
+    snd' P X pair H = pullback.lift (f ≫ pair) g
+      (by simpa only [fst_eq, fan_fst, Category.assoc] using H.w) ≫ (fan P X).snd := by
   simp [snd', snd]
   simp only [← Category.assoc]; congr! 2
   ext <;> simp
@@ -545,12 +546,12 @@ lemma mk'_comp_cartesianNatTrans_app {E' B' Γ X : C} {P' : UvPoly E' B'}
   refine .trans ?_ this
   simp only [← Category.assoc]; congr 1; ext
   · change _ = _ ≫ pullback.fst (P'.fstProj X) P'.p
-    simp only [pullback.map, pullback.lift_fst, Category.assoc, pullback.lift_fst_assoc]
+    simp only [pullback.map, pullback.lift_fst, Category.assoc]
     symm
     slice_lhs 1 2 => apply pullback.lift_fst
     exact Category.assoc _ _ _
   · change _ = _ ≫ pullback.snd (P'.fstProj X) P'.p
-    simp only [pullback.map, pullback.lift_snd, Category.assoc, pullback.lift_snd_assoc]
+    simp only [pullback.map, pullback.lift_snd, Category.assoc]
     rw [← Category.assoc]
     exact congrArg (fun k => k ≫ e)
       (pullback.lift_snd (f := P.fstProj X) (g := P.p) (f ≫ mk' P X y H x) g _).symm

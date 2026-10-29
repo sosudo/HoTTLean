@@ -31,8 +31,6 @@ unitt def uniq_fn {A : Type} (f g : A → Unit) : Identity f g := by
 open SynthLean
 open CategoryTheory MonoidalCategory Model.UnstructuredUniverse GroupoidModel ChosenTerminal
 
-instance : uHomSeq.IdSeq := sorry
-
 theorem slen : univMax ≤ uHomSeq.length := by grind [uHomSeq, univMax]
 
 def Groupoid.asTy (G : Type 0) [Groupoid.{0,0} G] : (𝟭_ Ctx) ⟶ uHomSeq[0].Ty :=

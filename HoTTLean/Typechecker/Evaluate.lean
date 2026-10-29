@@ -720,7 +720,7 @@ partial def evalFst (vp : Q(Val $χ)) : TypecheckerM ((v : Q(Val $χ)) ×
         apply EqTm.fst_pair Beq.wf_left t u |>.symm_tm.trans_tm
         gcongr
         apply EqTm.trans_tm _ eqt.symm_tm
-        gcongr <;> assumption
+        gcongr
       apply v.conv_nf (this.conv_eq Aeq) Aeq.symm_tp
     )⟩
   | ~q(.neut $n (.sigma $k $k' $vA $vB)) =>
@@ -754,14 +754,14 @@ partial def evalSnd (vp : Q(Val $χ)) : TypecheckerM ((v : Q(Val $χ)) ×
         apply EqTm.fst_pair Beq.wf_left t u |>.symm_tm.trans_tm
         gcongr
         apply EqTm.trans_tm _ eqt.symm_tm
-        gcongr <;> assumption
+        gcongr
       replace w := w.conv_tp <| Beq.symm_tp.subst_eq (EqSb.toSb feq)
       apply w.conv_tm
       apply EqTm.snd_pair Beq.wf_left t u |>.symm_tm.conv_eq
         (Beq'.wf_left.subst_eq (EqSb.toSb feq)) |>.trans_tm _
       apply EqTm.symm_tm; gcongr
       apply eqt.trans_tm
-      apply EqTm.symm_tm; gcongr <;> assumption
+      apply EqTm.symm_tm; gcongr
     )⟩
   | ~q(.neut $n (.sigma $k $k' $vA $vB)) => do
     let ⟨vf, vfpost⟩ ← evalFst q($vp)

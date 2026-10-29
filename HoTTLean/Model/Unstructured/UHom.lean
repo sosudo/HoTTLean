@@ -55,7 +55,8 @@ def Hom.subst (M : UnstructuredUniverse Ctx)
     Hom (M.pullback ((σ) ≫ A)) (M.pullback A) :=
   let Aσ := (σ) ≫ A
   { mapTm :=
-    (M.disp_pullback A).lift (M.var Aσ) (M.disp Aσ ≫ σ) (by exact (M.disp_pullback Aσ).w.trans (Category.assoc _ _ _).symm)
+    (M.disp_pullback A).lift (M.var Aσ) (M.disp Aσ ≫ σ)
+      (by exact (M.disp_pullback Aσ).w.trans (Category.assoc _ _ _).symm)
     mapTy := (σ)
     pb := by
       change IsPullback _ (M.disp Aσ) (M.disp A) σ
@@ -100,7 +101,8 @@ def UHom.comp {M N O : UnstructuredUniverse Ctx} (α : UHom M N) (β : UHom N O)
   asTm := α.asTm ≫ β.mapTm
   U_pb := α.U_pb.paste_horiz β.pb
 
-def UHom.comp_assoc {M N O P : UnstructuredUniverse Ctx} (α : UHom M N) (β : UHom N O) (γ : UHom O P) :
+def UHom.comp_assoc {M N O P : UnstructuredUniverse Ctx} (α : UHom M N) (β : UHom N O)
+    (γ : UHom O P) :
     comp (comp α β) γ = comp α (comp β γ) := by
   simp [comp, Hom.comp]
 
