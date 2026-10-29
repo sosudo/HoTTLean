@@ -255,10 +255,15 @@ def grothendieckClassifierIso.hom.map' {p1 p2: ∫ I.classifier} (h: p1 ⟶ p2) 
   (eqToHom (by simp[grothendieckClassifierIso.hom.map_aux,Fiber.fiberInclusion] )) ≫
   Fiber.fiberInclusion.map h.fiber ≫ (eqToHom (by simp[Fiber.fiberInclusion] ))
 
+-- The fiber inclusion and classifier objects are definitionally equal at full transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma grothendieckClassifierIso.hom.map_id (X : ∫ I.classifier) :
     hom.map I (𝟙 X) = 𝟙 _ := by
-  convert_to _ ≫ _ ≫ Fiber.fiberInclusion.map (Hom.fiber (𝟙 X)) = _
-  simp [liftIso_id, eqToHom_map]
+  change I.liftIso (Hom.base (𝟙 X)) (hom.map_aux2 ..) ≫
+    eqToHom (by simp [liftObj_id, Fiber.fiberInclusion]) ≫ Fiber.fiberInclusion.map (Hom.fiber (𝟙 X)) = 𝟙 _
+  simp only [Groupoidal.id_base, liftIso_id, Groupoidal.id_fiber]
+  rw [eqToHom_map]
+  simp
 
 lemma grothendieckClassifierIso.hom.map_comp {X Y Z: ∫ I.classifier} (f : X ⟶ Y) (g : Y ⟶ Z) :
     hom.map' I (f ≫ g) = hom.map' I f ≫ hom.map' I g := by
