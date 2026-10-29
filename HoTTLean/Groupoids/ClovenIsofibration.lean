@@ -467,6 +467,8 @@ def forget.liftObj_id {X: C} {X' : F.Groupoidal} (hX': Groupoidal.forget.obj X' 
     forget.liftObj (𝟙 X) hX' = X' := by
   simp [liftObj, Groupoidal.transport_eqToHom]
 
+-- The cast and transport equations require unfolding semireducible definitions.
+set_option backward.isDefEq.respectTransparency false in
 def forget.liftIso_id {X: C} {X' : F.Groupoidal} (hX': Groupoidal.forget.obj X' = X) :
     forget.liftIso (𝟙 X) hX' = eqToHom (by simp [forget.liftObj_id]) := by
   dsimp [liftIso]
