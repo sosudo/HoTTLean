@@ -35,32 +35,17 @@ lemma IdMap_id (X : Γ) : IdMap a0_tp a1_tp (𝟙 X) = 𝟙 (IdObj a0_tp a1_tp X
 
 lemma IdMap_comp {X Y Z : Γ} (f1 : X ⟶ Y) (f2 : Y ⟶ Z) : IdMap a0_tp a1_tp (f1 ≫ f2) =
     IdMap a0_tp a1_tp f1 ⋙ IdMap a0_tp a1_tp f2 := by
-  subst a0_tp
   apply Discrete.functor_ext
   intro g
   apply Discrete.ext
-  simp only [Functor.comp_obj, Functor.Grothendieck.forget_obj, PGrpd.objFiber'_rfl, IdMap,
-    Functor.comp_map, Functor.Grothendieck.forget_map, PGrpd.mapFiber'_rfl,
-    Discrete.functor_obj_eq_as, Functor.map_comp, Functor.map_inv,
-    Category.assoc, IsIso.eq_inv_comp]
-  simp only [PGrpd.mapFiber, PGrpd.map_comp_fiber, Functor.Grothendieck.forget_obj,
-    Functor.Grothendieck.forget_map, ← Category.assoc, IsIso.inv_comp, inv_eqToHom,
-    PGrpd.mapFiber', Functor.comp_obj, Functor.comp_map, PGrpd.objFiber'EqToHom,
-    PGrpd.mapFiber'EqToHom, Functor.map_comp, eqToHom_map, eqToHom_trans, IsIso.hom_inv_id,
-    Category.id_comp, Functor.Grothendieck.Hom.comp_base, Grpd.comp_eq_comp, eqToHom_naturality,
-    Category.comp_id, ← heq_eq_eq]
-  congr 1
-  rw! [Functor.map_comp]
-  simp only [Functor.Grothendieck.Hom.comp_base, Grpd.comp_eq_comp, Functor.comp_obj,
-    eqToHom_refl, Functor.comp_map, Category.id_comp, Category.assoc, ← heq_eq_eq]
-  congr 1
-  have h := Functor.congr_hom a1_tp f2
-  simp only [Functor.comp_obj, Functor.Grothendieck.forget_obj, Functor.comp_map,
-    Functor.Grothendieck.forget_map, Grpd.comp_eq_comp] at h
-  rw! [h]
-  simp only [← Grpd.comp_eq_comp, Grpd.comp_obj, ← Functor.comp_map, ← heq_eq_eq,
-    heq_eqToHom_comp_iff, heq_comp_eqToHom_iff, eqToHom_comp_heq_iff]
-  simp [Grpd.eqToHom_hom]
+  change inv (PGrpd.mapFiber' a0_tp (f1 ≫ f2)) ≫ (A.map (f1 ≫ f2)).map g ≫
+      PGrpd.mapFiber' a1_tp (f1 ≫ f2) =
+    inv (PGrpd.mapFiber' a0_tp f2) ≫
+      (A.map f2).map (inv (PGrpd.mapFiber' a0_tp f1) ≫ (A.map f1).map g ≫
+        PGrpd.mapFiber' a1_tp f1) ≫ PGrpd.mapFiber' a1_tp f2
+  simp only [PGrpd.mapFiber'_comp', Grpd.map_comp_map, Functor.map_comp,
+    Functor.map_inv, IsIso.inv_comp, inv_eqToHom, Category.assoc]
+  simp only [← Category.assoc, eqToHom_trans, eqToHom_refl, Category.id_comp]
 
 @[simps!]
 def Id : Γ ⥤ Grpd where
