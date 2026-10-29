@@ -294,6 +294,8 @@ lemma path0_unpath : path0 (unpath a0_tp a1_tp p_tp) = a0 := by
 lemma path1_unpath : path1 (unpath a0_tp a1_tp p_tp) = a1 := by
   exact sectR_true_comp_unpath a0_tp a1_tp p_tp
 
+-- Allow unfolding bundled functor projections in dependent fiber simplification.
+set_option backward.isDefEq.respectTransparency false in
 lemma pathFibObj_unpath (x) : pathFibObj (unpath_comp_forgetToGrpd a0_tp a1_tp p_tp) x =
     PGrpd.objFiber' p_tp x := by
   dsimp only [pathFibObj]
