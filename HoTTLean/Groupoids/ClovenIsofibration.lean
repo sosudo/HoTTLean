@@ -299,6 +299,8 @@ def grothendieckClassifierIso.inv.fibMap {X Y}(f : X ⟶ Y) :
     · rfl
     · simp[Functor.map_inv,ClovenIsofibration.map_liftIso']
 
+-- Reduce the bundled fiber projections in this dependent identity proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma grothendieckClassifierIso.inv.fibMap_id (x : E) :
     inv.fibMap I (𝟙 x) = eqToHom (by simp) := by
   apply Fiber.hom_ext
@@ -306,6 +308,8 @@ lemma grothendieckClassifierIso.inv.fibMap_id (x : E) :
   rw![Functor.map_id,liftIso_id]
   simp[inv_eqToHom,eqToHom_map]
 
+-- Reduce the same bundled fiber projections in the composition law.
+set_option backward.isDefEq.respectTransparency false in
 lemma grothendieckClassifierIso.inv.fibMap_comp {x y z : E} (f : x ⟶ y) (g : y ⟶ z) :
     inv.fibMap I (f ≫ g) =
     eqToHom (by simp) ≫
