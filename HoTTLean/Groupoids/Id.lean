@@ -665,6 +665,8 @@ section
 
 variable (p : Γ ⟶ U.Tm) (p_tp : p ≫ U.tp = UId.Id a0 a1 a0_tp a1_tp)
 
+-- The composition rewrite needs bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 def unpath : cylinder.I.obj Γ ⟶ U.{v}.Tm :=
   have p_tp' : toCoreAsSmallEquiv p ⋙ PGrpd.forgetToGrpd =
       FunctorOperation.Id (pt_tp a0 a0_tp) (pt_tp a1 a1_tp) := by
@@ -672,22 +674,30 @@ def unpath : cylinder.I.obj Γ ⟶ U.{v}.Tm :=
     rw [← toCoreAsSmallEquiv_apply_comp_right, p_tp, Equiv.apply_symm_apply]
   toCoreAsSmallEquiv.symm <| FunctorOperation.Path.unpath _ _ p_tp'
 
+-- The unpath composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma unpath_tp : unpath a0 a1 a0_tp a1_tp p p_tp ≫ U.tp = cylinder.π.app Γ ≫ A := by
   dsimp [unpath, U.tp]
   rw [← toCoreAsSmallEquiv_symm_apply_comp_right, toCoreAsSmallEquiv.symm_apply_eq,
     toCoreAsSmallEquiv_apply_comp_left, FunctorOperation.Path.unpath_comp_forgetToGrpd]
   rfl
 
+-- The unpath composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma δ0_unpath : cylinder.δ0.app Γ ≫ unpath a0 a1 a0_tp a1_tp p p_tp = a0 := by
   dsimp [unpath]
   rw [← toCoreAsSmallEquiv_symm_apply_comp_left, toCoreAsSmallEquiv.symm_apply_eq]
   apply FunctorOperation.Path.sectR_false_comp_unpath
 
+-- The unpath composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma δ1_unpath : cylinder.δ1.app Γ ≫ unpath a0 a1 a0_tp a1_tp p p_tp = a1 := by
   dsimp [unpath]
   rw [← toCoreAsSmallEquiv_symm_apply_comp_left, toCoreAsSmallEquiv.symm_apply_eq]
   apply FunctorOperation.Path.sectR_true_comp_unpath
 
+-- The unpath composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma path_unpath : path (A := A) (unpath a0 a1 a0_tp a1_tp p p_tp) (unpath_tp ..) = p := by
   dsimp [path, unpath]
   rw [toCoreAsSmallEquiv.symm_apply_eq]
@@ -696,6 +706,8 @@ lemma path_unpath : path (A := A) (unpath a0 a1 a0_tp a1_tp p p_tp) (unpath_tp .
 
 end
 
+-- The unpath composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma unpath_path (p : cylinder.I.obj Γ ⟶ U.Tm) (p_tp : p ≫ U.tp = cylinder.π.app Γ ≫ A)
     (δ0_p : cylinder.δ0.app Γ ≫ p = a0) (δ1_p : cylinder.δ1.app Γ ≫ p = a1) :
     unpath (A := A) a0 a1 (by simp [← δ0_p, - Grpd.comp_eq_comp, p_tp])
