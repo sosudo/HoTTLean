@@ -631,10 +631,11 @@ variable (p : cylinder.I.obj Γ ⟶ U.Tm) (p_tp : p ≫ U.tp = cylinder.π.app �
 
 def path : Γ ⟶ U.{v}.Tm := toCoreAsSmallEquiv.symm <|
   FunctorOperation.Path.path (A := toCoreAsSmallEquiv A) (p := toCoreAsSmallEquiv p) (by
-    rw [← toCoreAsSmallEquiv_apply_comp_left]
-    rw [← toCoreAsSmallEquiv_apply_comp_right,
-      EmbeddingLike.apply_eq_iff_eq]
-    exact p_tp)
+    have h := congrArg toCoreAsSmallEquiv p_tp
+    change toCoreAsSmallEquiv (p ⋙ Ctx.coreAsSmallFunctor PGrpd.forgetToGrpd) =
+      toCoreAsSmallEquiv (CategoryTheory.Prod.snd Interval Γ ⋙ A) at h
+    exact (toCoreAsSmallEquiv_apply_comp_right p PGrpd.forgetToGrpd).symm.trans
+      (h.trans (toCoreAsSmallEquiv_apply_comp_left _ _)))
 
 lemma path_comp : path (A := σ ≫ A) (cylinder.I.map σ ≫ p) (by rw [Category.assoc, p_tp,
     ← Category.assoc, cylinder.π.naturality, Category.assoc, Functor.id_map]) =
