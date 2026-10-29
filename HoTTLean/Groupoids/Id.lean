@@ -771,13 +771,15 @@ def lift : cylinder.I.obj Γ ⟶ U.{v}.Tm where
   map_id := liftMap_id p0 p p0_tp
   map_comp := liftMap_comp p0 p p0_tp
 
+-- These functor equations need bundled groupoid instances unfolded during elaboration.
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_comp_tp :
     hurewiczUTp.lift p0 p p0_tp ≫ U.tp = p := by
   fapply CategoryTheory.Functor.ext
   · intro x
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
-    · simpa using Functor.congr_obj p0_tp x
-    · simp
+    · exact Functor.congr_obj p0_tp x
+    · exact Functor.ClovenIsofibration.obj_liftObj tpClovenIsofibration _ _
   · intro x y f
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
     · rcases y with ⟨⟨⟨_|_⟩⟩, y⟩
@@ -821,46 +823,53 @@ lemma lift_comp_tp :
         conv => rhs; rw [this]
         rfl
 
+-- As above, expose the bundled instances locally when comparing functor components.
+set_option backward.isDefEq.respectTransparency false in
 lemma δ0_comp_lift : cylinder.δ0.app Γ ≫ hurewiczUTp.lift p0 p p0_tp = p0 := by
   fapply CategoryTheory.Functor.ext
   · intro x
-    convert_to (lift p0 p p0_tp).obj ⟨⟨⟨.false⟩⟩, x⟩ = _
-    simp
+    rfl
   · intro x y f
-    convert_to (lift p0 p p0_tp).map (ffm f) = _
-    simp
+    simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
+    rfl
 
 @[simp]
 lemma I_map_obj_ff (x : Δ) : (cylinder.I.map σ).obj ({ down := { as := false } }, x) =
     ({ down := { as := false } }, σ.obj x) := by
   rfl
 
+-- The following component equations also elaborate through bundled groupoid instances.
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_map_ffm {x y : Δ} (f : x ⟶ y) : (lift p0 p p0_tp).map (ffm (σ.map f)) =
     p0.map (σ.map f) := by
   simp [liftMap]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_map_ft (x : Δ) : (lift p0 p p0_tp).map (ft (σ.obj x)) =
     tpClovenIsofibration.liftIso (p.map (ft (σ.obj x)))
-    (by simpa using Functor.congr_obj p0_tp (σ.obj x)) := by
+    (by exact Functor.congr_obj p0_tp (σ.obj x)) := by
   simp [liftObj, liftMap]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_map_ft' (x : Δ) : (lift p0 p p0_tp).map (ft (σ.obj x)) =
     tpClovenIsofibration.liftIso (p.map (⟨⟨⟨⟩⟩, σ.map (𝟙 _)⟩ : ff (σ.obj x) ⟶ tt (σ.obj x)))
-    (by simpa using Functor.congr_obj p0_tp (σ.obj x)) ≫ eqToHom (by simp) := by
+    (by exact Functor.congr_obj p0_tp (σ.obj x)) ≫ eqToHom (by simp) := by
   simp only [U_Tm, lift_obj, liftObj, U_Ty, U_tp, ft, lift_map, liftMap,
     CategoryTheory.Functor.map_id, liftMap0, Category.id_comp, ← heq_eq_eq, heq_comp_eqToHom_iff]
   rw! (castMode := .all) [← CategoryTheory.Functor.map_id]
   rfl
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_map_tf (x : Δ) : (lift p0 p p0_tp).map (tf (σ.obj x)) =
     eqToHom (by simp; rfl) ≫ inv (tpClovenIsofibration.liftIso (p.map (ft (σ.obj x)))
-      (by simpa using Functor.congr_obj p0_tp (σ.obj x))) := by
+      (by exact Functor.congr_obj p0_tp (σ.obj x))) := by
   simp [liftMap]
 
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_map_tf' (x : Δ) : (lift p0 p p0_tp).map (tf (σ.obj x)) =
     eqToHom (by simp [ft]; rfl) ≫
     inv (tpClovenIsofibration.liftIso (p.map (⟨⟨⟨⟩⟩, σ.map (𝟙 _)⟩ : ff (σ.obj x) ⟶ tt (σ.obj x)))
-    (by simpa using Functor.congr_obj p0_tp (σ.obj x))) := by
+    (by exact Functor.congr_obj p0_tp (σ.obj x))) := by
   simp only [U_Tm, lift_obj, liftObj, U_Ty, U_tp, ft, tf, lift_map, liftMap, liftMap0,
     CategoryTheory.Functor.map_id, Category.comp_id, ← heq_eq_eq, heq_eqToHom_comp_iff]
   rw! (castMode := .all) [← CategoryTheory.Functor.map_id]
