@@ -31,6 +31,7 @@ lemma IdMap_id (X : Γ) : IdMap a0_tp a1_tp (𝟙 X) = 𝟙 (IdObj a0_tp a1_tp X
   intro g
   apply Discrete.ext
   simp [IdMap]
+  rfl
 
 lemma IdMap_comp {X Y Z : Γ} (f1 : X ⟶ Y) (f2 : Y ⟶ Z) : IdMap a0_tp a1_tp (f1 ≫ f2) =
     IdMap a0_tp a1_tp f1 ⋙ IdMap a0_tp a1_tp f2 := by
