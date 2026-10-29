@@ -302,6 +302,8 @@ lemma pathFibObj_unpath (x) : pathFibObj (unpath_comp_forgetToGrpd a0_tp a1_tp p
   apply Discrete.ext
   simp [PGrpd.mapFiber, unpath]
 
+-- Unfold bundled functor projections for the dependent fiber equality.
+set_option backward.isDefEq.respectTransparency false in
 lemma mapFiber_unpath_ft (x) : PGrpd.mapFiber (unpath a0_tp a1_tp p_tp) (ft x) =
     eqToHom (by simp [PGrpd.mapObjFiber, unpath, PGrpd.objFiber]) ≫
     (PGrpd.objFiber' p_tp x).as := by
