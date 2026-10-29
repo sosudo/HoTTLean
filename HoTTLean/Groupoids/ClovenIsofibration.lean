@@ -175,10 +175,13 @@ lemma classifier.map.map_id {X Y} (f : X ⟶ Y) (a: F.Fiber X):
    simp [map, Fiber.homMk, Fiber.fiberInclusion, classifier.map.obj]
    rfl
 
+-- Allow fiber projections to reduce when simplifying the conjugated composite.
+set_option backward.isDefEq.respectTransparency false in
 lemma classifier.map.map_comp {X Y} (f: X ⟶ Y) {a b c: F.Fiber X} (m1 : a ⟶ b) (m2: b ⟶ c):
   map.map I f (m1 ≫ m2) = map.map I f m1 ≫ map.map I f m2 := by
    ext
-   simp[classifier.map.map]
+   simp only [Functor.map_comp]
+   simp [classifier.map.map, Fiber.homMk, Fiber.fiberInclusion, Category.assoc]
 
 @[simps]
 def classifier.map {X Y} (f : X ⟶ Y) : F.Fiber X ⥤ F.Fiber Y where
