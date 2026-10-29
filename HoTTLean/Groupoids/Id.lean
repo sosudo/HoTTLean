@@ -917,17 +917,31 @@ lemma lift_comp : lift (σ ≫ p0) (cylinder.I.map σ ≫ p)
         erw [IsIso.hom_inv_id_assoc]
         rfl
 
+-- Unfold bundled groupoid instances for the component equations.
+set_option backward.isDefEq.respectTransparency false in
 open Functor.ClovenIsofibration.IsSplit in
 lemma isNormal (A : Γ ⟶ U.Ty) (π_A : p = CategoryTheory.Prod.snd _ Γ ≫ A) :
     lift p0 p p0_tp = CategoryTheory.Prod.snd _ Γ ≫ p0 := by
   have : tpClovenIsofibration.IsSplit := inferInstance -- FIXME
   subst π_A
-  fapply CategoryTheory.Functor.ext
+  have norm (z : Γ) (g : A.obj z ⟶ A.obj z) [IsIso g] (hg : g = 𝟙 _)
+      (hh : U.tp.obj (p0.obj z) = A.obj z) :
+      tpClovenIsofibration.liftIso g hh ≍ 𝟙 (p0.obj z) := by
+    subst g
+    rw [liftIso_id]
+    exact eqToHom_heq_id_dom _ _ _
+  have norm_inv (z : Γ) (g : A.obj z ⟶ A.obj z) [IsIso g] (hg : g = 𝟙 _)
+      (hh : U.tp.obj (p0.obj z) = A.obj z) :
+      inv (tpClovenIsofibration.liftIso g hh) ≍ 𝟙 (p0.obj z) := by
+    subst g
+    simp only [liftIso_id, inv_eqToHom]
+    exact eqToHom_heq_id_cod _ _ _
+  fapply CategoryTheory.Functor.hext
   · intro x
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
-    · simp
-    · simp [ft]
-      rw [liftObj_id]
+    · rfl
+    · change tpClovenIsofibration.liftObj (A.map (𝟙 x)) _ = p0.obj x
+      exact (congrArg (fun f => tpClovenIsofibration.liftObj f _) (A.map_id x)).trans (liftObj_id _)
   · intro x y f
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
     · rcases y with ⟨⟨⟨_|_⟩⟩, y⟩
@@ -935,17 +949,30 @@ lemma isNormal (A : Γ ⟶ U.Ty) (π_A : p = CategoryTheory.Prod.snd _ Γ ≫ A)
       · simp only [U_Tm, comp_eq_comp, lift_obj, liftObj, U_Ty, U_tp, Functor.comp_obj,
           Prod.snd_obj, Functor.comp_map, Prod.snd_map, lift_map, liftMap, liftMap0,
           eqToHom_refl, Category.id_comp]
-        rw! [CategoryTheory.Functor.map_id, liftIso_id]
+        have hy : U.tp.obj (p0.obj y) = A.obj y := Functor.congr_obj p0_tp y
+        have hh := norm y (A.map (𝟙 y)) (A.map_id y) hy
+        have ho := (congrArg (fun g => tpClovenIsofibration.liftObj g hy) (A.map_id y)).trans (liftObj_id hy)
+        have hc := heq_comp rfl rfl ho (show p0.map f.2 ≍ p0.map f.2 from HEq.rfl) hh
+        simpa using hc
     · rcases y with ⟨⟨⟨_|_⟩⟩, y⟩
       · simp only [U_Tm, comp_eq_comp, lift_obj, liftObj, U_Ty, U_tp, Functor.comp_obj,
           Prod.snd_obj, Functor.comp_map, Prod.snd_map, lift_map, liftMap, liftMap0,
           eqToHom_refl, Category.comp_id, IsIso.inv_comp_eq]
-        rw! [CategoryTheory.Functor.map_id, liftIso_id]
-        simp
+        have hx : U.tp.obj (p0.obj x) = A.obj x := Functor.congr_obj p0_tp x
+        have hi := norm_inv x (A.map (𝟙 x)) (A.map_id x) hx
+        have ho := (congrArg (fun g => tpClovenIsofibration.liftObj g hx) (A.map_id x)).trans (liftObj_id hx)
+        have hc := heq_comp ho rfl rfl hi (show p0.map f.2 ≍ p0.map f.2 from HEq.rfl)
+        simpa using hc
       · simp
-        rw! [CategoryTheory.Functor.map_id, liftIso_id]
-        slice_rhs 1 2 => rw! [CategoryTheory.Functor.map_id, liftIso_id]
-        simp
+        have hx : U.tp.obj (p0.obj x) = A.obj x := Functor.congr_obj p0_tp x
+        have hy : U.tp.obj (p0.obj y) = A.obj y := Functor.congr_obj p0_tp y
+        have hi := norm_inv x (A.map (𝟙 x)) (A.map_id x) hx
+        have hj := norm y (A.map (𝟙 y)) (A.map_id y) hy
+        have ho := (congrArg (fun g => tpClovenIsofibration.liftObj g hx) (A.map_id x)).trans (liftObj_id hx)
+        have hp := (congrArg (fun g => tpClovenIsofibration.liftObj g hy) (A.map_id y)).trans (liftObj_id hy)
+        have hc := heq_comp ho rfl rfl hi (show p0.map f.2 ≍ p0.map f.2 from HEq.rfl)
+        have hd := heq_comp ho rfl hp hc hj
+        simpa using hd
 
 end hurewiczUTp
 
