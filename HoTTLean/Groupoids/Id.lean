@@ -354,12 +354,14 @@ lemma obj_ff_fiber (x) : (p.obj (ff x)).fiber ≍
   symm
   convert PGrpd.objFiber'_heq (path0_comp_forgetToGrpd p_tp) (x := x)
   rw [← δ0_p]
+  all_goals rfl
 
 lemma obj_tt_fiber (x) : (p.obj (tt x)).fiber ≍
     PGrpd.objFiber' (a1_comp_forgetToGrpd p_tp δ1_p) x := by
   symm
   convert PGrpd.objFiber'_heq (path1_comp_forgetToGrpd p_tp) (x := x)
   rw [← δ1_p]
+  all_goals rfl
 
 lemma map_ff_fiber {x y : Γ} (f : ff x ⟶ ff y) : (p.map f).fiber ≍
     PGrpd.mapFiber' (a0_comp_forgetToGrpd p_tp δ0_p) f.2 := by
