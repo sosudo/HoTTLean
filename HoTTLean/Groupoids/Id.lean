@@ -211,7 +211,10 @@ open PGrpd in
 lemma map_objFiber'_mapFiber' {x y} (f : x ⟶ y) :
     (A.map f).map (objFiber' p_tp x).as ≫ mapFiber' a1_tp f =
     mapFiber' a0_tp f ≫ (objFiber' p_tp y).as := by
-  simpa using (mapFiber' p_tp f).1.1
+  have h := (mapFiber' p_tp f).eq
+  change inv (mapFiber' a0_tp f) ≫ (A.map f).map (objFiber' p_tp x).as ≫
+    mapFiber' a1_tp f = (objFiber' p_tp y).as at h
+  simpa [IsIso.inv_comp_eq] using h
 
 open PGrpd in
 lemma map_objFiber'_mapFiber'_inv_objFiber' {x y} (f : x ⟶ y) :
