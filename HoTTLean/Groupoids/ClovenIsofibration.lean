@@ -575,6 +575,8 @@ lemma comp.liftIso_id {X : C} {X' : A} (hX' : (F ⋙ G).obj X' = X) :
   apply (eqRec_heq_iff).2
   apply HEq.trans (eqToHom_heq_id_dom _ _ _) (eqToHom_heq_id_dom _ _ _).symm
 
+-- The congruence proof compares dependent lifts after unfolding the composite.
+set_option backward.isDefEq.respectTransparency false in
 lemma comp.liftObj_comp {X Y Z : C} (f : X ⟶ Y) [IsIso f] (g : Y ⟶ Z) [IsIso g] {X' : A}
     (hX' : (F ⋙ G).obj X' = X) :
     comp.liftObj IF IG (f ≫ g) hX' =
