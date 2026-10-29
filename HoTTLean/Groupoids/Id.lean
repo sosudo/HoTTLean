@@ -875,20 +875,22 @@ lemma lift_map_tf' (x : Δ) : (lift p0 p p0_tp).map (tf (σ.obj x)) =
   rw! (castMode := .all) [← CategoryTheory.Functor.map_id]
   rfl
 
+-- Expose bundled groupoid instances while elaborating cylinder components.
+set_option backward.isDefEq.respectTransparency false in
 lemma lift_comp : lift (σ ≫ p0) (cylinder.I.map σ ≫ p)
     (by simp [p0_tp, - Grpd.comp_eq_comp, ← cylinder.δ0.naturality_assoc]) =
     cylinder.I.map σ ≫ lift p0 p p0_tp := by
   fapply CategoryTheory.Functor.ext
   · intro x
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
-    · convert_to _ = (lift p0 p p0_tp).obj (ff (σ.obj x))
-      simp
-    · convert_to _ = (lift p0 p p0_tp).obj (tt (σ.obj x))
-      simp only [U_Tm, comp_eq_comp, lift_obj, liftObj, U_Ty, U_tp, Functor.comp_obj,
-        Functor.comp_map]
-      congr
-      conv => rhs; rw [ft, ← CategoryTheory.Functor.map_id]
-      rfl
+    · rfl
+    · simp only [comp_eq_comp, lift_obj, liftObj, Functor.comp_obj, Functor.comp_map]
+      congr 1
+      change p.map ((cylinder.I.map σ).map (ft x)) = p.map (ft (σ.obj x))
+      congr 1
+      simp only [ft]
+      change (⟨⟨⟨⟩⟩, σ.map (𝟙 x)⟩ : ff (σ.obj x) ⟶ tt (σ.obj x)) = _
+      exact congrArg (fun g => (⟨⟨⟨⟩⟩, g⟩ : ff (σ.obj x) ⟶ tt (σ.obj x))) (σ.map_id x)
   · intro x y f
     rcases x with ⟨⟨⟨_|_⟩⟩, x⟩
     · rcases y with ⟨⟨⟨_|_⟩⟩, y⟩
