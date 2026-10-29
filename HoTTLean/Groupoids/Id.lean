@@ -409,7 +409,8 @@ lemma mapFiber_ft (x) : PGrpd.mapFiber p (ft x) ≍
     Grpd.forgetToCat, Functor.Grothendieck.forget_obj, PGrpd.objFiber'EqToHom,
     PGrpd.mapFiber'EqToHom, Grpd.eqToHom_hom, eqToHom_trans_assoc, PGrpd.mapFiber]
   apply HEq.trans (eqToHom_comp_heq ..)
-  simp
+  apply HEq.trans (eqToHom_comp_heq ..)
+  exact (Grpd.eqToHom_hom _ _).heq.trans (cast_heq _ _)
 
 include p_tp in
 lemma map_ft_base (x) : (p.map (ft x)).base = eqToHom (by
