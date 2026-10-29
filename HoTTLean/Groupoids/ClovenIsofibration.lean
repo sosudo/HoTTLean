@@ -485,6 +485,8 @@ lemma forget.liftObj_comp {X Y Z: C} (f : X ⟶ Y) (g : Y ⟶ Z)
   subst hX' hY'
   simp [liftObj, Groupoidal.transport, Grothendieck.transport, Functor.map_comp, Grpd.comp_eq_comp, Grpd.forgetToCat]
 
+-- Unfold transport projections when rewriting dependent casts.
+set_option backward.isDefEq.respectTransparency false in
 lemma forget.liftIso_comp {X Y Z: C} (f : X ⟶ Y) (g : Y ⟶ Z) {X' : F.Groupoidal}
     (hX' : X'.base = X) {Y' : F.Groupoidal} (hY' : forget.liftObj f hX' = Y') :
     forget.liftIso (f ≫ g) hX' = forget.liftIso f hX' ≫ eqToHom hY' ≫
