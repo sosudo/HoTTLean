@@ -587,6 +587,8 @@ lemma comp.liftObj_comp {X Y Z : C} (f : X ⟶ Y) [IsIso f] (g : Y ⟶ Z) [IsIso
   congr!
   simp
 
+-- The dependent rewrite compares casts whose definitions need semireducible unfolding.
+set_option backward.isDefEq.respectTransparency false in
 lemma comp.liftIso_comp {X Y Z : C} (f : X ⟶ Y) [IsIso f] (g : Y ⟶ Z) [IsIso g] {X' : A}
     (hX' : (F ⋙ G).obj X' = X) (Y' : A)
     (hY' : comp.liftObj IF IG f hX' = Y') :
