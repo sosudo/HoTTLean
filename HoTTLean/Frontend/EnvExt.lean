@@ -70,10 +70,33 @@ For the initial shallow environment,
 we pull in a custom prelude with `Type`-valued identity types. -/
 def mkInitTheoryData (modNm mainModule : Name) : m TheoryData := do
   -- TODO: check if the `.olean` exists and print a better error if not.
-  -- Imports reset this flag. Enable it for each shallow environment import.
-  liftM (m := IO) (unsafe Lean.enableInitializersExecution)
-  let mut thyEnv ← importModules #[{ module := `HoTTLean.Prelude }]
-    (← getOptions) (leakEnv := true) (loadExts := true)
+  let opts ← getOptions
+  let imports := #[{ module := `HoTTLean.Prelude : Import }]
+  -- Read module data without changing the process-wide import flags.
+  let (_, state) ← liftM (m := IO) <| (importModulesCore imports).run
+  let mut thyEnv ← finalizeImport state imports opts (leakEnv := true) (loadExts := false)
+  -- Lean has already initialized Init in the host process. The custom prelude
+  -- must not require more initializers. Check this before restoring extensions.
+  for mod in thyEnv.header.modules, i in [0:thyEnv.header.modules.size] do
+    if mod.module == `HoTTLean.Prelude then
+      let preludeImports := thyEnv.header.moduleData[i]!.imports
+      if preludeImports.isEmpty || preludeImports.any (·.module != `Init) then
+        liftM (m := IO) <| throw <| IO.userError "the theory prelude must import only Init"
+      if !(regularInitAttr.ext.getModuleEntries thyEnv i).isEmpty ||
+          !(regularInitAttr.ext.getModuleIREntries thyEnv i).isEmpty ||
+          !(builtinInitAttr.ext.getModuleEntries thyEnv i).isEmpty ||
+          !(builtinInitAttr.ext.getModuleIREntries thyEnv i).isEmpty then
+        liftM (m := IO) <| throw <| IO.userError "the theory prelude must not contain initializers"
+    else if !(`Init).isPrefixOf mod.module then
+      liftM (m := IO) <| throw <| IO.userError s!"unsupported theory prelude import '{mod.module}'"
+  -- Restore only extension data from Init and the custom prelude. Do not run
+  -- module initializers, load native code, or change global import flags here.
+  -- These operations must also work inside another extension's addImportedFn.
+  for ext in (← liftM (m := IO) persistentEnvExtensionsRef.get) do
+    let s := ext.toEnvExtension.getState (asyncMode := .sync) thyEnv
+    if s.importedEntries.all Array.isEmpty then continue
+    let newState ← ext.addImportedFn s.importedEntries { env := thyEnv, opts }
+    thyEnv := ext.toEnvExtension.setState (asyncMode := .sync) thyEnv { s with state := newState }
   thyEnv := thyEnv.setMainModule mainModule
   return {
     modNm
