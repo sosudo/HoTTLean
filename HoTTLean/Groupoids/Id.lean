@@ -412,6 +412,8 @@ lemma mapFiber_ft (x) : PGrpd.mapFiber p (ft x) ≍
   apply HEq.trans (eqToHom_comp_heq ..)
   exact (Grpd.eqToHom_hom _ _).heq.trans (cast_heq _ _)
 
+-- The functor congruence reduces through the bundled forgetful functor.
+set_option backward.isDefEq.respectTransparency false in
 include p_tp in
 lemma map_ft_base (x) : (p.map (ft x)).base = eqToHom (by
     have h0 := Functor.congr_obj p_tp (ff x)
@@ -420,6 +422,7 @@ lemma map_ft_base (x) : (p.map (ft x)).base = eqToHom (by
     rw [h0, h1]) := by
   simpa using Functor.congr_hom p_tp (ft x)
 
+set_option backward.isDefEq.respectTransparency false in
 include p_tp in
 lemma map_tf_base (x) : (p.map (tf x)).base = eqToHom (by
     have h0 := Functor.congr_obj p_tp (ff x)
