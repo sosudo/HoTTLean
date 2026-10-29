@@ -336,6 +336,7 @@ lemma liftObj_map_fiberInclusion_map {S} {X Y : Fiber F S} {X' : E} (f : X ⟶ Y
     I.liftObj (F.map (Fiber.fiberInclusion.map f)) (X' := X') (by simp [hX'])
     = Fiber.fiberInclusion.obj X := by
   rw! [Fiber.functor_map_fiberInclusion_map, liftObj_eqToHom, hX']
+  rfl
 
 @[simp]
 lemma liftIso_map_fiberInclusion_map {S} {X Y : Fiber F S} {X' : E} (f : X ⟶ Y)
