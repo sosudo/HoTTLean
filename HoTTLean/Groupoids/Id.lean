@@ -729,18 +729,22 @@ attribute [local irreducible] tpClovenIsofibration
 variable (σ : Δ ⟶ Γ) (p0 : Γ ⟶ U.{v}.Tm) (p : cylinder.I.obj Γ ⟶ U.Ty)
     (p0_tp : p0 ≫ U.tp = cylinder.δ0.app Γ ≫ p)
 
+-- Unfold bundled groupoid instances while elaborating the lift.
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 def liftObj : Grpd.Interval × Γ → U.{v}.Tm
 | ⟨⟨⟨.false⟩⟩, x2⟩ => p0.obj x2
 | ⟨⟨⟨.true⟩⟩, x2⟩ => tpClovenIsofibration.liftObj (p.map (FunctorOperation.Path.ft x2))
     (Functor.congr_obj p0_tp x2)
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 abbrev liftMap0 {x2 : Γ} {y : Grpd.Interval × Γ} (f : FunctorOperation.Path.ff x2 ⟶ y) :=
   tpClovenIsofibration.liftIso (X' := p0.obj x2) (p.map f) (Functor.congr_obj p0_tp x2)
 
 open FunctorOperation.Path
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 def liftMap : {x y : Grpd.Interval × Γ} → (f : x ⟶ y) →
     liftObj p0 p p0_tp x ⟶ liftObj p0 p p0_tp y
