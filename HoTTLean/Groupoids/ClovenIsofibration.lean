@@ -344,6 +344,7 @@ lemma liftIso_map_fiberInclusion_map {S} {X Y : Fiber F S} {X' : E} (f : X ⟶ Y
     I.liftIso (F.map (Fiber.fiberInclusion.map f)) (X' := X') (by simp [hX'])
     = eqToHom (by simp [hX']) := by
   rw! [Fiber.functor_map_fiberInclusion_map, liftIso_eqToHom]
+  rfl
 
 open grothendieckClassifierIso in
 /-- A split isofibration `F : E ⥤ Γ` is classified by the functor `I.classifier : Γ ⥤ Grpd`.
