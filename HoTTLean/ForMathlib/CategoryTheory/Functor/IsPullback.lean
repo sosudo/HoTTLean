@@ -66,7 +66,8 @@ def morphismProperty : MorphismProperty (ChosenObjects east south) :=
 
 instance : MorphismProperty.IsMultiplicative (morphismProperty east south) where
   id_mem x := by
-    change east.map (𝟙 x.obj.1) = eqToHom x.property ≫ south.map (𝟙 x.obj.2) ≫ eqToHom x.property.symm
+    change east.map (𝟙 x.obj.1) =
+      eqToHom x.property ≫ south.map (𝟙 x.obj.2) ≫ eqToHom x.property.symm
     simp
   comp_mem f g hf hg := by
     change east.map (f.hom.1 ≫ g.hom.1) =
@@ -178,7 +179,7 @@ end Chosen
 end IsPullback
 
 
-open IsPullback
+open _root_.CategoryTheory.Functor.IsPullback
 
 /--
 A pullback structure on a type `Libya` over a pair of functors
@@ -746,16 +747,25 @@ def universal : (lift : C ⥤ Algeria) ×'
   by constructor
      . apply esah_pb.hom_ext
        . calc
-          (outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ esah_pb.lift north (west ⋙ so) outer) ⋙ rth =
-            outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ esah_pb.lift north (west ⋙ so) outer ⋙ rth := by rw[Functor.assoc]
-          _ = outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ north := by rw[esah_pb.fac_left north (west ⋙ so) outer]
-          _ = Cn ⋙ rth := by rw[outer_pb.fac_left (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC)]
+          (outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙
+            esah_pb.lift north (west ⋙ so) outer) ⋙ rth =
+            outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙
+              esah_pb.lift north (west ⋙ so) outer ⋙ rth := by rw [Functor.assoc]
+          _ = outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ north :=
+            by rw [esah_pb.fac_left north (west ⋙ so) outer]
+          _ = Cn ⋙ rth :=
+            by rw [outer_pb.fac_left (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC)]
        . calc
-          (outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ esah_pb.lift north (west ⋙ so) outer) ⋙ sah =
-            outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ esah_pb.lift north (west ⋙ so) outer ⋙ sah := by rw[Functor.assoc]
-          _ = outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ (west ⋙ so) := by rw[esah_pb.fac_right north (west ⋙ so) outer]
-          _ = Cw ⋙ so := by rw[← Functor.assoc, outer_pb.fac_right (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC)]
-          _ = Cn ⋙ sah := by rw[hC]
+          (outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙
+            esah_pb.lift north (west ⋙ so) outer) ⋙ sah =
+            outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙
+              esah_pb.lift north (west ⋙ so) outer ⋙ sah := by rw [Functor.assoc]
+          _ = outer_pb.lift (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC) ⋙ (west ⋙ so) :=
+            by rw [esah_pb.fac_right north (west ⋙ so) outer]
+          _ = Cw ⋙ so :=
+            by rw [← Functor.assoc,
+              outer_pb.fac_right (Cn ⋙ rth) Cw (ofRight.hCLeft esah Cn Cw hC)]
+          _ = Cn ⋙ sah := by rw [hC]
      . constructor
        . exact outer_pb.fac_right (Cn⋙rth) Cw (ofRight.hCLeft esah Cn Cw hC)
        . intro l0 l1 hll hlw
@@ -854,7 +864,7 @@ end CategoryTheory
 
 namespace CategoryTheory.Cat
 
-open Functor Limits
+open _root_.CategoryTheory.Functor Limits
 
 section
 variable {Libya Egypt Chad Sudan : Type u} [Category.{v} Libya]
@@ -865,7 +875,8 @@ variable {Libya Egypt Chad Sudan : Type u} [Category.{v} Libya]
   (h : Functor.IsPullback north west east south)
   (s : Limits.PullbackCone (homOf east) (homOf south))
 
-def lift : s.pt ⟶ of Libya := homOf (h.lift s.fst.toFunctor s.snd.toFunctor (congrArg Cat.Hom.toFunctor s.condition))
+def lift : s.pt ⟶ of Libya :=
+  homOf (h.lift s.fst.toFunctor s.snd.toFunctor (congrArg Cat.Hom.toFunctor s.condition))
 
 def fac_left : lift h s ≫ (homOf north) = s.fst :=
   Cat.Hom.ext (h.fac_left _ _ _)
@@ -907,7 +918,7 @@ end Cat
 
 namespace Grpd
 
-open Functor Limits
+open _root_.CategoryTheory.Functor Limits
 
 variable {Libya Egypt Chad Sudan : Type u} [Groupoid.{v} Libya]
   [Groupoid.{v} Egypt] [Groupoid.{v} Chad] [Groupoid.{v} Sudan]

@@ -29,7 +29,7 @@ def inv : G ⟶ F := h.isoOfCodGroupoid.inv
 
 end
 
-open Functor
+open _root_.CategoryTheory.Functor
 
 lemma hext {A : Type u} [Category.{v} A] {B : Type u₁} [Category.{v₁} B]
     {F F' G G' : A ⥤ B} (α : F ⟶ G) (β : F' ⟶ G')

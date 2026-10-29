@@ -12,7 +12,7 @@ namespace CategoryTheory
 
 namespace Functor.Grothendieck
 
-open Functor.IsPullback
+open _root_.CategoryTheory.Functor.IsPullback
 
 section
 
@@ -88,7 +88,8 @@ theorem liftMapFiber_comp {x y z} (f : x ⟶ y) (g : y ⟶ z) :
     eqToHom (by simp)
     ≫ (A.map (snd.map g)).toFunctor.map (liftMapFiber w f)
     ≫ liftMapFiber w g := by
-  have hgNatNatF := (eqToHom ((eqToHom w).naturality g).symm).toNatTrans.naturality (fst.map f).fiber
+  have hgNatNatF :=
+    (eqToHom ((eqToHom w).naturality g).symm).toNatTrans.naturality (fst.map f).fiber
   have h := congr_arg (λ x ↦ x ≫ ((eqToHom w).app z).toFunctor.map (fst.map g).fiber) hgNatNatF
   dsimp at h
   simp only [Category.assoc, Cat.Hom₂.eqToHom_toNatTrans, eqToHom_app] at h
@@ -172,7 +173,7 @@ def aux {C : Type*} [inst : Category C] (Cn : C ⥤ PCat) (Cw : C ⥤ Γ)
 
 end IsPullback
 
-open IsPullback
+open _root_.CategoryTheory.Functor.Grothendieck.IsPullback
 
 /--
 The following square is a (meta-theoretic) pullback of functors
@@ -297,14 +298,16 @@ end
 --     (s.snd ⋙ downFunctor)
 --     condition'
 
--- theorem lift_uniq (s : PullbackCone uLiftPCatForgetToCat.{v,u} (uLiftA.{v,u} A)) (m : s.pt ⥤ Grothendieck A)
+-- theorem lift_uniq (s : PullbackCone uLiftPCatForgetToCat.{v,u}
+--     (uLiftA.{v,u} A)) (m : s.pt ⥤ Grothendieck A)
 --     (hl : m ⋙ Grothendieck.toPCat A = s.fst ⋙ downFunctor)
 --     (hr : m ⋙ Grothendieck.forget A = s.snd ⋙ downFunctor) :
 --     m = lift s :=
 --   IsMegaPullback.lift_uniq
 --     (s.fst ⋙ downFunctor) (s.snd ⋙ downFunctor) condition' m hl hr
 
--- theorem lift_uniq' (s : PullbackCone uLiftPCatForgetToCat.{v,u} (uLiftA.{v,u} A)) (m : s.pt ⟶ uLiftGrothendieck A)
+-- theorem lift_uniq' (s : PullbackCone uLiftPCatForgetToCat.{v,u}
+--     (uLiftA.{v,u} A)) (m : s.pt ⟶ uLiftGrothendieck A)
 --     (hl : m ≫ uLiftToPCat A = s.fst) (hr : m ≫ uLiftGrothendieckForget A = s.snd) :
 --     m = lift' s := by
 --   unfold lift'

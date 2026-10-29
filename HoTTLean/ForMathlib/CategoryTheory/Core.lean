@@ -22,7 +22,8 @@ variable {C : Type u} [Category.{v} C] {D : Type u₁} [Category.{v₁} D]
   subst h
   rfl
 
-def comp_inclusion_injective {l0 l1 : D ⥤ Core C} (hl : l0 ⋙ inclusion C = l1 ⋙ inclusion C) : l0 = l1 := by
+def comp_inclusion_injective {l0 l1 : D ⥤ Core C}
+    (hl : l0 ⋙ inclusion C = l1 ⋙ inclusion C) : l0 = l1 := by
   fapply Functor.ext
   · intro x
     ext
@@ -105,7 +106,7 @@ instance {G : Type u} [Groupoid.{v} G] :
 
 end Adjunction
 
-open Functor
+open _root_.CategoryTheory.Functor
 
 instance : IsLeftAdjoint Grpd.forgetToCat :=
   IsLeftAdjoint.mk ⟨ Core.map , ⟨ adjunction ⟩ ⟩
@@ -145,7 +146,8 @@ def fac_right : lift F En Ew hE ⋙ F.core = Ew := by
   exact hE
 
 def universal : (lift : E ⥤ Core C) ×' lift ⋙ inclusion C = En ∧ lift ⋙ F.core = Ew ∧
-    ∀ {l0 l1 : E ⥤ Core C}, l0 ⋙ inclusion C = l1 ⋙ inclusion C → l0 ⋙ F.core = l1 ⋙ F.core → l0 = l1 :=
+    ∀ {l0 l1 : E ⥤ Core C}, l0 ⋙ inclusion C = l1 ⋙ inclusion C →
+      l0 ⋙ F.core = l1 ⋙ F.core → l0 = l1 :=
   ⟨ lift F En Ew hE, fac_left _ _ _ _, fac_right _ _ _ _,
     fun hl _ => comp_inclusion_injective hl ⟩
 
@@ -154,7 +156,7 @@ end IsPullback
 variable {C : Type u} [Category.{v} C] {D : Type u} [Category.{v} D]
   (F : C ⥤ D) [F.ReflectsIsomorphisms]
 
-open IsPullback
+open _root_.CategoryTheory.Core.IsPullback
 
 /--
   In the category of categories,

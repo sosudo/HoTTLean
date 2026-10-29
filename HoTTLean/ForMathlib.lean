@@ -19,8 +19,10 @@ to be upstreamed. -/
 This comment space is for notes about mathlib definitions/theorems that should be fixed, refactored,
 or redesigned.
 
-- AsSmall.down and AsSmall.up should have their universe level order changed so that the third value comes first.
-- currently I often write AsSmall.{_,_,w} because the first two can be inferred but not the max universe.
+- AsSmall.down and AsSmall.up should have their universe level order changed
+  so that the third value comes first.
+- currently I often write AsSmall.{_,_,w} because the first two can be inferred
+  but not the max universe.
 
 -/
 
@@ -391,7 +393,7 @@ lemma functorToAsSmallEquiv_symm_apply_comp_right (F : C ⥤ E) :
 
 end
 
-open ULift
+open _root_.CategoryTheory.ULift
 
 instance (C : Type u) [Category.{v} C] :
     (downFunctor : ULift.{w} C ⥤ C).ReflectsIsomorphisms :=
@@ -600,7 +602,8 @@ theorem NatTrans.yonedaMk_app {X : C} (α : yoneda.obj X ⟶ F) :
 
 namespace Functor
 
-theorem precomp_heq_of_heq_id {A B : Type u} {C : Type*} [Category.{v} A] [Category.{v} B] [Category C]
+theorem precomp_heq_of_heq_id {A B : Type u} {C : Type*}
+    [Category.{v} A] [Category.{v} B] [Category C]
     (hAB : A = B) (h0 : HEq (inferInstance : Category A) (inferInstance : Category B)) {F : A ⥤ B}
     (h : HEq F (𝟭 B)) (G : B ⥤ C) : HEq (F ⋙ G) G := by
   subst hAB
@@ -675,7 +678,7 @@ lemma Discrete.Hom.hext {α β : Type u} {x y : Discrete α} (x' y' : Discrete �
     (hx : x ≍ x') (hy : y ≍ y') (f : x ⟶ y) (f' : x' ⟶ y') : f ≍ f' := by
   aesop_cat
 
-open Prod in
+open _root_.CategoryTheory.Prod in
 lemma Prod.sectR_comp_snd {C : Type u₁} [Category.{v₁} C] (Z : C)
     (D : Type u₂) [Category.{v₂} D] : sectR Z D ⋙ snd C D = 𝟭 D :=
   rfl

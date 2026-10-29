@@ -498,7 +498,8 @@ variable {D : Type*} [Category D]
 def fib' (c) : (F ⋙ Grpd.forgetToCat).obj c ⥤ E := fib c
 
 variable {fib} in
-def hom' {c c' : C} (f : c ⟶ c') : fib' fib c ⟶ ((F ⋙ Grpd.forgetToCat).map f).toFunctor ⋙ fib' fib c' :=
+def hom' {c c' : C} (f : c ⟶ c') :
+    fib' fib c ⟶ ((F ⋙ Grpd.forgetToCat).map f).toFunctor ⋙ fib' fib c' :=
   hom f
 
 variable (G : E ⥤ D)
@@ -510,7 +511,8 @@ def functorFromCompFib (c : C) : F.obj c ⥤ D :=
  functorFromCompFib' fib G c
 
 def functorFromCompHom' {c c' : C}  (f : c ⟶ c') :
-    functorFromCompFib' fib G c ⟶ ((F ⋙ Grpd.forgetToCat).map f).toFunctor ⋙ functorFromCompFib' fib G c' :=
+    functorFromCompFib' fib G c ⟶
+      ((F ⋙ Grpd.forgetToCat).map f).toFunctor ⋙ functorFromCompFib' fib G c' :=
   Grothendieck.functorFromCompHom (fib' fib) (hom' hom) _ _
 
 def functorFromCompHom {c c' : C}  (f : c ⟶ c') :
@@ -833,7 +835,7 @@ lemma map_map_eqToHom {α : F ⟶ G} {X Y : ∫(F)} (f : X ⟶ Y) :
 @[simp] theorem eqToHom_comp_fiber {C : Type u} [Category.{v} C] {A : C ⥤ Grpd.{v₁, u₁}}
     {p q r : ∫(A)} (h : p = q) {f : q ⟶ r} :
     (eqToHom h ≫ f).fiber = eqToHom (by subst h; simp) ≫ f.fiber := by
-  simp only [comp_fiber, fiber_eqToHom, eqToHom_map, Category.assoc, eqToHom_trans_assoc]
+  simp only [comp_fiber, fiber_eqToHom, eqToHom_map, eqToHom_trans_assoc]
 
 end
 

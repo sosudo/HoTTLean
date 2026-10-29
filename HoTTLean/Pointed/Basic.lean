@@ -17,7 +17,7 @@ set_option backward.isDefEq.respectTransparency false
 
 attribute [local simp] eqToHom_map Grpd.id_eq_id Grpd.comp_eq_comp Functor.id_comp
 
-open Functor
+open _root_.CategoryTheory.Functor
 
 abbrev PCat := ∫ 𝟭 Cat.{v,u}
 
@@ -126,7 +126,9 @@ theorem mapFiber_inv {x y} (f : x ⟶ y) [IsIso f] :
 end
 
 theorem eqToHom_base_map {x y : PCat} (eq : x = y) {a b} (f : a ⟶ b) :
-    (eqToHom eq).base.toFunctor.map f = eqToHom (by simp) ≫ (eqToHom (by simp [eq] : x.base = y.base)).toFunctor.map f ≫ eqToHom (by simp) := by
+    (eqToHom eq).base.toFunctor.map f = eqToHom (by simp) ≫
+      (eqToHom (by simp [eq] : x.base = y.base)).toFunctor.map f ≫
+      eqToHom (by simp) := by
   cases eq
   simp
 

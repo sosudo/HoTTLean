@@ -122,7 +122,7 @@ def lift (φ : C ⥤ G) : Category.FreeGroupoid C ⥤ G :=
     · have hf := Prefunctor.congr_hom (Quiver.FreeGroupoid.lift_spec φ.toPrefunctor) f
       have hg := Prefunctor.congr_hom (Quiver.FreeGroupoid.lift_spec φ.toPrefunctor) g
       have hfg := Prefunctor.congr_hom (Quiver.FreeGroupoid.lift_spec φ.toPrefunctor) (f ≫ g)
-      simp only [Functor.toPrefunctor_obj, Prefunctor.comp_obj, Prefunctor.comp_map,
+      simp only [Prefunctor.comp_map,
         Functor.toPrefunctor_map, Quiver.homOfEq_rfl, Functor.map_comp] at *
       rw [hf, hg, hfg])
 

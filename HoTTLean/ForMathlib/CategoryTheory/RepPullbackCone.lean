@@ -20,7 +20,7 @@ variable {J : Type u₁} [Category.{v₁} J] {K : Type u₂} [Category.{v₂} K]
 variable {C : Type u₃} [Category.{v₃} C]
 
 open CategoryTheory
-open Functor
+open _root_.CategoryTheory.Functor
 
 /-- A `c : RepCone F` is:
 * an object `c.pt` and
@@ -170,7 +170,8 @@ lemma snd_mk (W : C) (fst : yoneda.obj W ⟶ X) (snd : yoneda.obj W ⟶ Y)
 theorem condition : t.fst ≫ f = t.snd ≫ g :=
   t.pullbackCone.condition
 
-open WalkingSpan.Hom WalkingCospan.Hom WidePullbackShape.Hom WidePushoutShape.Hom Limits.PullbackCone
+open WalkingSpan.Hom WalkingCospan.Hom
+open WidePullbackShape.Hom WidePushoutShape.Hom Limits.PullbackCone
 
 def repIsLimitAux (t : PullbackCone f g) (lift : ∀ s : RepPullbackCone f g, yoneda.obj s.pt ⟶ t.pt)
     (fac_left : ∀ s : RepPullbackCone f g, lift s ≫ t.fst = s.fst)
@@ -185,8 +186,9 @@ def repIsLimitAux (t : PullbackCone f g) (lift : ∀ s : RepPullbackCone f g, yo
       fun j' => WalkingPair.casesOn j' (fac_left s) (fac_right s)
     uniq := uniq }
 
-/-- To show that a `PullbackCone` in a presheaf category constructed using `PullbackCone.mk` is a limit cone,
-  it suffices to show its universal property among representable cones.
+/-- To show that a `PullbackCone` in a presheaf category constructed using
+`PullbackCone.mk` is a limit cone, it suffices to show its universal property
+among representable cones.
 -/
 def RepIsLimit.mk {fst : W ⟶ X} {snd : W ⟶ Y} (eq : fst ≫ f = snd ≫ g)
     (lift : ∀ s : RepPullbackCone f g, yoneda.obj s.pt ⟶ W)
@@ -229,7 +231,8 @@ open Opposite
 
 def repPullbackCone (c : C) (x : G.obj (op c)) : RepPullbackCone f g :=
   .mk c (yonedaEquiv.symm $ a.app (op c) x) (yonedaEquiv.symm $ b.app (op c) x) (by
-    simpa [yonedaEquiv_symm_naturality_right] using ConcreteCategory.congr_hom (NatTrans.congr_app hab (op c)) x)
+    simpa [yonedaEquiv_symm_naturality_right] using
+      ConcreteCategory.congr_hom (NatTrans.congr_app hab (op c)) x)
 
 def lift'.app (c : C) : G.obj (op c) ⟶ W.obj (op c) :=
   TypeCat.ofHom fun x => yonedaEquiv (lift (repPullbackCone a b hab c x))
@@ -246,9 +249,9 @@ lemma lift'.naturality ⦃c d : C⦄ (σ : c ⟶ d) : G.map σ.op ≫ lift'.app 
   dsimp only [repPullbackCone, π_app_left, fst_mk, π_app_right, snd_mk]
   congr 3
   · erw [yonedaEquiv_symm_naturality_left σ]
-    simpa using ConcreteCategory.congr_hom (a.naturality σ.op) x
+    simp
   · erw [yonedaEquiv_symm_naturality_left σ]
-    simpa using ConcreteCategory.congr_hom (b.naturality σ.op) x
+    simp
 
 include lift_naturality in
 def lift' : G ⟶ W where
