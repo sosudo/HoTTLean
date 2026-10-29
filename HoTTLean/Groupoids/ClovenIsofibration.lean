@@ -265,6 +265,8 @@ lemma grothendieckClassifierIso.hom.map_id (X : ∫ I.classifier) :
   rw [eqToHom_map]
   simp
 
+-- Reduce classifier and fiber projections in the dependent composition proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma grothendieckClassifierIso.hom.map_comp {X Y Z: ∫ I.classifier} (f : X ⟶ Y) (g : Y ⟶ Z) :
     hom.map' I (f ≫ g) = hom.map' I f ≫ hom.map' I g := by
   simp [map', liftIso_comp, eqToHom_map, classifier, classifier.map.map]
