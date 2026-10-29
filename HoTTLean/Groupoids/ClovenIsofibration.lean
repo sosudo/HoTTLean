@@ -204,6 +204,8 @@ lemma classifier.map_id (X : Γ) : classifier.map I (𝟙 X) = 𝟙 (Grpd.of (F.
     ext
     simp [map.map, liftIso_id, eqToHom_map]
 
+-- Reduce fiber projections in the dependent composition proof.
+set_option backward.isDefEq.respectTransparency false in
 lemma classifier.map_comp {X Y Z: Γ} (f : X⟶ Y) (g : Y ⟶ Z):
  classifier.map I (f ≫ g) = classifier.map I f ⋙ classifier.map I g := by
   fapply Functor.ext
