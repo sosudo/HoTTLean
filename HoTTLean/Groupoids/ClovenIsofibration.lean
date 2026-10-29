@@ -31,7 +31,7 @@ lemma functor_map_fiberInclusion_map {a b : Fiber p S}
 lemma hext {S'} (hS : S' ≍ S) {a : Fiber p S}
     {a' : Fiber p S'} (h : Fiber.fiberInclusion.obj a ≍ Fiber.fiberInclusion.obj a') : a ≍ a' := by
   subst hS
-  simpa using Subtype.ext h.eq
+  exact heq_of_eq (Subtype.ext h.eq)
 
 lemma hom_hext {S'} (hS : S' ≍ S) {a b : Fiber p S}
     {a' b' : Fiber p S'} (ha : a ≍ a') (hb : b ≍ b') {φ : a ⟶ b}
