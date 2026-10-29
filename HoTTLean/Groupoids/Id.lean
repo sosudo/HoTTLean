@@ -645,6 +645,8 @@ lemma path_comp : path (A := σ ≫ A) (cylinder.I.map σ ≫ p) (by rw [Categor
   dsimp [path]
   rw [← toCoreAsSmallEquiv_symm_apply_comp_left, ← FunctorOperation.Path.path_comp]
 
+-- The endpoint composition rewrites require bundled groupoid transparency.
+set_option backward.isDefEq.respectTransparency false in
 lemma path_tp (δ0_p : cylinder.δ0.app Γ ≫ p = a0) (δ1_p : cylinder.δ1.app Γ ≫ p = a1) :
     path p p_tp ≫ U.tp = UId.Id (A := A) a0 a1
     (by rw [← δ0_p, Category.assoc, p_tp, Cylinder.δ0_π'_app_assoc])
