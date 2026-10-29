@@ -916,7 +916,7 @@ variable (F)
 
 -- Match the bundled Cat transports when elaborating the identity laws.
 @[simps!]
-def toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
+def toPseudoFunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
   map_id x := by
@@ -928,7 +928,7 @@ def toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck where
       all_goals rfl
 
 @[simps!]
-def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
+def toPseudoFunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
   obj x := ⟨ x.base, x.fiber ⟩
   map f := ⟨ f.base, f.fiber ⟩
   map_id x := by
@@ -939,34 +939,52 @@ def toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F where
       apply Hom.ext <;> simp
       all_goals rfl
 
-def toPseudofunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck where
-  hom := toPseudofunctor'Iso.hom F
-  inv := toPseudofunctor'Iso.inv F
+def toPseudoFunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck where
+  hom := toPseudoFunctor'Iso.hom F
+  inv := toPseudoFunctor'Iso.inv F
 
-def toPseudofunctor'Equivalence : ∫ F ≌ F.toPseudofunctor'.Grothendieck :=
-  (toPseudofunctor'Iso F).toEquivalence
+def toPseudoFunctor'Equivalence : ∫ F ≌ F.toPseudofunctor'.Grothendieck :=
+  (toPseudoFunctor'Iso F).toEquivalence
 
-lemma toPseudofunctor'Iso.hom_comp_forget : toPseudofunctor'Iso.hom F ⋙
+lemma toPseudoFunctor'Iso.hom_comp_forget : toPseudoFunctor'Iso.hom F ⋙
     Pseudofunctor.Grothendieck.forget _ = forget _ :=
   rfl
 
-lemma toPseudofunctor'Iso.inv_comp_forget : toPseudofunctor'Iso.inv F ⋙ forget _ =
+lemma toPseudoFunctor'Iso.inv_comp_forget : toPseudoFunctor'Iso.inv F ⋙ forget _ =
     Pseudofunctor.Grothendieck.forget _ :=
   rfl
 
-lemma map_eq_pseudofunctor_map {G} (α : F ⟶ G) : map α = (toPseudofunctor'Iso F).hom ⋙
+-- Keep the migration spelling available to downstream code while restoring the
+-- original project API (including the `simps` lemmas generated above).
+abbrev toPseudofunctor'Iso.hom : ∫ F ⥤ F.toPseudofunctor'.Grothendieck :=
+  toPseudoFunctor'Iso.hom F
+abbrev toPseudofunctor'Iso.inv : F.toPseudofunctor'.Grothendieck ⥤ ∫ F :=
+  toPseudoFunctor'Iso.inv F
+abbrev toPseudofunctor'Iso : ∫ F ≅≅ F.toPseudofunctor'.Grothendieck :=
+  toPseudoFunctor'Iso F
+abbrev toPseudofunctor'Equivalence : ∫ F ≌ F.toPseudofunctor'.Grothendieck :=
+  toPseudoFunctor'Equivalence F
+
+lemma toPseudofunctor'Iso.hom_comp_forget : toPseudofunctor'Iso.hom F ⋙
+    Pseudofunctor.Grothendieck.forget _ = forget _ :=
+  toPseudoFunctor'Iso.hom_comp_forget F
+lemma toPseudofunctor'Iso.inv_comp_forget : toPseudofunctor'Iso.inv F ⋙ forget _ =
+    Pseudofunctor.Grothendieck.forget _ :=
+  toPseudoFunctor'Iso.inv_comp_forget F
+
+lemma map_eq_pseudofunctor_map {G} (α : F ⟶ G) : map α = (toPseudoFunctor'Iso F).hom ⋙
     Pseudofunctor.Grothendieck.map α.toStrongTrans' ⋙
-    (toPseudofunctor'Iso G).inv := by
+    (toPseudoFunctor'Iso G).inv := by
   fapply Functor.ext
   · aesop
   · intro X Y f
     -- Match the wrapped Cat transports before applying naturality.
     set_option backward.isDefEq.respectTransparency false in
       apply Hom.ext
-      · simp [map, toPseudofunctor'Iso, toPseudofunctor'Iso.hom, toPseudofunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
+      · simp [map, toPseudoFunctor'Iso, toPseudoFunctor'Iso.hom, toPseudoFunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
         rw [← NatIso.naturality_2 (eqToIso (congrArg Cat.Hom.toFunctor (G.map_id Y.base))) ((α.app Y.base).toFunctor.map f.fiber)]
         simp
-      · simp [map, toPseudofunctor'Iso, toPseudofunctor'Iso.hom, toPseudofunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
+      · simp [map, toPseudoFunctor'Iso, toPseudoFunctor'Iso.hom, toPseudoFunctor'Iso.inv, Pseudofunctor.Grothendieck.map, NatTrans.toStrongTrans']
 
 end Pseudofunctor
 
